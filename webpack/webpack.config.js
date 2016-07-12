@@ -45,7 +45,7 @@ const webpackConfig = {
     preLoaders: [
       {
         test: /\.(js|jsx)$/,
-        loader: 'baggage?[file].less&[file].scss'
+        loader: 'baggage?[file].less'
       }
     ],
     loaders: [
