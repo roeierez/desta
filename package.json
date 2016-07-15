@@ -92,6 +92,8 @@
     "babel-preset-react-hmre": "1.1.1",
     "baggage-loader": "^0.2.4",
     "react": "15.1.0",
+    "react-bootstrap": "^0.29.5",
+    "react-google-maps": "^4.11.0",
     "react-redux": "4.4.5",
     "react-router": "2.4.1",
     "redux-batched-subscribe": "0.1.4"
