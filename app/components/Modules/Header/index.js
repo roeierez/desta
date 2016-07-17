@@ -8,21 +8,29 @@ import {Nav, NavItem, Navbar, Grid, Row, Col} from 'react-bootstrap';
 const Header = () => (
     <Navbar className="site-header" fluid={true}>
         <Row>
-            <Col xs={1}>
+            <Col fluid={true}>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <a href="#">Desta</a>
+                        <a className="logo" href="#"><span className="logo-desta">Desta</span><span className="logo-travel">Travel</span></a>
                     </Navbar.Brand>
                 </Navbar.Header>
             </Col>
-            <Col xs={4} xsOffset={4}>
+            <Col fluid={true}>
                 <Nav bsStyle="pills">
                     <NavItem><Link to="/createtrip"><span className="font-icon font-icon-home"></span>Home</Link></NavItem>
                     <NavItem><Link to="/profile"><span className="font-icon font-icon-user"></span>My Desta</Link></NavItem>
                     <NavItem><Link to="/explore"><span className="font-icon font-icon-search"></span>Explore</Link></NavItem>
+                    <NavItem><Link to="/about"><span className="font-icon font-icon-help"></span>About us</Link></NavItem>
+                    <NavItem><Link to="/contact"><span className="font-icon font-icon-phone"></span>Contact us</Link></NavItem>
                 </Nav>
             </Col>
-            <Nav pullRight={true} bsStyle="pills">
+            <Nav className="rightNavBar" pullRight={true} bsStyle="pills">
+                <NavItem><Link className="notifications" to="notifications"><span className="font-icon font-icon-alarm"></span>
+                    <span className="label notification-number label-pill label-danger">4</span></Link>
+                </NavItem>
+                <NavItem><Link className="messages" to="messages"><span className="font-icon font-icon-mail"></span>
+                    <span className="label notification-number label-pill label-danger">7</span>
+                </Link></NavItem>
                 <NavItem><Link to="login"><span className="font-icon font-icon-lock"></span>Sign in</Link></NavItem>
             </Nav>
         </Row>

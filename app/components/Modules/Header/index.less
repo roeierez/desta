@@ -3,6 +3,41 @@
 }
 
 .site-header {
+  .logo {
+    min-width: 300px;
+    padding-left: 48px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: black;
+
+    .logo-travel {
+      color: white;
+      background-color: #00a8ff;
+      padding: 4px;
+      margin-left: 5px;
+    }
+  }
+  .rightNavBar {
+    a {
+      padding-left: 0px;;
+    }
+    .font-icon-alarm, .font-icon-mail, .font-icon-lock {
+      font-size: 18px;
+      //&::before {
+      //  content: "\62";
+      //}
+    }
+
+    .notifications, .messages {
+      position: relative;
+      .notification-number {
+        position: absolute;
+        right: 14px;
+        top: -10px;
+        font-size: 11px;
+      }
+    }
+  }
   li {
     a {
       color: rgb(52, 52, 52);

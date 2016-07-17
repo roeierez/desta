@@ -18,6 +18,7 @@ var PlacesAutocompleteInput = React.createClass({ // eslint-disable-line
             <div>
                 <Geosuggest
                     ref = "geoSuggest"
+                    placeholder="Search cities"
                     initialValue = {this.props.value && this.props.value.label}
                     inputClassName = "form-control"
                     types = {['(cities)']}

@@ -1,7 +1,13 @@
 import React from 'react';
-import {GoogleMap, Marker, GoogleMapLoader} from "react-google-maps";
+import {GoogleMap, Marker, GoogleMapLoader, InfoWindow} from "react-google-maps";
+var mapStyles = require('./mapStyle.js');
 
 class MapView extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.onMarkerClick = this.onMarkerClick.bind(this);
+    }
 
     componentDidUpdate () {
         var {selectedLocation, containerElementProps, workingTrip } = this.props;
@@ -14,6 +20,13 @@ class MapView extends React.Component {
             }
             this.refs.map && this.refs.map.fitBounds(bounds);
         }
+    }
+
+    onMarkerClick(marker) {
+        var infowindow = new google.maps.InfoWindow({
+            content: "test"
+        });
+        infowindow.open(this.refs.map, marker);
     }
 
     render() {
@@ -38,13 +51,18 @@ class MapView extends React.Component {
                             defaultZoom={3}
                             defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
                             zoom={selectedLocation && 8 || 3}
+                            defaultOptions={{
+                                styles: mapStyles,
+                            }}
                             center={ centeredLocation && centeredLocation.location || { lat: -25.363882, lng: 131.044922 }}
                         >
                             {locations.map((dest, i) => {
                                 return (
                                     <Marker
                                         position={dest.location}
-                                        key={dest.placeId + i.toString()} />
+                                        onClick={this.onMarkerClick}
+                                        key={dest.placeId + i.toString()}>
+                                    </Marker>
                                 )
                             })}
                         </GoogleMap>

@@ -16,12 +16,10 @@ class CreateTrip extends React.Component {
 
     render (){
         return (
-            <Grid fluid={true}>
-                <Row className="show-grid">
-                    <Col xs={3}><QuickTripWizard {...this.props} /></Col>
-                    <Col xs={9}><MapView ref="mapView" {...this.props}/></Col>
-                </Row>
-            </Grid>
+            <div className="createTripPage">
+                <div className="page-quickTripWizard"><QuickTripWizard {...this.props} /></div>
+                <div className="page-mapView"><MapView ref="mapView" {...this.props}/></div>
+            </div>
         );
     }
 };
