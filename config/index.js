@@ -31,4 +31,7 @@ config.set('utils_aliases', [
     return (acc[path.basename(src)] = src) && acc;
 }, {}));
 
+let aliases = config.get('utils_aliases');
+aliases['redux-modules'] = paths.src('redux/modules');
+aliases['base-styles'] = paths.src('resources/styles/base');
 module.exports = config;

@@ -91,11 +91,17 @@
     "asset-require-hook": "1.0.2",
     "babel-preset-react-hmre": "1.1.1",
     "baggage-loader": "^0.2.4",
+    "classnames": "^2.2.4",
+    "moment": "^2.14.1",
     "react": "15.1.0",
     "react-bootstrap": "^0.29.5",
+    "react-bootstrap-daterangepicker": "^3.1.0",
+    "react-geosuggest": "^1.24.1",
     "react-google-maps": "^4.11.0",
+    "react-google-places-suggest": "^1.0.1",
     "react-redux": "4.4.5",
     "react-router": "2.4.1",
-    "redux-batched-subscribe": "0.1.4"
+    "redux-batched-subscribe": "0.1.4",
+    "redux-form": "^5.3.1"
   }
 }
