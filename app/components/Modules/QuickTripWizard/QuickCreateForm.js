@@ -1,13 +1,17 @@
 import React from 'react';
-import { TextInput } from 'components/Modules/Form';
-import { reduxForm } from 'redux-form';
+import {TextInput} from 'components/Modules/Form';
+import {reduxForm} from 'redux-form';
 import {PlacesAutocompleteInput} from 'components/Modules/Form';
-import { Row, FormGroup, FormControl, HelpBlock, ControlLabel, Button, Glyphicon } from 'react-bootstrap';
-import { RangePicker } from 'components/Modules/Form';
-import { connect } from 'react-redux';
+import {Row, FormGroup, FormControl, HelpBlock, ControlLabel, Button, Glyphicon} from 'react-bootstrap';
+import {RangePicker} from 'components/Modules/Form';
+import {connect} from 'react-redux';
 import classNames from 'classnames';
 
-var mapStateToProps = state => state;
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+
+function hasDates(tripDates) {
+    return tripDates.value && tripDates.value.startDate && tripDates.value.endDate;
+}
 
 var form = reduxForm({
     form: 'QuickCreateTrip',
@@ -23,27 +27,37 @@ const QuickCreateForm = ({onSaveAndAddDestination, onSaveAndCreateTrip, fields, 
     return (
         <div className="quick-create-form">
             <form>
-                    <FormGroup controlId="tripDestination">
-                        <ControlLabel>Where are you going?</ControlLabel>
-                        <PlacesAutocompleteInput selectLocation={selectLocation} types={["(cities)"]} {...fields.tripDestination}/>
+                <ReactCSSTransitionGroup transitionEnterTimeout={0} transitionLeaveTimeout={350} transitionName="component-fade"
+                                         transitionAppear={true} transitionAppearTimeout={350}>
+                    <FormGroup key="1" controlId="tripDestination">
+                        <PlacesAutocompleteInput selectLocation={selectLocation}
+                                                 types={["(cities)"]} {...fields.tripDestination}/>
                     </FormGroup>
-                    <FormGroup className={classNames({hidden: fields.tripDestination.value == ''})} controlId="tripDates">
-                        <ControlLabel>When is your trip?</ControlLabel>
-                        <RangePicker {...fields.tripDates} />
-                    </FormGroup>
-                    <FormGroup className={classNames({hidden: fields.tripDates.value == ''})} controlId="tripFriends">
-                        <ControlLabel>Who is coming with you?</ControlLabel>
-                        <FormControl type="text" {...fields.tripFriends}/>
-                    </FormGroup>
+                    {fields.tripDestination.value != '' && (
+                        <FormGroup key="2" controlId="tripDates">
+                            <RangePicker placeholder="When is your trip" {...fields.tripDates} />
+                        </FormGroup>
+                    )}
+                    {hasDates(fields.tripDates) && (
+                        <FormGroup key="3" controlId="tripFriends">
+                            <FormControl placeholder="Who is coming with you?" type="text" {...fields.tripFriends}/>
+                        </FormGroup>
+                    )}
+                </ReactCSSTransitionGroup>
             </form>
 
-            <div className={classNames('pull-right', {hidden: fields.tripDates.value == ''})}>
-                <a onClick={onSaveAndAddDestination}  href="#" className="pull-right icon-link-circle"><span>+</span></a>
-            </div>
-            <div className={classNames('pull-left', {hidden: fields.tripDates.value == ''})}>
-                <Button onClick={onSaveAndCreateTrip} bsSize="small" bsStyle="success"><span>Create Trip</span>
-                </Button>
-            </div>
+            <ReactCSSTransitionGroup transitionEnterTimeout={0} transitionLeaveTimeout={350} transitionName="component-fade"
+                                     transitionAppear={true} transitionAppearTimeout={350}>
+                {hasDates(fields.tripDates) && (
+                    <div className="layout-center">
+                        <Button onClick={onSaveAndAddDestination} bsSize="small"
+                                bsStyle="primary">
+                            <a className="pull-left icon-link-circle"><span>+</span></a>
+                            <span>Add Destination</span>
+                        </Button>
+                    </div>
+                )}
+            </ReactCSSTransitionGroup>
         </div>
 
     )

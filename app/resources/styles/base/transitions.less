@@ -4,7 +4,7 @@
 
 .component-fade-enter.component-fade-enter-active {
   opacity: 1;
-  transition: opacity 500ms ease-in;
+  transition: opacity 1000ms ease-in;
 }
 
 .component-fade-appear {
@@ -13,7 +13,7 @@
 
 .component-fade-appear.component-fade-appear-active {
   opacity: 1;
-  transition: opacity 500ms ease-in;
+  transition: opacity 1000ms ease-in;
 }
 
 .component-fade-leave {
@@ -22,5 +22,33 @@
 
 .component-fade-leave.component-fade-leave-active {
   opacity: 0.01;
-  transition: opacity 300ms ease-in;
+  transition: opacity 1000ms ease-in;
+}
+
+
+.component-slide-enter {
+  transform: translateX(-400px);
+}
+
+.component-slide-enter.component-slide-enter-active {
+  transform: translateX(0px);
+  transition: transform 250ms ease-in;
+}
+
+.component-slide-appear {
+  transform: translateX(-400px);
+}
+
+.component-slide-appear.component-slide-appear-active {
+  transform: translateX(0px);
+  transition: transform 250ms ease-in;
+}
+
+.component-slide-leave {
+  transform: translateX(0px);
+}
+
+.component-slide-leave.component-slide-leave-active {
+  transform: translateX(-400px);
+  transition: transform 250ms ease-in;
 }

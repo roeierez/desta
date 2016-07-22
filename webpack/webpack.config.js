@@ -55,6 +55,11 @@ const webpackConfig = {
         loader: "babel-loader"
       },
       {
+        test: /\.(json)$/,
+        exclude: /node_modules/,
+        loader: "json-loader"
+      },
+      {
         test: /\.css$/,
         loader: "style-loader!css-loader"
       },
@@ -62,7 +67,7 @@ const webpackConfig = {
         test: /\.less$/,
         loader: 'style!css!postcss!less'
       },
-      {test: /\.(png|svg|gif)(\?.*)?$/, loader: 'url-loader?limit=100000'},
+      {test: /\.(png|svg|gif|jpg)(\?.*)?$/, loader: 'url-loader?limit=100000'},
       /* eslint-disable */
       {
         test: /\.woff(\?.*)?$/,

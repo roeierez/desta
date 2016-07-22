@@ -1,0 +1,61 @@
+.trips-gallery {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .trip-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+    .trip-summary {
+      border-radius: 5px;
+      border: 5px solid white;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-image: url("../../../resources/images/cities/new_york.jpg");
+      &.barcelona {
+        background-image: url("../../../resources/images/cities/barcelona.jpg");
+      }
+
+      &.new_york {
+        background-image: url("../../../resources/images/cities/new_york.jpg");
+      }
+
+      &.paris {
+        background-image: url("../../../resources/images/cities/paris.jpg");
+      }
+
+      &.rome {
+        background-image: url("../../../resources/images/cities/rome.jpg");
+      }
+
+      &.tokyo {
+        background-image: url("../../../resources/images/cities/tokyo.jpg");
+      }
+
+      .trip-content {
+        background-color: rgba(0, 0, 0, 0.3);
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.5);
+          cursor: pointer;
+        }
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        padding: 0px 20px 10px 10px;
+        flex-direction: column;
+        color: white;
+        font-size: 20px;
+        width: 500px;
+        height: 200px;
+
+        .trip-dates {
+          font: 400 12px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+        }
+
+        .trip-destinations {
+          font: 500 20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+         margin-bottom: 5px;
+        }
+      }
+    }
+  }
+}

@@ -25,7 +25,9 @@ const paths = (() => {
 config.set('utils_paths', paths);
 config.set('utils_aliases', [
     'components',
-    'utils'
+    'utils',
+    'resources',
+    'lib'
 ].reduce((acc, dir) => {
     const src = paths.src(dir);
     return (acc[path.basename(src)] = src) && acc;

@@ -35,21 +35,19 @@ class QuickTripWizard extends React.Component {
         return (
             <div className="quickTripWizard">
 
-                    {workingTrip.destinations.length > 0 && (
-                            <div className="destinationPanel">
+                    {workingTrip && workingTrip.destinations.length > 0 && (
+                            <Panel className="destinationPanel">
                                 <DestinationsList {...this.props} destinations={workingTrip.destinations} />
-                            </div>
+                            </Panel>
                         )
                     }
-                <Panel>
-                    <QuickCreateForm onSaveAndAddDestination = {this.onSaveAndAddDestination}
-                                     onSaveAndCreateTrip={this.onSaveAndCreateTrip}
-                                     ref="quickCreateForm"
-                                     destination={workingDestination}
-                                     selectLocation={selectLocation}
-                                     fields={['tripDestination', 'tripFriends', 'tripDates']}
-                                     onSubmit={this.onSubmit} />
-                </Panel>
+                <QuickCreateForm onSaveAndAddDestination = {this.onSaveAndAddDestination}
+                                 onSaveAndCreateTrip={this.onSaveAndCreateTrip}
+                                 ref="quickCreateForm"
+                                 destination={workingDestination}
+                                 selectLocation={selectLocation}
+                                 fields={['tripDestination', 'tripFriends', 'tripDates']}
+                                 onSubmit={this.onSubmit} />
             </div>
         );
     }

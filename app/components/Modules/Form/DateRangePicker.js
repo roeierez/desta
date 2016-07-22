@@ -6,28 +6,31 @@ var moment = require('moment');
 class RangePicker extends  React.Component{
     handleEvent(event, picker) {
         this.props.onChange({
-                startDate: picker.startDate,
-                endDate: picker.endDate
+                startDate: picker.startDate && picker.startDate.format('YYYY-MM-DD'),
+                endDate: picker.endDate && picker.endDate.format('YYYY-MM-DD')
             }
         );
     }
 
     render () {
-        var start = (this.props.value.startDate || moment()).format('YYYY-MM-DD');
-        var end = (this.props.value.endDate || moment()).format('YYYY-MM-DD');
-        var label = start + ' - ' + end;
-        if (start === end) {
-            label = start;
+        var placeHolderClass="-placeholder";
+        var start = this.props.value.startDate && moment(this.props.value.startDate);
+        var end = this.props.value.endDate && moment(this.props.value.endDate);
+        var label = this.props.placeholder || '';
+        if (start || end) {
+            placeHolderClass = "";
+            label = start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');;
+            if (start === end) {
+                label = start.format('YYYY-MM-DD');;
+            }
         }
         return (
-            <DateRangePicker startDate={this.props.startDate} endDate={this.props.endDate} onEvent={this.handleEvent.bind(this)}>
+            <DateRangePicker autoUpdateInput={false} startDate={start} endDate={end} onApply={this.handleEvent.bind(this)}>
                 <Button className="selected-date-range-btn" style={{width:'100%'}}>
-                    <div className="pull-left"><Glyphicon glyph="calendar" /></div>
-                    <div className="pull-right">
-									<span>
+                    <div className="pull-left">
+                        <span className={"label" + placeHolderClass}>
 										{label}
 									</span>
-                        <span className="caret"></span>
                     </div>
                 </Button>
             </DateRangePicker>

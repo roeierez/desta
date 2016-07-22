@@ -1,7 +1,7 @@
-import * as app from './app/app';
-import * as posts from './posts/posts';
+import * as app from './app';
 import * as createTrip from './createTrip';
+import * as profile from './profile';
 
 export { app };
-export { posts };
 export { createTrip }
+export { profile }

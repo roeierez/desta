@@ -6,6 +6,11 @@
     font-size: 16px;
     font-weight: 500;
   }
+
+  .icon-link-circle {
+    color: white;
+  }
+
 }
 
 .hidden {
@@ -16,13 +21,6 @@
   .createTripButton {
     width: 100%;
   }
-
-  .destinationPanel {
-    &:hover {
-      background-color: #ecf2f5;
-      cursor: pointer;
-    }
-  }
 }
 .icon-link-circle { display: block; width: 20px; height: 20px; border: solid 1px @color-blue; text-align: left; line-height: 10px; border-radius: 50%; color: @color-blue; font-size: 1.25rem /*20/16*/; font-weight: 700; position: relative;
    span { position: absolute; left: 4px; top: 5px; }
@@ -30,7 +28,12 @@
 a.icon-link-circle:hover { color: #fff; background-color: @color-blue; }
 
 .destinationsList {
+  button {
+    margin: 20px 0px 20px 0px;
+  }
   .destinationListItem {
+    padding: 10px 0px 10px 0px;
+    //border-bottom: 1px solid #c7c7c7;
     position: relative;
      // background-color: #ecf2f5;
     .destinationName {
@@ -44,9 +47,16 @@ a.icon-link-circle:hover { color: #fff; background-color: @color-blue; }
     }
     .destinationDates {
       color: #919fa9;
-      font-size: 14px;
+      font-size: 15px;
     }
-
+    .remove {
+      visibility:hidden;
+    }
+    &:hover {
+      .remove {
+        visibility: visible;
+      }
+    }
     .remove {
       i {
         color: #919fa9;
@@ -67,6 +77,11 @@ a.icon-link-circle:hover { color: #fff; background-color: @color-blue; }
     }
   }
 }
+.form-group {
+  input, button {
+    height: 50px;
+  }
+}
 
 .geosuggest {
   font-size: 18px;
@@ -75,6 +90,7 @@ a.icon-link-circle:hover { color: #fff; background-color: @color-blue; }
   text-align: left;
 }
 .geosuggest__input {
+  padding-left: 55px;
   width: 100%;
   border: 2px solid transparent;
   box-shadow: 0 0 1px #3d464d;
@@ -82,6 +98,23 @@ a.icon-link-circle:hover { color: #fff; background-color: @color-blue; }
   -webkit-transition: border 0.2s, box-shadow 0.2s;
   transition: border 0.2s, box-shadow 0.2s;
 }
+
+.geosuggest__input:before {
+  content: "Y";
+  font-family: "startui" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle;
+  position: relative;
+  top: -0.15em;
+}
+
 .geosuggest__input:focus {
   border-color: #267dc0;
   box-shadow: 0 0 0 transparent;

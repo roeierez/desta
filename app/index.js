@@ -10,13 +10,14 @@ if (__DEVELOPMENT__) {
   window.Perf = require('react-addons-perf');
 }
 
-let initialState;
-try {
-  initialState = window.__INITIAL_STATE__; // for erver-side-rendering
-} catch (err) {
-  initialState = {};
-}
+var initialState = require('./resources/initialState.json');
+// try {
+//   initialState = window.__INITIAL_STATE__; // for erver-side-rendering
+// } catch (err) {
+//   initialState = {};
+// }
 
+debugger;
 export const history = browserHistory;
 
 export const store = configureStore(initialState);

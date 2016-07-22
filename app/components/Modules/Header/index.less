@@ -17,6 +17,12 @@
       margin-left: 5px;
     }
   }
+  .nav {
+    margin-top: 10px;
+    a {
+      padding: 15px 5px 12px 5px;
+    }
+  }
   .rightNavBar {
     a {
       padding-left: 0px;;
@@ -28,12 +34,16 @@
       //}
     }
 
+    .font-icon-alarm, .font-icon-mail {
+      line-height: 20px;
+    }
+
     .notifications, .messages {
       position: relative;
       .notification-number {
         position: absolute;
         right: 14px;
-        top: -10px;
+        top: 0px;
         font-size: 11px;
       }
     }
@@ -44,8 +54,8 @@
       line-height: 16px;
       font-size: 15px;
       font-weight: 600;
-      &:active {
-        border-bottom: 1px solid orange;
+      .active {
+        border-bottom: 4px solid #fa424a;
       }
     }
     .font-icon {
