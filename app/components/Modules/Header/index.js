@@ -15,7 +15,7 @@ const Header = ({login, loggedInUser}) => {
             </div>
             <div className="main-navigation">
                 <IndexLink activeClassName="active" to="/">Home</IndexLink>
-                <Link activeClassName="active" to="/profile">My Desta</Link>
+                <Link activeClassName="active" to="/profile/trips">My Desta</Link>
                 <Link activeClassName="active" to="/explore">Explore</Link>
                 <Link activeClassName="active" to="/about">About us</Link>
                 <Link activeClassName="active" to="/contact">Contact us</Link>

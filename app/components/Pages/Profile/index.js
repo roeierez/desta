@@ -1,10 +1,8 @@
 
 import React from 'react';
-import QuickTripWizard from 'components/Modules/QuickTripWizard';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from 'redux-modules';
-import TripsGallery from 'components/Modules/TripsGallery';
 
 @connect(
     state => {
@@ -14,15 +12,16 @@ import TripsGallery from 'components/Modules/TripsGallery';
         ...actionCreators.profile,
     }, dispatch),
 )
-class CreateTrip extends React.Component {
+class Profile extends React.Component {
 
     render (){
+        const props = Object.assign({}, this.props, {children: undefined});
         return (
             <div className="profilePage">
-                <TripsGallery trips= {this.props.trips} />
+                { this.props.children.props.children && React.cloneElement(this.props.children.props.children, props) }
             </div>
         );
     }
 };
 
-export default CreateTrip;
+export default Profile;
