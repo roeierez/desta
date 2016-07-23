@@ -19,16 +19,8 @@ export default class Root extends Component {
         hideSpinnerAsyncPage: PropTypes.func,
     };
 
-    componentDidReceiveProps(newProps) {
-        console.error('props');
-    }
-
-    onLogin() {
-        alert('logged in')
-    }
-
-    onLogout() {
-        alert('on logout');
+    componentDidMount() {
+        this.props.login(true);
     }
 
     render() {

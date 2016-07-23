@@ -21,12 +21,12 @@ export default createReducer({
     }
 }, initialState);
 
-export const login = (location) => ({
+export const login = (silent) => ({
     type: 'LOGIN',
-    payload: {promise: loginAsync()}
+    payload: {promise: loginAsync(silent)}
 });
 
-export const logout = (destination) => ({
+export const logout = () => ({
     type: 'LOGOUT',
     payload: {promise: logoutAsync()}
 });
