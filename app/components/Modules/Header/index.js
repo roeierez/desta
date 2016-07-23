@@ -2,7 +2,7 @@
 
 import '../../../resources/styles/main.less';
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, IndexLink} from 'react-router';
 import {Nav, NavItem, Navbar, Grid, Row, Col} from 'react-bootstrap';
 
 const Header = ({login, loggedInUser}) => {
@@ -14,7 +14,7 @@ const Header = ({login, loggedInUser}) => {
                     className="logo-travel">Travel</span></a>
             </div>
             <div className="main-navigation">
-                <Link activeClassName="active" to="/createtrip">Home</Link>
+                <IndexLink activeClassName="active" to="/">Home</IndexLink>
                 <Link activeClassName="active" to="/profile">My Desta</Link>
                 <Link activeClassName="active" to="/explore">Explore</Link>
                 <Link activeClassName="active" to="/about">About us</Link>

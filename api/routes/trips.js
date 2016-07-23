@@ -5,12 +5,11 @@ const Router = new Express.Router();
 
 export default [
 
-  // See in /app/redux/modules/posts/posts.js
-  Router.get('/api/posts', wrap(async function(req, res) {
-    console.log(req.query.testParam); // example
+  // See in /app/redux/modules/posts/trips.js
+  Router.get('/api/trips', wrap(async function(req, res) {
 
     res.json({
-      posts: [
+      trips: [
         {
           id: '1',
           text: 'example 1',

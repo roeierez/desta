@@ -1,4 +1,4 @@
-import Posts from './routes/posts';
+import Posts from './routes/trips';
 
 export default [
   Posts,
