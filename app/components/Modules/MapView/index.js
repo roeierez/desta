@@ -1,6 +1,6 @@
 import React from 'react';
 import {GoogleMap, Marker, GoogleMapLoader, InfoWindow, Polyline} from "react-google-maps";
-import { default as MarkerClusterer } from "react-google-maps/lib/addons/MarkerClusterer";
+import {default as MarkerClusterer} from "react-google-maps/lib/addons/MarkerClusterer";
 var mapStyles = require('./mapStyle.js');
 
 class MapView extends React.Component {
@@ -10,17 +10,17 @@ class MapView extends React.Component {
         this.onMarkerClick = this.onMarkerClick.bind(this);
     }
 
-    componentDidUpdate (prevProps) {
+    componentDidUpdate(prevProps) {
         if (prevProps.workingTrip.destinations == this.props.workingTrip.destinations) {
             return;
         }
 
-        var {selectedLocation, containerElementProps, workingTrip } = this.props;
+        var {selectedLocation, containerElementProps, workingTrip} = this.props;
         var locations = (selectedLocation ? [selectedLocation] : []).concat(workingTrip.destinations.map(d => d.tripDestination));
         if (locations)
-        if (workingTrip.destinations.length > 1) {
-            this.refs.cluster.fitMapToMarkers();
-        }
+            if (workingTrip.destinations.length > 1) {
+                this.refs.cluster.fitMapToMarkers();
+            }
     }
 
     onMarkerClick(marker) {
@@ -31,13 +31,13 @@ class MapView extends React.Component {
     }
 
     render() {
-        var {selectedLocation, containerElementProps, workingTrip } = this.props;
+        var {selectedLocation, containerElementProps, workingTrip} = this.props;
         var locations = workingTrip.destinations.map(d => d.tripDestination),
             centeredLocation = selectedLocation || locations[0],
             lines = [];
 
-        for (var i=1; i<locations.length; ++i) {
-            lines.push(<Polyline strokeColor="#fff" path={[locations[i-1].location, locations[i].location]} />)
+        for (var i = 1; i < locations.length; ++i) {
+            lines.push(<Polyline strokeColor="#fff" path={[locations[i - 1].location, locations[i].location]}/>)
         }
 
         return (
@@ -45,38 +45,44 @@ class MapView extends React.Component {
                 <GoogleMapLoader
                     containerElement={
                         <div className="map-container"
-                            {...containerElementProps}
-                            style={{
-                                height: "100%",
-                            }}
+                             {...containerElementProps}
+                             style={{
+                                 height: "100%",
+                             }}
                         />
                     }
                     googleMapElement={
                         <GoogleMap
                             ref="map"
                             defaultZoom={3}
-                            defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
+                            defaultCenter={{lat: -25.363882, lng: 131.044922}}
                             zoom={selectedLocation && 8 || 3}
                             defaultOptions={{
                                 styles: mapStyles,
                             }}
-                            center={ centeredLocation && centeredLocation.location || { lat: -25.363882, lng: 131.044922 }}
+                            mapTypeControlOptions={{
+                                mapTypeIds: [google.maps.MapTypeId.ROADMAP]
+                            }}
+                            center={ centeredLocation && centeredLocation.location || {
+                                lat: -25.363882,
+                                lng: 131.044922
+                            }}
                         >
                             <MarkerClusterer ref="cluster"
-                                averageCenter
-                                fitMapToMarkers={true}
-                                enableRetinaIcons
-                                gridSize={ 60 }
+                                             averageCenter
+                                             fitMapToMarkers={true}
+                                             enableRetinaIcons
+                                             gridSize={ 60 }
                             >
-                            {locations.map((dest, i) => {
-                                return (
-                                    <Marker
-                                        position={dest.location}
-                                        onClick={this.onMarkerClick}
-                                        key={dest.placeId + i.toString()}>
-                                    </Marker>
-                                )
-                            })}
+                                {locations.map((dest, i) => {
+                                    return (
+                                        <Marker
+                                            position={dest.location}
+                                            onClick={this.onMarkerClick}
+                                            key={dest.placeId + i.toString()}>
+                                        </Marker>
+                                    )
+                                })}
                             </MarkerClusterer>
                         </GoogleMap>
                     }

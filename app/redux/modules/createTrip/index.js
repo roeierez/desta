@@ -59,7 +59,7 @@ export const removeDestination = (destination) => ({
     payload: destination
 })
 
-var dbId = 0;
+var dbId = 10;
 export const createTrip = (trip) => ({
     type: 'CREATE_TRIP',
     payload: {

@@ -46,13 +46,11 @@ const QuickCreateForm = ({onSaveAndAddDestination, onSaveAndCreateTrip, fields, 
                 </ReactCSSTransitionGroup>
             </form>
 
-            <ReactCSSTransitionGroup transitionEnterTimeout={0} transitionLeaveTimeout={350} transitionName="component-fade"
+            <ReactCSSTransitionGroup transitionEnterTimeout={0} transitionLeave={false} transitionLeaveTimeout={0} transitionName="component-fade"
                                      transitionAppear={true} transitionAppearTimeout={350}>
                 {hasDates(fields.tripDates) && (
                     <div className="layout-center">
-                        <Button onClick={onSaveAndAddDestination} bsSize="small"
-                                bsStyle="primary">
-                            <a className="pull-left icon-link-circle"><span>+</span></a>
+                        <Button onClick={onSaveAndAddDestination} bsStyle="primary">
                             <span>Add Destination</span>
                         </Button>
                     </div>

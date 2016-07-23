@@ -28,7 +28,7 @@ class RangePicker extends  React.Component{
             <DateRangePicker autoUpdateInput={false} startDate={start} endDate={end} onApply={this.handleEvent.bind(this)}>
                 <Button className="selected-date-range-btn" style={{width:'100%'}}>
                     <div className="pull-left">
-                        <span className={"label" + placeHolderClass}>
+                        <span className={"text" + placeHolderClass}>
 										{label}
 									</span>
                     </div>

@@ -7,7 +7,7 @@ const initialState = {
 
 // For async components
 export default createReducer({
-    ['LOGIN']: (state, { payload } ) => {
+    ['LOGIN_SUCCESS']: (state, { payload } ) => {
         return {
         ...state,
             loggedInUser: payload
@@ -23,10 +23,10 @@ export default createReducer({
 
 export const login = (location) => ({
     type: 'LOGIN',
-    payload: loginAsync()
+    payload: {promise: loginAsync()}
 });
 
 export const logout = (destination) => ({
     type: 'LOGOUT',
-    payload: logoutAsync()
+    payload: {promise: logoutAsync()}
 });

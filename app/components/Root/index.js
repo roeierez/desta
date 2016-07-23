@@ -1,16 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Helmet from 'react-helmet';
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-
 import * as actionCreators from '../../redux/modules';
-
-import Loading from 'components/Modules/Loading';
 import Header from 'components/Modules/Header';
 
 @connect(
-    state => ({...state}),
+    state => ({...state.app}),
     dispatch => bindActionCreators({...actionCreators.app}, dispatch),
 )
 export default class Root extends Component {
@@ -39,8 +34,8 @@ export default class Root extends Component {
     render() {
 
         return (
-            <div className="container-fluid">
-                <Header {...this.props.app} />
+            <div className="root-page container-fluid">
+                <Header {...this.props} />
                 <div className="page-content">
                     { this.props.children && React.cloneElement(this.props.children, this.props) }
                 </div>
