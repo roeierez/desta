@@ -17,7 +17,6 @@ var initialState = require('./resources/initialState.json');
 //   initialState = {};
 // }
 
-debugger;
 export const history = browserHistory;
 
 export const store = configureStore(initialState);

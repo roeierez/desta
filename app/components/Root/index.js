@@ -29,7 +29,7 @@ export default class Root extends Component {
             <div className="root-page container-fluid">
                 <Header {...this.props} />
                 <div className="page-content">
-                    { this.props.children && React.cloneElement(this.props.children, this.props) }
+                    { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }
                 </div>
             </div>
         );

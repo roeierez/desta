@@ -3,10 +3,26 @@
 html {
   font-size: 14px;
   overflow-y: scroll;
+  height: 100%;
   background-color: @color-bg-page;
   .btn-primary {
     background-color: rgba(61, 166, 196, 0.75);
     border-color: rgba(61, 166, 196, 0.75);
+  }
+
+  body {
+    height: 100%;
+    #root {
+      height: 100%;
+      .root-page {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        .page-content {
+          flex: 1;
+        }
+      }
+    }
   }
 }
 h1 {
@@ -18,7 +34,7 @@ h1 {
 }
 
 .page-content {
-  margin-top: 80px;
+  padding-top: 80px;
 }
 
 .label {

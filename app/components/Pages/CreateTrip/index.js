@@ -20,7 +20,6 @@ class CreateTrip extends React.Component {
         return (
             <div className="createTripPage">
                 <div className="page-quickTripWizard"><QuickTripWizard {...this.props } /></div>
-                <div></div>
                 <div className="page-mapView"><MapView ref="mapView" {...this.props}/></div>
             </div>
         );

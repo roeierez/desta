@@ -54,7 +54,6 @@ export function promiseMiddleware(config = {}) {
        */
       action.payload.promise = promise.then(
         (resolved = {}) => {
-          debugger;
           if (!R.isEmpty(resolved)) {
             const resolveAction = getResolveAction();
             return dispatch(isThunk(resolved) ? resolved.bind(null, resolveAction) : {

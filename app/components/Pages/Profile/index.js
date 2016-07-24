@@ -15,10 +15,10 @@ import * as actionCreators from 'redux-modules';
 class Profile extends React.Component {
 
     render (){
-        const props = Object.assign({}, this.props, {children: undefined});
+       // const props = Object.assign({}, this.props, this.props.children.props.children.prop);
         return (
-            <div className="profilePage">
-                { this.props.children.props.children && React.cloneElement(this.props.children.props.children, props) }
+            <div className="profilePage layout-column">
+                { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }
             </div>
         );
     }
