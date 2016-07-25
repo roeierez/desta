@@ -95,6 +95,7 @@
     "json-loader": "^0.5.4",
     "moment": "^2.14.1",
     "react": "15.1.0",
+    "react-autosuggest": "^3.9.0",
     "react-big-calendar": "^0.10.3",
     "react-bootstrap": "^0.29.5",
     "react-bootstrap-daterangepicker": "^3.1.0",

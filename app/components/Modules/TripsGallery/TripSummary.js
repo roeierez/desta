@@ -11,7 +11,7 @@ class TripSummary extends React.Component {
 
     handleClick (event) {
         event.preventDefault();
-        browserHistory.push(`/profile/trips/${this.props.tripInfo.id}`)
+        browserHistory.push(`/profile/trips/${this.props.tripInfo.id}/calendar`)
     }
 
     render() {
