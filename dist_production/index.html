@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9D_WiUcmNrPPAzRVV6fc1hLpAxSXgmpc&libraries=geometry,drawing,places"></script>
+  <title>Client App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+</head>
+<body>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '280958242271322',
+        xfbml      : true,
+        cookie: true,
+        version    : 'v2.7'
+      });
+
+      FB.Event.subscribe('auth.logout',function(){alert('logged out')});
+      FB.Event.subscribe('auth.login',function(){alert('logged in')});
+    };
+
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <div id="root" />
+<script type="text/javascript" src="/app.js?07768e9fe6cb56dd2a8c"></script></body>
+</html>
