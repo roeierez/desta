@@ -1,14 +1,10 @@
 {
-  "name": "redux-easy-boilerplate",
+  "name": "desta",
   "engines": {
     "node": ">=5.0"
   },
   "version": "3.0.1",
-  "description": "Start your project easy and fast with modern tools",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/roeierez/redux-easy-boilerplate.git"
-  },
+  "description": "Deta Travel",
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "6.3.6",
@@ -62,9 +58,9 @@
     "postcss-loader": "0.8.2",
     "ramda": "^0.20.1",
     "react-addons-css-transition-group": "0.14.8",
-    "react-addons-perf": "15.1.0",
+    "react-addons-perf": "15.0.0",
     "react-addons-test-utils": "0.14.8",
-    "react-dom": "15.1.0",
+    "react-dom": "15.0.0",
     "react-helmet": "3.1.0",
     "react-transform-hmr": "1.0.4",
     "redux": "3.5.2",
@@ -94,7 +90,7 @@
     "classnames": "^2.2.4",
     "json-loader": "^0.5.4",
     "moment": "^2.14.1",
-    "react": "15.1.0",
+    "react": "15.0.0",
     "react-autosuggest": "^3.9.0",
     "react-big-calendar": "^0.10.3",
     "react-bootstrap": "^0.29.5",
