@@ -9,7 +9,7 @@
     "type": "git",
     "url": "https://github.com/roeierez/redux-easy-boilerplate.git"
   },
-  "scripts": {"start": "node server.js"},
+  "scripts": {"start": "node api/server.js"},
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "6.3.6",
@@ -77,6 +77,7 @@
     "babel-preset-react-hmre": "1.1.1"
   },
   "dependencies": {
+    "express": "4.13.4",
     "babel-loader": "6.2.4",
     "babel-plugin-react-remove-prop-types": "2.0.2",
     "babel-plugin-react-transform": "2.0.2",
