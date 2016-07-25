@@ -1,10 +1,14 @@
 {
-  "name": "desta",
+  "name": "redux-easy-boilerplate",
   "engines": {
     "node": ">=5.0"
   },
   "version": "3.0.1",
-  "description": "Deta Travel",
+  "description": "Start your project easy and fast with modern tools",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/roeierez/redux-easy-boilerplate.git"
+  },
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "6.3.6",
@@ -58,9 +62,8 @@
     "postcss-loader": "0.8.2",
     "ramda": "^0.20.1",
     "react-addons-css-transition-group": "0.14.8",
-    "react-addons-perf": "15.0.0",
+    "react-addons-perf": "15.2.1",
     "react-addons-test-utils": "0.14.8",
-    "react-dom": "15.0.0",
     "react-helmet": "3.1.0",
     "react-transform-hmr": "1.0.4",
     "redux": "3.5.2",
@@ -81,21 +84,19 @@
     "webpack-dev-server": "2.0.0-beta",
     "webpack-hot-middleware": "2.10.0",
     "webpack-merge": "^0.8.4",
-    "whatwg-fetch": "0.11.0"
+    "whatwg-fetch": "0.11.0",
+    "babel-preset-react-hmre": "1.1.1"
   },
   "dependencies": {
     "asset-require-hook": "1.0.2",
-    "babel-preset-react-hmre": "1.1.1",
     "baggage-loader": "^0.2.4",
     "classnames": "^2.2.4",
     "json-loader": "^0.5.4",
     "moment": "^2.14.1",
-    "react": "15.0.0",
-    "react-autosuggest": "^3.9.0",
-    "react-big-calendar": "^0.10.3",
+    "react": "15.2.1",
+    "react-dom": "15.2.1",
     "react-bootstrap": "^0.29.5",
     "react-bootstrap-daterangepicker": "^3.1.0",
-    "react-event-calendar": "^0.3.0",
     "react-geosuggest": "^1.24.1",
     "react-google-maps": "^4.11.0",
     "react-google-places-suggest": "^1.0.1",
