@@ -51,7 +51,7 @@ app.use(function(req, res, next){
 });
 
 
-server.listen(80, () => {
+server.listen(3000, () => {
   const host = server.address().address;
   const port = server.address().port;
 
