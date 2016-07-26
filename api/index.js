@@ -44,6 +44,8 @@ app.use(function(req, res, next){
   next();
 })
 
+console.error('isProduction ' + isProduction);
+console.error(__dirname + `/../${isProduction ? "dist_production" : "dist"}/`);
 // Static directory for express
 app.use(Express.static(__dirname + `/../${isProduction ? "dist_production" : "dist"}/`));
 app.use(function(req, res, next){
