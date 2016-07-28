@@ -68,7 +68,7 @@ export const createTrip = (trip) => ({
                 d.tripDestination.cityName = d.tripDestination.label.split(',')[0];
             });
             setTimeout(() => {
-                resolve(Object.assign({id: dbId++}, trip));
+                resolve(Object.assign({id: dbId++, hotels: [], pois: [], notes: [], transporations: []}, trip));
             }, 1000);
         })
     }

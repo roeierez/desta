@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actionCreators from '../../redux/modules';
 import Header from 'components/Modules/Header';
+import TripInfoEditor from 'components/Modules/TripInfoEditor';
 
 @connect(
     state => ({...state.app}),
@@ -29,6 +30,7 @@ export default class Root extends Component {
             <div className="root-page container-fluid">
                 <Header {...this.props} />
                 <div className="page-content">
+                    {/*<TripInfoEditor />*/}
                     { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }
                 </div>
             </div>

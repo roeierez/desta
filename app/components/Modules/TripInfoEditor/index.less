@@ -1,0 +1,89 @@
+.react-tabs {
+  background: white;
+  min-width: 530px;
+  width: 100%;
+  .section-content {
+    padding: 5px;
+    padding-top: 15px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    .hotels {
+      flex: 1;
+      li {
+        padding: 5px 5px 5px 5px !important;
+        font-size: medium;
+      }
+    }
+    .actions-bar {
+      button {
+        float: right;
+      }
+    }
+  }
+}
+.react-tabs [role=tablist] {
+  border:none;
+  margin:0;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+}
+.react-tabs [role=tab] {
+  flex: 1;
+  text-align: center !important;
+}
+
+.react-tabs [role=tab][aria-selected=true] {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 2px solid cornflowerblue;
+}
+
+.react-tabs [role=tab]:focus {
+  box-shadow: none;
+}
+
+.ReactTabs__TabPanel--selected {
+  background: white;
+}
+.react-tabs {
+  display: inline-block;
+}
+
+.two-columns-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-radius: 5px;
+}
+
+.add-hotel-form {
+  padding: 10px;
+  max-width: 500px;
+  .form-actions {
+    width: 100%;
+    button {
+      margin-left: 10px;
+      float: right;
+    }
+  }
+  .form-group {
+    flex-grow: 1;
+    width: 40%;
+    margin: 0px 5px 15px 5px;
+    &.hasErrors {
+      ::-webkit-input-placeholder {
+        color: #a94442;
+      }
+      input, label, button {
+        color: #a94442;
+        border-color: #a94442;
+        span {
+          color: #a94442;
+        }
+      }
+    }
+  }
+}

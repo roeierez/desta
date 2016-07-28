@@ -3,7 +3,7 @@ import {formatTripName} from 'lib/tripUtils';
 import TripsCalendar from './TripsCalendar';
 import {Link} from 'react-router';
 
-class TripInfo extends React.Component {
+class TripPage extends React.Component {
 
     render() {
         var trip = this.props.trips.find(t => {
@@ -23,7 +23,7 @@ class TripInfo extends React.Component {
                         <Link activeClassName="active" to={`/profile/trips/${trip.id}/calendar`}>Calendar</Link>
                         <Link activeClassName="active" to={`/profile/trips/${trip.id}/map`}>Map</Link>
                     </div>
-                    { this.props.children && React.cloneElement(this.props.children, {trip}) }
+                    { this.props.children && React.cloneElement(this.props.children, {trip, ...this.props}) }
                 </div>
             </div>
         );
@@ -31,4 +31,4 @@ class TripInfo extends React.Component {
 }
 ;
 
-export default TripInfo;
+export default TripPage;

@@ -2,7 +2,7 @@
 import React from 'react';
 import TripsGallery from 'components/Modules/TripsGallery';
 
-class Trips extends React.Component {
+class TripsCollectionPage extends React.Component {
 
     render (){
         return (
@@ -11,4 +11,4 @@ class Trips extends React.Component {
     }
 };
 
-export default Trips;
+export default TripsCollectionPage;
