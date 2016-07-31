@@ -2,7 +2,8 @@ import { createReducer } from '../../utils/createReducer';
 import { loginAsync, logoutAsync } from 'lib/facebook';
 
 const initialState = {
-    loggedInUser: null
+    loggedInUser: null,
+    pageLinks: null
 };
 
 // For async components
@@ -18,6 +19,12 @@ export default createReducer({
             ...state,
             loggedInUser: null
         }
+    },
+    ['PAGE_LINKS']:(state, {payload}) => {
+        return {
+            ...state,
+            pageLinks: payload
+        }
     }
 }, initialState);
 
@@ -30,3 +37,8 @@ export const logout = () => ({
     type: 'LOGOUT',
     payload: {promise: logoutAsync()}
 });
+
+export const setPageLinks = (links) => ({
+    type: 'PAGE_LINKS',
+    payload: links
+})

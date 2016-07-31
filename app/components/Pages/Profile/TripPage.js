@@ -5,6 +5,25 @@ import {Link} from 'react-router';
 
 class TripPage extends React.Component {
 
+    componentDidMount() {
+        var trip = this.props.trips.find(t => {
+            return this.props.params.id == t.id;
+        });
+        this.props.setPageLinks([
+            {
+                to: `/profile/trips/${trip.id}/calendar`,
+                label: 'Calendar'
+            },
+            {
+                to: `/profile/trips/${trip.id}/map`,
+                label: 'Map'
+            }
+        ])
+    }
+
+    componentWillUnmount () {
+        this.props.setPageLinks(null);
+    }
     render() {
         var trip = this.props.trips.find(t => {
             return this.props.params.id == t.id;
@@ -12,17 +31,12 @@ class TripPage extends React.Component {
 
         return (
             <div className="trip-info">
-                <div className="header">{formatTripName(trip, true)}</div>
                 {/*{*/}
                 {/*trip.destinations.map(d => (*/}
                 {/*<div className="destination">{d.tripDestination.cityName}</div>*/}
                 {/*))*/}
                 {/*}*/}
-                <div className="content layout-row">
-                    <div className="links">
-                        <Link activeClassName="active" to={`/profile/trips/${trip.id}/calendar`}>Calendar</Link>
-                        <Link activeClassName="active" to={`/profile/trips/${trip.id}/map`}>Map</Link>
-                    </div>
+                <div className="content layout-column">                  
                     { this.props.children && React.cloneElement(this.props.children, {trip, ...this.props}) }
                 </div>
             </div>

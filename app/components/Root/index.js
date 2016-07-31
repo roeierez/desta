@@ -5,6 +5,7 @@ import * as actionCreators from '../../redux/modules';
 import Header from 'components/Modules/Header';
 import TripInfoEditor from 'components/Modules/TripInfoEditor';
 import MainMenu from 'components/Modules/MainMenu';
+import classNames from 'classnames';
 
 @connect(
     state => ({...state.app}),
@@ -30,7 +31,7 @@ export default class Root extends Component {
         return (
             <div className="root-page container-fluid">
                 <Header {...this.props} />
-                <div className="page-content-wrapper layout-row">
+                <div className={classNames("page-content-wrapper", "layout-row", {"with-page-links": (this.props.pageLinks != null)})}>
                     <MainMenu className="main-menu"/>
                     <div className="page-content use-all-space">
                         {/*<TripInfoEditor />*/}
