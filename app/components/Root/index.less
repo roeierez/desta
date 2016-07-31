@@ -19,7 +19,7 @@ html {
         display: flex;
         flex-direction: column;
         .page-content {
-          postion: relative;
+          position: relative;
           flex: 1;
         }
       }
@@ -36,6 +36,8 @@ h1 {
 
 .page-content-wrapper {
   flex: 1;
+  transition: padding-top 0.1s ease;
+  transition-delay: 0.1s;
   padding-top: 80px;
   &.with-page-links {
     padding-top: 130px;

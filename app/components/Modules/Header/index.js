@@ -7,6 +7,7 @@ import {PlacesAutocompleteInput} from 'components/Modules/Form';
 import {Link, IndexLink} from 'react-router';
 import {Nav, NavItem, Navbar, Grid, Row, Col} from 'react-bootstrap';
 import classNames from 'classnames';
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 class Header extends React.Component { 
     constructor(props) {
@@ -76,7 +77,10 @@ class Header extends React.Component {
                         <Link onClick={login} to="login"><span className="font-icon font-icon-lock"></span>Sign in</Link>}
                     </div>
                 </div>
-                {pageLinks != null && this.renderLinks(pageLinks)}                
+                <ReactCSSTransitionGroup transitionLeaveTimeout={0} transitionName="component-fade"
+                                         transitionAppear={true} transitionAppearTimeout={1000}>
+                    {pageLinks != null && this.renderLinks(pageLinks)}   
+                </ReactCSSTransitionGroup>             
             </div>
         )
     }
