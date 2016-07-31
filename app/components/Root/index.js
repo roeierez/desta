@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import * as actionCreators from '../../redux/modules';
 import Header from 'components/Modules/Header';
 import TripInfoEditor from 'components/Modules/TripInfoEditor';
+import MainMenu from 'components/Modules/MainMenu';
 
 @connect(
     state => ({...state.app}),
@@ -29,9 +30,12 @@ export default class Root extends Component {
         return (
             <div className="root-page container-fluid">
                 <Header {...this.props} />
-                <div className="page-content">
-                    {/*<TripInfoEditor />*/}
-                    { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }
+                <div className="page-content-wrapper layout-row">
+                    <MainMenu className="main-menu"/>
+                    <div className="page-content use-all-space">
+                        {/*<TripInfoEditor />*/}
+                        { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }
+                    </div>
                 </div>
             </div>
         );

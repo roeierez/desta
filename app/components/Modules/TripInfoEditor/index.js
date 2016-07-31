@@ -1,6 +1,7 @@
 import React from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import HotelEditor from './HotelsEditor';
+import POIEditor from './POIEditor';
 
 class TripInfoEditor extends React.Component {
 
@@ -26,7 +27,7 @@ class TripInfoEditor extends React.Component {
                                  onHotelsChanged={this.updateTrip.bind(this, 'hotels')} />
                 </TabPanel>
                 <TabPanel>
-                    <div className="section-content">TBD</div>
+                    <POIEditor pois={this.props.trip.pois} />
                 </TabPanel>
                 <TabPanel>
                     <div className="section-content">TBD</div>

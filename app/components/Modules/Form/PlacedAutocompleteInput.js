@@ -18,7 +18,7 @@ var PlacesAutocompleteInput = React.createClass({ // eslint-disable-line
             <div className="geo-suggest-wrapper">
                 <Geosuggest
                     ref="geoSuggest"
-                    placeholder="Where are you going?"
+                    placeholder= { this.props.placeholder != null ? this.props.placeholder : "Where are you going?" }
                     initialValue={this.props.value && this.props.value.label}
                     inputClassName="form-control"
                     types={['(cities)']}
@@ -39,6 +39,7 @@ var PlacesAutocompleteInput = React.createClass({ // eslint-disable-line
      */
     onFocus: function () {
         console.log('onFocus'); // eslint-disable-line
+        this.props.onFocus && this.props.onFocus(this.props.value);
     },
 
     /**
