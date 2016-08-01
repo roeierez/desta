@@ -10,7 +10,7 @@ import createForm from 'components/Modules/Form/GeneralForm';
 const POIInfo = ({poi}) => {
     let poiInfo = `${poi.name}`;
     return (
-        <li>{hotelInfo}</li>
+        <li>{poiInfo}</li>
     )
 }
 
@@ -31,7 +31,7 @@ class POIEditor extends React.Component {
 
     onAdd(values) {
         console.log(JSON.stringify(values));
-        this.props.onHotelsChanged(this.props.hotels.concat([values]));
+        this.props.onChange(this.props.pois.concat([values]));
         this.setState({editMode: false});
     }
 
@@ -46,14 +46,27 @@ class POIEditor extends React.Component {
                     </div>
                     {!this.state.editMode && (
                         <div className="actions-bar">
-                            <Button onClick={this.showForm.bind(this)}>Add Point</Button>
+                            <Button bsStyle="primary" onClick={this.showForm.bind(this)}><span className="font-icon font-icon-plus-1">New Point</span></Button>
                         </div>)
                     }
-                    {this.state.editMode &&
-                        createForm('POIEditor', [
-                            {type: 'text', label: 'Point name'}
-                        ], (values) => {})                    
-                }
+                    {this.state.editMode && React.createElement(
+                            createForm('POIEditor', [
+                                {type: 'text', label: 'Point of Interest', key: 'name'}                                
+                            ], (values) => {
+                                if (values.name == '' || !values.name) {
+                                    return {
+                                        name: 'Name is required'
+                                    }
+                                }
+                            }),
+                            {
+                                submitText: 'Add Point',
+                                onSubmit: this.onAdd.bind(this),
+                                cancelText: 'Cancel',
+                                onCancel: this.onCancel.bind(this)
+                            }
+                        )                    
+                    }
                 </div>
             </div>
         )

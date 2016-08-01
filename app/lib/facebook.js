@@ -39,7 +39,7 @@ const getLoginStatus = () => {
             if (response.status === 'connected') {
                 resolve({id: response.authResponse.userID});
             } else {
-                reject();
+                resolve();
             }
         });
     })

@@ -74,7 +74,7 @@ class Header extends React.Component {
                         </Link>
                         {loggedInUser && <div className="avatar-wrapper"><img className="avatar" src={userPhothURL}/></div>}
                         {!loggedInUser &&
-                        <Link onClick={login} to="login"><span className="font-icon font-icon-lock"></span>Sign in</Link>}
+                        <a className="sign-in" onClick={() => login(false)}><span className="font-icon font-icon-lock"></span>Sign in</a>}
                     </div>
                 </div>
                 <ReactCSSTransitionGroup transitionLeaveTimeout={0} transitionName="component-fade"

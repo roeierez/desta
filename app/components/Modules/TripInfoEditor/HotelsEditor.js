@@ -5,6 +5,7 @@ import {reduxForm} from 'redux-form';
 import {Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 import {RangePicker} from 'components/Modules/Form';
 import classNames from 'classnames';
+import createForm from 'components/Modules/Form/GeneralForm';
 
 var form = reduxForm({
     form: 'AddHotel',
@@ -77,9 +78,9 @@ class HotelsEditor extends React.Component {
         this.setState({editMode: false});
     }
 
-    onAddHotel(values) {
+    onAdd(values) {
         console.log(JSON.stringify(values));
-        this.props.onHotelsChanged(this.props.hotels.concat([values]));
+        this.props.onChange(this.props.hotels.concat([values]));
         this.setState({editMode: false});
     }
 
@@ -94,11 +95,30 @@ class HotelsEditor extends React.Component {
                     </div>
                     {!this.state.editMode && (
                         <div className="actions-bar">
-                            <Button onClick={this.showHotelForm.bind(this)}>Add Hotel</Button>
+                            <Button bsStyle="primary" onClick={this.showHotelForm.bind(this)}><span className="font-icon font-icon-plus-1">New Hotel</span></Button>
                         </div>)
                     }
                     {this.state.editMode &&
-                    <ReduxForm onCancel={this.onCancel.bind(this)} onSubmit={this.onAddHotel.bind(this)}/>}
+                    React.createElement(
+                            createForm('HotelsEditor', [
+                                {type: 'text', label: 'Name', key: 'hotelName'},
+                                {type: 'number', label: 'Price', key: 'pricePerNight'},
+                                {type: 'rangePicker', label: 'Dates booked', key: 'hotelDates'},
+                                {type: 'text', label: 'Who is there?', key: 'hotelFriends'}
+                            ], (travel) => {
+                                return {
+                                    hotelName: !travel.hotelName ? 'Hotel name is required' : undefined,
+                                    hotelDates: !travel.hotelDates || !travel.hotelDates.startDate || ! travel.hotelDates.endDate ? 'Hotel dates are required' : undefined,
+                                }
+                            }),
+                            {
+                                submitText: 'Add Hotel',
+                                onSubmit: this.onAdd.bind(this),
+                                cancelText: 'Cancel',
+                                onCancel: this.onCancel.bind(this)
+                            }
+                        )
+                    }
                 </div>
             </div>
         )

@@ -6,50 +6,62 @@ import {Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 import {RangePicker} from 'components/Modules/Form';
 import classNames from 'classnames';
 
-class GenericForm extends React.Component {
-
-    render () {
-        let {fields, handleSubmit, errors, fieldsDefinitions} = this.props,        
+var createGenericForm = (fieldsDefinitions) => {
+    return  (props) => {
+        let {fields, handleSubmit, errors, submitText, cancelText, onCancel} = props,        
             fieldsComponents = fieldsDefinitions.map( def => {
                 switch(def.type) {
                     case 'text':
                     case 'number':
                         return (
-                            <FormControl placeholder={def.label} type={def.type} {...fields[def.label]}/>
+                            <FormControl placeholder={fields[def.key].touched && errors[def.key] || def.placeholder || def.label} type={def.type} {...fields[def.key]}/>
                         )                        
                     case 'rangePicker':
                         return (
-                            <RangePicker placeholder={fields[def.label].touched && errors[def.label] || "Pick range"} {...fields[def.label]} />
+                            <RangePicker placeholder={fields[def.key].touched && errors[def.key] || "Pick range"} {...fields[def.key]} />
                         )
                 }
             }),
             formComponents = fieldsComponents.map( (fc, i) => {
-                let def = fieldsComponents[i];
+                let def = fieldsDefinitions[i];
                 return (
-                    <FormGroup key={i} controlId={def.label} className={classNames({hasErrors: fields[def.label].touched && errors[label] != null})}>
-                        <ControlLabel>{def.label}}</ControlLabel>
+                    <FormGroup key={i} controlId={def.key} className={classNames({hasErrors: fields[def.key].touched && errors[def.key] != null})}>
+                        <ControlLabel>{def.label}</ControlLabel>
                         {fc}
                     </FormGroup>
                 )
-            })
+            });
 
         
-         return (
-            <form className="two-columns-form" onSubmit={handleSubmit}>
+        return (
+            <form className="generic-form two-columns-form" onSubmit={handleSubmit}>
                 {formComponents}
+                <div className="form-actions">
+                    {submitText && (
+                        <Button type="submit">
+                            {submitText}
+                        </Button>
+                    )}
+                    {cancelText && (
+                        <Button onClick={onCancel}>
+                            {cancelText}
+                        </Button>
+                    )}                                      
+                </div>
             </form>
-         )
+        )
     }
-}
+}    
 
 export default function createForm(name, fieldDefinitions, validateFn) {
+    debugger;
     var form = reduxForm({
         form: name,
-        fields: fieldDefinitions.map(fd => fd.label),
+        fields: fieldDefinitions.map(fd => fd.key),
         validate(form) {
             return validateFn(form);
         }
     });
 
-    return form(GenericForm);
+    return form(createGenericForm(fieldDefinitions));
 }

@@ -14,8 +14,7 @@ class Calendar extends React.Component {
         super(props);
     }
 
-    render () {
-        debugger;
+    render () {        
         return (
             <BigCalendar
                 {...this.props}
