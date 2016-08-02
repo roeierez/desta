@@ -17,7 +17,7 @@ const loginAsync = (silent) => {
                     reject();
                 }
 
-            }));
+            }, {scope: 'user_friends', return_scopes: true}));
         })
 }
 
@@ -45,6 +45,18 @@ const getLoginStatus = () => {
     })
 }
 
+const getFriendsAsync = () => {
+    return new Promise( (resolve, reject) => {
+        FB.api('/me/friends', function (response) {
+            if (response && response.data) {
+                resolve(response.data);
+            } else {
+                reject();
+            }
+        });
+    });
+}
+
 const init = () => {
     if (window.FB) {
         return getLoginStatus();
@@ -53,7 +65,7 @@ const init = () => {
     return new Promise((resolve, reject) => {
         window.fbAsyncInit = function() {
             FB.init({
-                appId      : '280958242271322',
+                appId      : window.location.hostname == 'test.robustico.com' ? '289224691444677' : '280958242271322',
                 xfbml      : true,
                 cookie: true,
                 version    : 'v2.7'
@@ -74,5 +86,6 @@ const init = () => {
 }
 
 export {loginAsync};
+export {getFriendsAsync};
 export {getUserDetails};
 export {init};
