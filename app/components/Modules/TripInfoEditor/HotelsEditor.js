@@ -104,7 +104,7 @@ class HotelsEditor extends React.Component {
                                 {type: 'text', label: 'Name', key: 'hotelName'},
                                 {type: 'number', label: 'Price', key: 'pricePerNight'},
                                 {type: 'rangePicker', label: 'Dates booked', key: 'hotelDates'},
-                                {type: 'text', label: 'Who is there?', key: 'hotelFriends'}
+                                {type: 'friendsPicker', label: 'Who is there?', key: 'hotelFriends'}
                             ], (travel) => {
                                 return {
                                     hotelName: !travel.hotelName ? 'Hotel name is required' : undefined,

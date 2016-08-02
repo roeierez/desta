@@ -5,6 +5,7 @@ import {reduxForm} from 'redux-form';
 import {Button, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 import {RangePicker} from 'components/Modules/Form';
 import classNames from 'classnames';
+import FCFriendsPicker from 'components/Modules/FCFriendsPicker';
 
 var createGenericForm = (fieldsDefinitions) => {
     return  (props) => {
@@ -19,6 +20,10 @@ var createGenericForm = (fieldsDefinitions) => {
                     case 'rangePicker':
                         return (
                             <RangePicker placeholder={fields[def.key].touched && errors[def.key] || "Pick range"} {...fields[def.key]} />
+                        )
+                    case 'friendsPicker':
+                        return (
+                            <FCFriendsPicker inputProps={{placeholder:def.placeholder}} {...fields[def.key]} />
                         )
                 }
             }),
