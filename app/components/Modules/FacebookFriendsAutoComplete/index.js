@@ -16,6 +16,9 @@ class FacebookFriendsAutoComplete extends React.Component {
 
         getFriendsAsync().then(results => {
             var suggestions = results.filter(f => f.name.toLowerCase().indexOf(value.value.toLowerCase()) == 0).slice(0, 10);
+            if (this.props.filter) {
+                suggestions = this.props.filter(suggestions);
+            }
             this.setState({
                 isLoading: false,
                 suggestions
@@ -36,10 +39,17 @@ class FacebookFriendsAutoComplete extends React.Component {
         this.setState({
             value: newValue
         });
+
+        if (this.props.onChange) {
+            this.props.onChange(newValue);
+        }
     }
 
     onSuggestionSelected(event, { suggestion, suggestionValue, sectionIndex, method }) {
         this.setState({selectedFriend: suggestionValue});
+        if (this.props.onSuggestionSelected) {
+            this.props.onSuggestionSelected(suggestion);
+        }
     }
 
     render() {
@@ -52,6 +62,7 @@ class FacebookFriendsAutoComplete extends React.Component {
 
         return (
             <Autosuggest suggestions={suggestions}
+                         onSuggestionSelected={this.onSuggestionSelected.bind(this)}
                          onSuggestionsUpdateRequested={this.loadSuggestions.bind(this)}
                          getSuggestionValue={this.getSuggestionValue.bind(this)}
                          renderSuggestion={this.renderSuggestion.bind(this)}

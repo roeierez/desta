@@ -4,7 +4,7 @@ import {reduxForm} from 'redux-form';
 import {PlacesAutocompleteInput} from 'components/Modules/Form';
 import {Row, FormGroup, FormControl, HelpBlock, ControlLabel, Button, Glyphicon} from 'react-bootstrap';
 import {RangePicker} from 'components/Modules/Form';
-import FacebookFriendsAutoComplete from 'components/Modules/FacebookFriendsAutoComplete';
+import FCFriendsPicker from 'components/Modules/FCFriendsPicker';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
 
@@ -41,7 +41,7 @@ const QuickCreateForm = ({onSaveAndAddDestination, onSaveAndCreateTrip, fields, 
                     )}
                     {hasDates(fields.tripDates) && (
                         <FormGroup key="3" controlId="tripFriends">
-                            <FacebookFriendsAutoComplete inputProps={{placeholder:"Who is coming with you?"}} {...fields.tripFriends} />
+                            <FCFriendsPicker inputProps={{placeholder:"Who is coming with you?"}} {...fields.tripFriends} />
                             {/*<FormControl placeholder="Who is coming with you?" type="text" {...fields.tripFriends}/>*/}
                         </FormGroup>
                     )}
