@@ -41,7 +41,7 @@ const QuickCreateForm = ({onSaveAndAddDestination, onSaveAndCreateTrip, fields, 
                     )}
                     {hasDates(fields.tripDates) && (
                         <FormGroup key="3" controlId="tripFriends">
-                            <FacebookFriendsAutoComplete inputProps={{placeholder:"Who is coming with you?", ...fields.tripFriends}} />
+                            <FacebookFriendsAutoComplete inputProps={{placeholder:"Who is coming with you?"}} {...fields.tripFriends} />
                             {/*<FormControl placeholder="Who is coming with you?" type="text" {...fields.tripFriends}/>*/}
                         </FormGroup>
                     )}
