@@ -67,9 +67,13 @@ export const createTrip = (trip) => ({
             trip.destinations.forEach(d => {
                 d.tripDestination.cityName = d.tripDestination.label.split(',')[0];
             });
-            setTimeout(() => {
-                resolve(Object.assign({id: dbId++, hotels: [], pois: [], notes: [], transporations: []}, trip));
-            }, 1000);
+            var updatedTrip = Object.assign({id: dbId++, hotels: [], pois: [], notes: [], transporations: []}, trip)
+            fetch('/api/trips', {
+                credentials: 'include',
+                headers: {'Content-Type': 'application/json'},
+                method: 'POST',
+                body: JSON.stringify(updatedTrip)
+            }).then(r => r.json()).then(resolve);
         })
     }
 })

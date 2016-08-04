@@ -8,7 +8,7 @@ import MainMenu from 'components/Modules/MainMenu';
 import classNames from 'classnames';
 
 @connect(
-    state => ({...state.app}),
+    state => ({...state.profile, ...state.app}),
     dispatch => bindActionCreators({...actionCreators.app}, dispatch),
 )
 export default class Root extends Component {
@@ -23,7 +23,7 @@ export default class Root extends Component {
     };
 
     componentDidMount() {
-        this.props.login(true);
+        let action = this.props.login(true);;
     }
 
     render() {

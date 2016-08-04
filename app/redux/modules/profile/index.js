@@ -1,5 +1,6 @@
 import {createReducer} from '../../utils/createReducer';
 import moment from 'moment';
+import fetch from 'isomorphic-fetch';
 
 const initialState = {
         trips: []
@@ -20,7 +21,7 @@ export default createReducer({
             trips: sortTrips(state.trips.concat(payload))
         }
     },
-    ['UPDATE_TRIP']: (state, {payload}) => {
+    ['UPDATE_TRIP_SUCCESS']: (state, {payload}) => {
         let {id} = payload,
             editedTrip = state.trips.find(t => t.id == id),
             tripAfterEdit = {...editedTrip, ...payload};
@@ -28,10 +29,25 @@ export default createReducer({
             ...state,
             trips: sortTrips( state.trips.filter(t => t.id != id).concat([tripAfterEdit]) )
         }
+    },
+    ['LOAD_PROFILE_SUCCESS']: (state, {payload}) => {
+        return {
+            ...state,
+            trips: sortTrips(payload)
+        }
     }
 }, initialState);
 
 export const updateTrip = (tripInfo) => ({
     type: 'UPDATE_TRIP',
-    payload: tripInfo
+    payload: {promise: fetch(`/api/trips/${tripInfo.id}`, {credentials: 'include', headers: {'Content-Type': 'application/json'}, method: 'PUT', body: JSON.stringify(tripInfo)}).then(
+        r => r.json()
+    )}
 });
+
+export const loadProfile = () => {
+    return {
+        type: 'LOAD_PROFILE',
+        payload: {promise: fetch('/api/trips', {credentials: 'include'}).then(r => r.json())}
+    }
+}
