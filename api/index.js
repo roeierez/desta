@@ -23,12 +23,12 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 var storage = null;
 
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}));
+// app.use(session({
+//   secret: 'keyboard cat',
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { secure: false }
+// }));
 
 app.use(cookieParser());
 app.use(morgan('combined'));
