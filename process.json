@@ -6,6 +6,7 @@
       "NODE_ENV": "development"
     },
     "env_production": {
+      "MONGODB_URI": "mongodb://desta_site:desta_password@ds139705.mlab.com:39705/desta",
       "NODE_ENV": "production"
     }
   }
