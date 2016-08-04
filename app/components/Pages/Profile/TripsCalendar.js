@@ -13,7 +13,11 @@ class TripsCalendar extends React.Component {
         this.state = {editMode: false};
     }
     onSelectEvent (slotInfo) {
-        this.setState({editMode: true})
+        this.setState({editMode: true, destination: slotInfo})
+    }
+
+    close () {
+        this.setState({editMode: false, destination: null});
     }
 
     render (){
@@ -28,7 +32,14 @@ class TripsCalendar extends React.Component {
         return (
             <div className="calendar modal-container">
                 <Calendar events={events} onSelectEvent={this.onSelectEvent.bind(this)} />
-                {this.state.editMode && <div className="trip-editor"><Modal container={this} show={this.state.editMode}><TripInfoEditor {...this.props} /></Modal></div>}
+                {this.state.editMode && <div className="trip-editor">
+                    <Modal onHide={this.close.bind(this)} container={this} show={this.state.editMode}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{this.state.destination.title}</Modal.Title>
+                        </Modal.Header>
+                        <TripInfoEditor {...this.props} />
+                    </Modal>
+                </div>}
             </div>
         );
     }

@@ -14,6 +14,10 @@ import * as actionCreators from 'redux-modules';
 )
 class Profile extends React.Component {
 
+    componentDidMount () {
+        this.props.loadProfile();
+    }
+
     render (){
        // const props = Object.assign({}, this.props, this.props.children.props.children.prop);
         return (

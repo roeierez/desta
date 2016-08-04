@@ -7,14 +7,13 @@ import {RangePicker} from 'components/Modules/Form';
 import classNames from 'classnames';
 import createForm from 'components/Modules/Form/GeneralForm';
 
-const POIInfo = ({poi}) => {
-    let poiInfo = `${poi.name}`;
+const NoteInfo = ({note}) => {  
     return (
-        <li>{poiInfo}</li>
+        <li>{note.text}</li>
     )
 }
 
-class POIEditor extends React.Component {
+class TravellerNotesEditor extends React.Component {
 
     constructor(props) {
         super(props);
@@ -31,7 +30,7 @@ class POIEditor extends React.Component {
 
     onAdd(values) {
         console.log(JSON.stringify(values));
-        this.props.onChange(this.props.pois.concat([values]));
+        this.props.onChange(this.props.notes.concat([values]));
         this.setState({editMode: false});
     }
 
@@ -41,26 +40,26 @@ class POIEditor extends React.Component {
                 <div className="section-content">
                     <div className="hotels">
                         <ul>
-                            {this.props.pois.map(h => <POIInfo poi={h}/>) }
+                            {this.props.notes.map(h => <NoteInfo note={h}/>) }
                         </ul>
                     </div>
                     {!this.state.editMode && (
                         <div className="actions-bar">
-                            <Button bsStyle="primary" onClick={this.showForm.bind(this)}><span className="font-icon font-icon-plus-1">New Point</span></Button>
+                            <Button bsStyle="primary" onClick={this.showForm.bind(this)}><span className="font-icon font-icon-plus-1">New Note</span></Button>
                         </div>)
                     }
                     {this.state.editMode && React.createElement(
-                            createForm('POIEditor', [
-                                {type: 'text', label: 'Point of Interest', key: 'name'}                                
+                            createForm('TravellerNotesEditor', [
+                                {type: 'text', label: 'Note', key: 'text'}                                
                             ], (values) => {
-                                if (values.name == '' || !values.name) {
+                                if (values.text == '' || !values.text) {
                                     return {
-                                        name: 'Name is required'
+                                        text: 'Text is required'
                                     }
                                 }
                             }),
                             {
-                                submitText: 'Add Point',
+                                submitText: 'Add Note',
                                 onSubmit: this.onAdd.bind(this),
                                 cancelText: 'Cancel',
                                 onCancel: this.onCancel.bind(this)
@@ -73,4 +72,4 @@ class POIEditor extends React.Component {
     }
 }
 
-export default POIEditor;
+export default TravellerNotesEditor;

@@ -19,7 +19,7 @@ var initialState = require('./resources/initialState.json');
 
 export const history = browserHistory;
 
-export const store = configureStore(initialState);
+export const store = configureStore();
 
 ReactDOM.render(
     <Provider store={store}>
