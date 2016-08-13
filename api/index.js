@@ -57,9 +57,6 @@ console.error(__dirname + `/../${isProduction ? "dist_production" : "dist"}/`);
 if (isProduction) {
 // Static directory for express
   app.use(Express.static(__dirname + `/../${isProduction ? "dist_production" : "dist"}/`));
-  app.use(function (req, res, next) {
-    res.redirect('/');
-  });
 } else {
   app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true, publicPath: webpackConfig.output.publicPath,
@@ -69,6 +66,10 @@ if (isProduction) {
     log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000,
   }));
 }
+
+app.use(function (req, res, next) {
+  res.redirect('/');
+});
 
 connect().then(db => {
   storage = db;

@@ -90,7 +90,7 @@
     "classnames": "^2.2.4",
     "compression": "1.6.1",
     "cookie-parser": "1.4.1",
-    "cors": "2.7.1",
+    "cors": "^2.7.1",
     "express": "4.13.4",
     "express-async-wrap": "1.0.0",
     "express-session": "^1.14.0",

@@ -14,7 +14,12 @@ class TripInfoEditor extends React.Component {
     }
 
     updateTrip (property, value) {
-        this.props.updateTrip({...this.props.trip, [property]:value});
+        let destination = this.props.destination,
+            clonedTrip = JSON.parse(JSON.stringify(this.props.trip)),
+            editedDestination = clonedTrip.destinations.find( d => d.tripDates.startDate == destination.tripDates.startDate && d.tripDates.endDate == destination.tripDates.endDate);
+
+        editedDestination[property] = value;
+        this.props.updateTrip(clonedTrip);
     }
 
     handleSelect (index, last) {
@@ -22,6 +27,7 @@ class TripInfoEditor extends React.Component {
     }
 
     render() {
+        let {destination} = this.props;
         return (
             <Tabs
                 onSelect={this.handleSelect.bind(this)}
@@ -32,15 +38,15 @@ class TripInfoEditor extends React.Component {
                     <Tab><span className="font-icon font-icon-notebook">Traveller Notes</span></Tab>                  
                 </TabList>
                 <TabPanel>
-                    <HotelEditor hotels={this.props.trip.hotels}
+                    <HotelEditor hotels={destination.hotels}
                                  onChange={this.updateTrip.bind(this, 'hotels')} />
                 </TabPanel>
                 <TabPanel>
-                    <POIEditor pois={this.props.trip.pois} 
+                    <POIEditor pois={destination.pois}
                                 onChange={this.updateTrip.bind(this, 'pois')} />
                 </TabPanel>
                 <TabPanel>
-                    <TravellerNotesEditor notes={this.props.trip.notes} 
+                    <TravellerNotesEditor notes={destination.notes}
                                 onChange={this.updateTrip.bind(this, 'notes')} />
                 </TabPanel>               
             </Tabs>

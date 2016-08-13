@@ -16,8 +16,8 @@ class RangePicker extends  React.Component{
         var placeHolderClass="-placeholder";
         var start = this.props.value.startDate && moment(this.props.value.startDate);
         var end = this.props.value.endDate && moment(this.props.value.endDate);
-        var label = this.props.placeholder || '';
-        if (start || end) {
+        var label = this.props.title || this.props.placeholder || '';
+        if (!this.props.title && (start || end)) {
             placeHolderClass = "";
             label = start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');;
             if (start === end) {
@@ -25,14 +25,17 @@ class RangePicker extends  React.Component{
             }
         }
         return (
-            <DateRangePicker autoUpdateInput={false} startDate={start} endDate={end} onApply={this.handleEvent.bind(this)}>
-                <Button className="selected-date-range-btn" style={{width:'100%'}}>
-                    <div className="pull-left">
-                        <span className={"text" + placeHolderClass}>
-										{label}
-									</span>
-                    </div>
-                </Button>
+            <DateRangePicker {...this.props} autoUpdateInput={false} startDate={start} endDate={end} onApply={this.handleEvent.bind(this)}>
+                {this.props.innerComponent && this.props.innerComponent }
+                {!this.props.innerComponent && (
+                    <Button className="selected-date-range-btn" style={{width:'100%'}}>
+                        <div className="pull-left">
+                            <span className={"text" + placeHolderClass}>
+                                            {label}
+                                        </span>
+                        </div>
+                    </Button>
+                )}
             </DateRangePicker>
         );
     }

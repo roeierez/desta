@@ -1,9 +1,75 @@
 .profilePage {
   height: 100%;
+  .panel-heading {
+    background-color: white;
+    border: none;
+  }
   .trip-info {
+    .right-dashboard {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      margin-left: 20px;
+      .destinations-list {
+        cursor: pointer;
+        background-color: white;
+        margin-bottom: 20px;
+        .destination-list-item {
+          border-top: 1px solid rgba(0, 0, 0, 0.08);
+          display: flex;
+          align-items: center;
+          padding: 10px;
+          .city-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 35px;
+            margin-right: 10px;
+          }
+          .destination-info {
+            flex: 1;
+            .title {
+              color: rgba(49, 64, 73, 0.82);
+              font-weight: 700;
+              font-size: 18px;
+            }
+          }
+          .destination-dates {
+            color: rgba(49, 64, 73, 0.82);
+            font-weight: 700;
+          }
+        }
+      }
+
+      .friends-panel {
+        .panel-body {
+          padding-left: 10px;
+          padding-bottom: 10px;
+        }
+      }
+    }
+    .top-dashboard {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .panel {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin-bottom: 20px;
+        .panel-body {
+          flex: 1;
+          display: flex;
+        }
+      }
+      .map-view {
+        border: 1px solid #dbdbdb;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      }
+    }
+
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     .header {
       text-align: center;
       font-size: 25px;
@@ -51,15 +117,18 @@
     .modal-content {
       border-radius: 10px;
       padding: 10px;
+      width: 200px;
     }
     .modal-header {
+      padding: 5px;
       h4 {
         font-weight: bold;
         font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+        font-size: 12px;
       }
     }
     .calendar {
-      flex: 1;;
+      flex: 1;
     }
   }
 }

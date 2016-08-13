@@ -18,6 +18,7 @@ class Calendar extends React.Component {
         return (
             <BigCalendar
                 {...this.props}
+                toolbar={false}
                 events={this.props.events}
                 defaultDate={this.props.events[0].start}
             />

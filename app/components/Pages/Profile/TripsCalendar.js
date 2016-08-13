@@ -1,10 +1,12 @@
 
 import React from 'react';
-import {formatTripName} from 'lib/tripUtils';
+import {formatTripName, isBookedDate} from 'lib/tripUtils';
+import {formatShortDate} from 'lib/dateUtils';
 import Calendar from 'components/Modules/Calendar'
 import moment from 'moment';
 import {Modal} from 'react-bootstrap';
 import TripInfoEditor from 'components/Modules/TripInfoEditor'
+import {RangePicker} from 'components/Modules/Form';
 
 class TripsCalendar extends React.Component {
 
@@ -12,34 +14,42 @@ class TripsCalendar extends React.Component {
         super(props);
         this.state = {editMode: false};
     }
-    onSelectEvent (slotInfo) {
-        this.setState({editMode: true, destination: slotInfo})
+
+    onDestinationDateChange(event, newDate) {
+        let clonedTrip = JSON.parse(JSON.stringify(this.props.trip)),
+            editedDestination = clonedTrip.destinations.find( d => d.tripDates.startDate == event.destination.tripDates.startDate && d.tripDates.endDate == event.destination.tripDates.endDate);
+
+        editedDestination.tripDates = newDate;
+        this.props.updateTrip(clonedTrip);
     }
 
-    close () {
-        this.setState({editMode: false, destination: null});
+    isInvalidDate(event, date) {
+        let eventStart = moment(event.destination.tripDates.startDate),
+            eventEnd = moment(event.destination.tripDates.endDate);
+
+        if ( date.isBetween( eventStart, eventEnd ) || date.isSame(eventStart) || date.isSame(eventEnd)) {
+            return false;
+        }
+
+        return isBookedDate(this.props.trip, date);
     }
 
     render (){
         var events = this.props.trip.destinations.map( d => {
-            return {
-                start: moment(d.tripDates.startDate, 'YYY-MM-DD').toDate(),
-                end: moment(d.tripDates.endDate, 'YYY-MM-DD').toDate(),
-                title: d.tripDestination.cityName,
-                allDay: true
-            }
-        });
+                return {
+                    start: moment(d.tripDates.startDate, 'YYYY-MM-DD').toDate(),
+                    end: moment(d.tripDates.endDate, 'YYYY-MM-DD').toDate(),
+                    title: d.tripDestination.cityName,
+                    allDay: true,
+                    destination: d
+                }
+            }),
+            EventComponent = (props) => (
+                <RangePicker isInvalidDate={this.isInvalidDate.bind(this, props.event)} onChange={this.onDestinationDateChange.bind(this, props.event)} innerComponent={props.title} title={props.title} value={{startDate: props.event.start, endDate: props.event.end}} />
+            )
         return (
             <div className="calendar modal-container">
-                <Calendar events={events} onSelectEvent={this.onSelectEvent.bind(this)} />
-                {this.state.editMode && <div className="trip-editor">
-                    <Modal onHide={this.close.bind(this)} container={this} show={this.state.editMode}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>{this.state.destination.title}</Modal.Title>
-                        </Modal.Header>
-                        <TripInfoEditor {...this.props} />
-                    </Modal>
-                </div>}
+                <Calendar components={{event: EventComponent}} events={events} />
             </div>
         );
     }

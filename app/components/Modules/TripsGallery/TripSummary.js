@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment'
 import { browserHistory } from 'react-router'
 import classNames from 'classnames';
+import {getCityClassName} from 'lib/tripUtils';
 
 class TripSummary extends React.Component {
 
@@ -11,7 +12,7 @@ class TripSummary extends React.Component {
 
     handleClick (event) {
         event.preventDefault();
-        browserHistory.push(`/profile/trips/${this.props.tripInfo.id}/calendar`)
+        browserHistory.push(`/profile/trips/${this.props.tripInfo.id}`)
     }
 
     render() {
@@ -23,7 +24,7 @@ class TripSummary extends React.Component {
             maxDate = moment.max(endDates);
 
         return (
-            <div onClick={this.handleClick.bind(this)} className={classNames("trip-summary", destinations[0].replace(/\s/g, '_').toLowerCase()) }>
+            <div onClick={this.handleClick.bind(this)} className={classNames("trip-summary", getCityClassName(destinations[0])) }>
                 <div className="trip-content">
                     <div className="trip-destinations">{destinations.join(',')}</div>
                     <div className="trip-dates">{`${minDate.format('ll')} - ${maxDate.format('ll')}`}</div>
