@@ -5,6 +5,9 @@ import {PlacesAutocompleteInput} from 'components/Modules/Form';
 import {Row, FormGroup, FormControl, HelpBlock, ControlLabel, Button, Glyphicon} from 'react-bootstrap';
 import {RangePicker} from 'components/Modules/Form';
 import FCFriendsPicker from 'components/Modules/FCFriendsPicker';
+import moment from 'moment';
+import {parseShortDate} from 'lib/dateUtils';
+import {isBookedDate} from 'lib/tripUtils';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
 
@@ -24,7 +27,11 @@ var form = reduxForm({
     }
 })
 
-const QuickCreateForm = ({onSaveAndAddDestination, onSaveAndCreateTrip, fields, selectLocation}) => {
+const QuickCreateForm = ({workingTrip, onSaveAndAddDestination, onSaveAndCreateTrip, fields, selectLocation}) => {
+    let isInvalidDate = (date) => {
+            return isBookedDate(workingTrip, date);
+        };
+
     return (
         <div className="quick-create-form">
             <form>
@@ -36,7 +43,7 @@ const QuickCreateForm = ({onSaveAndAddDestination, onSaveAndCreateTrip, fields, 
                     </FormGroup>
                     {fields.tripDestination.value != '' && (
                         <FormGroup key="2" controlId="tripDates">
-                            <RangePicker placeholder="When is your trip" {...fields.tripDates} />
+                            <RangePicker isInvalidDate={isInvalidDate} placeholder="When is your trip" {...fields.tripDates} />
                         </FormGroup>
                     )}
                     {hasDates(fields.tripDates) && (

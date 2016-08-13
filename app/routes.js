@@ -6,6 +6,7 @@ import CreateTrip from './components/Pages/CreateTrip';
 import Profile from './components/Pages/Profile';
 import TripsCollectionPage from './components/Pages/Profile/TripsCollectionPage';
 import TripPage from './components/Pages/Profile/TripPage';
+import TripDestination from './components/Pages/TripDestination';
 import TripsCalendar from './components/Pages/Profile/TripsCalendar';
 import TripsMap from './components/Pages/Profile/TripsMap';
 
@@ -15,8 +16,10 @@ export default (
         <Route path="/profile" component={Profile}>
             <Route path="/profile/trips" component={TripsCollectionPage} />
             <Route path="/profile/trips/:id" component={TripPage} >
-                <Route path="/profile/trips/:id/calendar" component={TripsCalendar} />
-                <Route path="/profile/trips/:id/map" component={TripsMap} />
+                {/*<Route path="/profile/trips/:id/calendar" component={TripsCalendar} />*/}
+                {/*<Route path="/profile/trips/:id/map" component={TripsMap} />*/}
+            </Route>
+            <Route path="/profile/trips/:id/destination/:destinationId" component={TripDestination} >
             </Route>
         </Route>
     </Route>

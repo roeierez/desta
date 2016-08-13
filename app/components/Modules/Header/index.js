@@ -56,7 +56,7 @@ class Header extends React.Component {
                                     onFocus={this.onAutocompleteFocus.bind(this)}
                                     ref="autoComplete" placeholder="" selectLocation={selectLocation}
                                     types={["(cities)"]} />
-                            {this.state.placeHolderVisible && <div ref="searchPlaceHolder" onClick={this.onSearchClicked.bind(this)} className="font-icon font-icon-search search-place-holder">Where are you going?</div>}
+                            {this.state.placeHolderVisible && <div ref="searchPlaceHolder" onClick={this.onSearchClicked.bind(this)} className="font-icon font-icon-search search-place-holder">Explore:</div>}
                         </div>                
                     </div>           
                     <div className="right-navigation">

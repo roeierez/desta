@@ -45,6 +45,7 @@ class QuickTripWizard extends React.Component {
                                  onSaveAndCreateTrip={this.onSaveAndCreateTrip}
                                  ref="quickCreateForm"
                                  destination={workingDestination}
+                                 workingTrip={workingTrip}
                                  selectLocation={selectLocation}
                                  fields={['tripDestination', 'tripFriends', 'tripDates']}
                                  onSubmit={this.onSubmit} />

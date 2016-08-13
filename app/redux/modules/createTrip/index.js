@@ -18,10 +18,10 @@ export default createReducer({
             ...state,
             workingTrip: {
                 ...state.workingTrip,
-                destinations: state.workingTrip.destinations.concat(payload)
+                destinations: state.workingTrip.destinations.concat(Object.assign({hotels: [], pois: [], notes: [], transporations: []}, payload))
             },
             selectedLocation: null
-        }
+        }//var updatedTrip = Object.assign({id: dbId++, hotels: [], pois: [], notes: [], transporations: []}, trip)
     },
     ['REMOVE_DESTINATION']: (state, {payload}) => {
         return {
@@ -67,12 +67,11 @@ export const createTrip = (trip) => ({
             trip.destinations.forEach(d => {
                 d.tripDestination.cityName = d.tripDestination.label.split(',')[0];
             });
-            var updatedTrip = Object.assign({id: dbId++, hotels: [], pois: [], notes: [], transporations: []}, trip)
             fetch('/api/trips', {
                 credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 method: 'POST',
-                body: JSON.stringify(updatedTrip)
+                body: JSON.stringify(trip)
             }).then(r => r.json()).then(resolve);
         })
     }
