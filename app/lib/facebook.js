@@ -2,11 +2,11 @@ const loginAsync = (silent) => {
     var me = this;
     return init()
         .then(user => {
-            if (user) {
-                return user;
-            }
+            // if (user) {
+            //     return user;
+            // }
 
-            if (silent) {
+            if (silent && !user) {
                 return null;
             }
 
@@ -71,7 +71,7 @@ const getFriendsLocationsHistory = () => {
             let requests = friends.map( f => {
                 return {
                     method: 'GET',
-                    relative_url: `${id}/feed?with=location&fields=place`
+                    relative_url: `${f.id}/feed?with=location&fields=place`
                 }
             })
             return api('/', 'POST', {
