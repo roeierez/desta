@@ -17,7 +17,7 @@ const loginAsync = (silent) => {
                     reject();
                 }
 
-            }, {scope: 'user_friends', return_scopes: true}));
+            }, {scope: 'user_friends,user_posts', return_scopes: true}));
         })
 }
 
@@ -57,6 +57,94 @@ const getFriendsAsync = () => {
     });
 }
 
+const formatPhotoURL = (id, size) => {
+    return `https://graph.facebook.com/v2.7/${id}/picture?type=small&width=${size}&height=${size}`;
+}
+
+const getFriendsLocationsHistory = () => {
+    return getFriendsAsync()
+        .then(friends => {
+            if (!friends || friends.length == 0) {
+                return [];
+            }
+
+            let requests = friends.map( f => {
+                return {
+                    method: 'GET',
+                    relative_url: `${id}/feed?with=location&fields=place`
+                }
+            })
+            return api('/', 'POST', {
+                batch: requests
+            })
+                .then(friendsResponses => {
+
+                    let friendsLocations = [];
+                    friendsResponses.forEach((fr,i) => {
+                        if (fr.code == 200) {
+                            let body = JSON.parse(fr.body);
+                            if (body.data && body.data.length > 0) {
+                                body.data.forEach(data => {
+                                    if (data.place.location) {
+                                        friendsLocations.push({
+                                            user: {...friends[i], photo: formatPhotoURL(friends[i].id, 45)},
+                                            location: {lat: data.place.location.latitude, lng: data.place.location.longitude}
+                                        })
+                                }
+                                });
+                            }
+                        }
+                    });
+
+                    return friendsLocations;
+
+                    // return [
+                    //     {
+                    //         user: {
+                    //             id: '123',
+                    //             name: 'Gal Erez',
+                    //             photo: formatPhotoURL('10154285576534477', 30)
+                    //         },
+                    //         location: {
+                    //             lat: -25.363882, lng: 131.044922
+                    //         }
+                    //     },
+                    //     {
+                    //         user: {
+                    //             id: '1223',
+                    //             name: 'Gal2 Erez',
+                    //             photo: formatPhotoURL('10154285576534477', 30)
+                    //         },
+                    //         location: {
+                    //             lat: -25.363882, lng: 90.044922
+                    //         }
+                    //     }
+                    // ];
+                })
+
+        })
+}
+
+const api = (...args) => {
+    //var args = Array.prototype.slice.call(arguments);
+    return new Promise((resolve, reject) => {
+        args.push(function(response){
+            if (response.length != null) {
+                resolve(response);
+                return;
+            }
+            if (response && response.body) {
+                resolve(response.body);
+            } else if (response && response.data) {
+                resolve(response.data);
+            } else {
+                reject();
+            }
+        });
+        FB.api.apply(FB, args)
+    });
+}
+
 const init = () => {
     if (window.FB) {
         return getLoginStatus();
@@ -89,3 +177,5 @@ export {loginAsync};
 export {getFriendsAsync};
 export {getUserDetails};
 export {init};
+export {getFriendsLocationsHistory}
+export {formatPhotoURL}

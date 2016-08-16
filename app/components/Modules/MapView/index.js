@@ -10,19 +10,6 @@ class MapView extends React.Component {
         this.onMarkerClick = this.onMarkerClick.bind(this);
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.workingTrip.destinations == this.props.workingTrip.destinations) {
-            return;
-        }
-
-        var {selectedLocation, containerElementProps, workingTrip} = this.props;
-        var locations = (selectedLocation ? [selectedLocation] : []).concat(workingTrip.destinations.map(d => d.tripDestination));
-        if (locations)
-            if (workingTrip.destinations.length > 1) {
-                this.refs.cluster.fitMapToMarkers();
-            }
-    }
-
     onMarkerClick(marker) {
         var infowindow = new google.maps.InfoWindow({
             content: "test"
@@ -30,15 +17,39 @@ class MapView extends React.Component {
         infowindow.open(this.refs.map, marker);
     }
 
-    render() {
-        var {selectedLocation, containerElementProps, workingTrip} = this.props;
-        var locations = workingTrip.destinations.map(d => d.tripDestination),
-            centeredLocation = selectedLocation || locations[0],
-            lines = [];
-
-        for (var i = 1; i < locations.length; ++i) {
-            lines.push(<Polyline strokeColor="#fff" path={[locations[i - 1].location, locations[i].location]}/>)
+    onClusterRef(cluster){
+        if (cluster != null) {
+            this.cluster = cluster;
+            if (this.props.locations && this.props.locations.length > 1) {
+                cluster.fitMapToMarkers();
+            }
+            // if (this.props.locations && this.props.locations.length > 0) {
+            //     cluster.fitMapToMarkers();
+            // }
         }
+    }
+
+    componentDidUpdate(prevProps) {
+        var {locations} = this.props;
+        if (JSON.stringify(prevProps.locations) == JSON.stringify(this.props.locations)) {
+            return;
+        }
+
+
+        var locations = this.props.locations;
+        if (locations && locations.length > 1) {
+            this.cluster.fitMapToMarkers();
+        }
+    }
+
+    render() {
+        var {locations, selectedLocation, containerElementProps} = this.props,
+            centerLocation = selectedLocation || locations[0];
+
+        // var lines = [];
+        // for (var i = 1; i < locations.length; ++i) {
+        //     lines.push(<Polyline strokeColor="#fff" path={[locations[i - 1].location, locations[i].location]}/>)
+        // }
 
         return (
             <section className="map-view">
@@ -54,36 +65,41 @@ class MapView extends React.Component {
                     googleMapElement={
                         <GoogleMap
                             ref="map"
-                            defaultZoom={3}
+
                             defaultCenter={{lat: -25.363882, lng: 131.044922}}
-                            zoom={selectedLocation && 8 || 3}
+
                             defaultOptions={{
                                 styles: mapStyles,
                             }}
                             mapTypeControlOptions={{
                                 mapTypeIds: [google.maps.MapTypeId.ROADMAP]
                             }}
-                            center={ centeredLocation && centeredLocation.location || {
-                                lat: -25.363882,
-                                lng: 131.044922
+
+                            zoom={centerLocation && 7 || 3}
+                            center={ centerLocation && centerLocation.location || {
+                                lat: -25.363882, lng: 131.044922
                             }}
                         >
-                            <MarkerClusterer ref="cluster"
-                                             averageCenter
-                                             fitMapToMarkers={true}
-                                             enableRetinaIcons
-                                             gridSize={ 60 }
-                            >
-                                {locations.map((dest, i) => {
-                                    return (
-                                        <Marker
-                                            position={dest.location}
-                                            onClick={this.onMarkerClick}
-                                            key={dest.placeId + i.toString()}>
-                                        </Marker>
-                                    )
-                                })}
-                            </MarkerClusterer>
+                            {locations && locations.length > 0 && (
+                                <MarkerClusterer ref={this.onClusterRef.bind(this)}
+                                                 averageCenter
+                                                 fitMapToMarkers={true}
+                                                 enableRetinaIcons
+                                                 gridSize={ 60 }>
+                                    {locations.map((dest, i) => {
+                                        return (
+                                            <Marker
+                                                position={dest.location}
+                                                shape={{coords:[22,22,23],type:'circle'}}
+                                                optimized={false}
+                                                icon={ new google.maps.MarkerImage(dest.icon, null, null, new google.maps.Point(13, 25))}
+                                                onClick={this.onMarkerClick}
+                                                key={dest.location.lat.toString() + dest.location.lng.toString()}>
+                                            </Marker>
+                                        )
+                                    })}
+                                </MarkerClusterer>
+                            ) }
                         </GoogleMap>
                     }
                 />

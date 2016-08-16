@@ -1,14 +1,14 @@
 
 import React from 'react';
 import {formatTripName} from 'lib/tripUtils';
-import MapView from 'components/Modules/MapView'
+import TripMapView from 'components/Modules/TripMapView'
 
 class TripsMap extends React.Component {
 
     render (){
         return (
-            <MapView workingTrip={this.props.trip} />
-        );;
+            <TripMapView workingTrip={this.props.trip} />
+        );
     }
 };
 

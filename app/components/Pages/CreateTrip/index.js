@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, Row, Col, Panel} from 'react-bootstrap';
 import QuickTripWizard from 'components/Modules/QuickTripWizard';
-import MapView from 'components/Modules/MapView';
+import TripMapView from 'components/Modules/TripMapView';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from 'redux-modules';
@@ -20,7 +20,7 @@ class CreateTrip extends React.Component {
         return (
             <div className="createTripPage">
                 <div className="page-quickTripWizard"><QuickTripWizard {...this.props } /></div>
-                <div className="page-mapView"><MapView ref="mapView" {...this.props}/></div>
+                <div className="page-mapView"><TripMapView ref="mapView" {...this.props}/></div>
             </div>
         );
     }
