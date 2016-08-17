@@ -37,7 +37,7 @@ class Explore extends React.Component {
     }
 
     render() {
-        let locations = (this.props.friendsLocations || []).map(fl => ({location: fl.location, icon: fl.user.photo }));
+        let locations = (this.props.friendsLocations || []).map(fl => ({location: fl.location, icon: fl.user.photo, title: fl.title, label: fl.label }));
         return (
             <div className="explore-page">
                 <MapView locations={locations} />

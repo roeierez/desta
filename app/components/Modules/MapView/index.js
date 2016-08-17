@@ -1,5 +1,5 @@
 import React from 'react';
-import {GoogleMap, Marker, GoogleMapLoader, InfoWindow, Polyline} from "react-google-maps";
+import {GoogleMap, Marker, GoogleMapLoader, InfoWindow, OverlayView} from "react-google-maps";
 import {default as MarkerClusterer} from "react-google-maps/lib/addons/MarkerClusterer";
 var mapStyles = require('./mapStyle.js');
 
@@ -44,7 +44,8 @@ class MapView extends React.Component {
 
     render() {
         var {locations, selectedLocation, containerElementProps} = this.props,
-            centerLocation = selectedLocation || locations[0];
+            centerLocation = selectedLocation || locations[0],
+            extraProps = centerLocation && locations.length <= 1 ? {zoom: 7} : {};
 
         // var lines = [];
         // for (var i = 1; i < locations.length; ++i) {
@@ -75,7 +76,9 @@ class MapView extends React.Component {
                                 mapTypeIds: [google.maps.MapTypeId.ROADMAP]
                             }}
 
-                            zoom={centerLocation && 7 || 3}
+                            defaultZoom={3}
+
+                            {...extraProps}
                             center={ centerLocation && centerLocation.location || {
                                 lat: -25.363882, lng: 131.044922
                             }}
@@ -88,6 +91,15 @@ class MapView extends React.Component {
                                                  gridSize={ 60 }>
                                     {locations.map((dest, i) => {
                                         return (
+                                        dest.icon ?
+                                            <OverlayView
+                                                position={dest.location}
+                                                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
+                                                <div>
+                                                    <div style={{width:"45px", height:"45px", borderRadius: "22px", backgroundImage: `url(${dest.icon})`}} />
+                                                </div>
+                                            </OverlayView>
+                                            :
                                             <Marker
                                                 position={dest.location}
                                                 shape={{coords:[22,22,23],type:'circle'}}
@@ -96,6 +108,7 @@ class MapView extends React.Component {
                                                 onClick={this.onMarkerClick}
                                                 key={dest.location.lat.toString() + dest.location.lng.toString()}>
                                             </Marker>
+
                                         )
                                     })}
                                 </MarkerClusterer>

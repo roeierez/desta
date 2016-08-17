@@ -2,9 +2,9 @@ const loginAsync = (silent) => {
     var me = this;
     return init()
         .then(user => {
-            // if (user) {
-            //     return user;
-            // }
+            if (user) {
+                return user;
+            }
 
             if (silent && !user) {
                 return null;
@@ -71,7 +71,7 @@ const getFriendsLocationsHistory = () => {
             let requests = friends.map( f => {
                 return {
                     method: 'GET',
-                    relative_url: `${f.id}/feed?with=location&fields=place`
+                    relative_url: `${f.id}/feed?with=location&fields=place,created_time`
                 }
             })
             return api('/', 'POST', {
@@ -88,7 +88,9 @@ const getFriendsLocationsHistory = () => {
                                     if (data.place.location) {
                                         friendsLocations.push({
                                             user: {...friends[i], photo: formatPhotoURL(friends[i].id, 45)},
-                                            location: {lat: data.place.location.latitude, lng: data.place.location.longitude}
+                                            location: {lat: data.place.location.latitude, lng: data.place.location.longitude},
+                                            title: friends[i].name,
+                                            label: friends[i].name
                                         })
                                 }
                                 });
