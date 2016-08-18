@@ -23,30 +23,37 @@ class MapView extends React.Component {
             if (this.props.locations && this.props.locations.length > 1) {
                 cluster.fitMapToMarkers();
             }
-            // if (this.props.locations && this.props.locations.length > 0) {
-            //     cluster.fitMapToMarkers();
-            // }
         }
     }
 
     componentDidUpdate(prevProps) {
-        var {locations} = this.props;
-        if (JSON.stringify(prevProps.locations) == JSON.stringify(this.props.locations)) {
-            return;
+        var {locations, selectedLocation, containerElementProps} = this.props;
+
+        if (this.props.heatmap) {
+            this.heatmap = new google.maps.visualization.HeatmapLayer({
+                data: (locations || []).concat(selectedLocation && [selectedLocation] || []).map(l => new google.maps.LatLng(l.location.lat, l.location.lng)),
+                map: this.refs.map.props.map
+            });
         }
+        else {
+            if (this.heatmap) {
+                this.heatmap.setMap(null);
+            }
 
-
-        var locations = this.props.locations;
-        if (locations && locations.length > 1) {
-            this.cluster.fitMapToMarkers();
+            if (locations && locations.length > 1 && JSON.stringify(prevProps.locations) != JSON.stringify(this.props.locations)) {
+                this.cluster.fitMapToMarkers();
+            }
         }
     }
 
     render() {
-        var {locations, selectedLocation, containerElementProps} = this.props,
+        var {locations, selectedLocation, containerElementProps, heatmap} = this.props,
             centerLocation = selectedLocation || locations[0],
             extraProps = centerLocation && locations.length <= 1 ? {zoom: 7} : {};
 
+        if (heatmap) {
+            extraProps.zoom = 3;
+        }
         // var lines = [];
         // for (var i = 1; i < locations.length; ++i) {
         //     lines.push(<Polyline strokeColor="#fff" path={[locations[i - 1].location, locations[i].location]}/>)
@@ -59,7 +66,7 @@ class MapView extends React.Component {
                         <div className="map-container"
                              {...containerElementProps}
                              style={{
-                                 height: "100%",
+
                              }}
                         />
                     }
@@ -83,7 +90,7 @@ class MapView extends React.Component {
                                 lat: -25.363882, lng: 131.044922
                             }}
                         >
-                            {locations && locations.length > 0 && (
+                            {!this.props.heatmap && locations && locations.length > 0 && (
                                 <MarkerClusterer ref={this.onClusterRef.bind(this)}
                                                  averageCenter
                                                  fitMapToMarkers={true}

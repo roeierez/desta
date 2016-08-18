@@ -1,8 +1,18 @@
 .explore-page {
   display: flex;
   height: 100%;
-  flex-direction: column;
-  .map-view {
+  .content{
     flex: 1;
+    display: flex;
+    .map-view {
+      margin-left: 15px;
+      flex: 1;
+    }
+    .left-panel {
+      min-width: 400px;
+      display: flex;
+      flex-direction: column;
+    }
   }
+  flex-direction: column;
 }
