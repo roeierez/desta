@@ -17,15 +17,6 @@ class MapView extends React.Component {
         infowindow.open(this.refs.map, marker);
     }
 
-    onClusterRef(cluster){
-        if (cluster != null) {
-            this.cluster = cluster;
-            if (this.props.locations && this.props.locations.length > 1) {
-                cluster.fitMapToMarkers();
-            }
-        }
-    }
-
     componentDidUpdate(prevProps) {
         var {locations, selectedLocation, containerElementProps} = this.props;
 
@@ -41,7 +32,11 @@ class MapView extends React.Component {
             }
 
             if (locations && locations.length > 1 && JSON.stringify(prevProps.locations) != JSON.stringify(this.props.locations)) {
-                this.cluster.fitMapToMarkers();
+                var bounds = new google.maps.LatLngBounds();
+                this.props.locations.forEach(l => {
+                    bounds.extend(new google.maps.LatLng(l.location.lat ,l.location.lng));
+                });
+                this.refs.map.fitBounds(bounds);
             }
         }
     }
@@ -91,15 +86,12 @@ class MapView extends React.Component {
                             }}
                         >
                             {!this.props.heatmap && locations && locations.length > 0 && (
-                                <MarkerClusterer ref={this.onClusterRef.bind(this)}
-                                                 averageCenter
-                                                 fitMapToMarkers={true}
-                                                 enableRetinaIcons
-                                                 gridSize={ 60 }>
-                                    {locations.map((dest, i) => {
+
+                                    locations.map((dest, i) => {
                                         return (
                                         dest.icon ?
                                             <OverlayView
+                                                key={i.toString() + dest.location.lat.toString() + dest.location.lng.toString()}
                                                 position={dest.location}
                                                 mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
                                                 <div>
@@ -113,12 +105,12 @@ class MapView extends React.Component {
                                                 optimized={false}
                                                 icon={ new google.maps.MarkerImage(dest.icon, null, null, new google.maps.Point(13, 25))}
                                                 onClick={this.onMarkerClick}
-                                                key={dest.location.lat.toString() + dest.location.lng.toString()}>
+                                                key={i.toString() + dest.location.lat.toString() + dest.location.lng.toString()}>
                                             </Marker>
 
                                         )
-                                    })}
-                                </MarkerClusterer>
+                                    })
+
                             ) }
                         </GoogleMap>
                     }

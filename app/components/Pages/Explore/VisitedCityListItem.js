@@ -12,7 +12,7 @@ class VisitedCityListItem extends React.Component {
             }))
 
         return (
-            <div onClick={this.props.onSelected} className={"visited-city-list-item " + this.props.className || ""}>
+            <div onClick={this.props.onSelected} className={"visit-list-item " + this.props.className || ""}>
                 <div className={getCityClassName(city)} />
                 <div className="destination-info">
                     <div className="cityAndCountry">
@@ -21,7 +21,7 @@ class VisitedCityListItem extends React.Component {
                     </div>
                     <span className="details"></span>
                 </div>
-                <div className="visitors-count">
+                <div className="right-info">
                     {visitorsSet.size <= 2 &&
                         (
                             Array.from(visitorsSet).map(id => {
