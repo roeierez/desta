@@ -54,17 +54,6 @@ class Explore extends React.Component {
             byCity = {},
             allVisits = [];
 
-        if (this.props.selectedPopularCity && this.props.params.filter == 'past') {
-            locations = locations.filter(l => {
-                return (l.place.location.city + ', ' + l.place.location.country) ==  this.props.selectedPopularCity;
-            })
-        }
-
-        if (this.props.selectedTravelingFriend && this.props.params.filter == 'current') {
-            locations = locations.filter(l => {
-                return l.user.id ==  this.props.selectedTravelingFriend;
-            })
-        }
 
         locations.forEach(l => {
             let currentCity = byCity[l.place.location.city + ', ' + l.place.location.country];
@@ -86,6 +75,18 @@ class Explore extends React.Component {
 
             allVisits = this.getUniqLastWeekVisits(allVisits);
             locations = allVisits;
+        }
+
+        if (this.props.selectedPopularCity && this.props.params.filter == 'past') {
+            locations = locations.filter(l => {
+                return (l.place.location.city + ', ' + l.place.location.country) ==  this.props.selectedPopularCity;
+            })
+        }
+
+        if (this.props.selectedTravelingFriend && this.props.params.filter == 'current') {
+            locations = locations.filter(l => {
+                return l.user.id ==  this.props.selectedTravelingFriend;
+            })
         }
 
         return (

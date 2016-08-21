@@ -1,7 +1,9 @@
 import Trips from './routes/trips';
+import Links from './routes/links';
+import Express from 'express';
+const router = new Express.Router();
 
-// export default [
-//   Trips,
-//];
-
-export default Trips;
+router.use('/trips', Trips);
+router.use('/links', Links);
+export default router;
+//export default [Trips,Links];

@@ -16,7 +16,7 @@ class TripsGallery extends React.Component {
                                          transitionAppear={true} transitionAppearTimeout={1000}>
                     {trips && trips.map(t => (
                         <div key={t.id} className="trip-wrapper">
-                            <TripSummary tripInfo={t}/>
+                            <TripSummary shareTrip={this.props.enterShareMode} tripInfo={t}/>
                         </div>
                     ))}
                 </ReactCSSTransitionGroup>

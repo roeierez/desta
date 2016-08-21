@@ -15,6 +15,12 @@ class TripSummary extends React.Component {
         browserHistory.push(`/profile/trips/${this.props.tripInfo.id}`)
     }
 
+    onShare (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.props.shareTrip(this.props.tripInfo);
+    }
+
     render() {
         var {tripInfo} = this.props,
             destinations = tripInfo.destinations.map(d => d.tripDestination.cityName),
@@ -25,6 +31,9 @@ class TripSummary extends React.Component {
 
         return (
             <div onClick={this.handleClick.bind(this)} className={classNames("trip-summary", getCityClassName(destinations[0])) }>
+                <div className="icons">
+                    <i onClick={this.onShare.bind(this)} className="fa fa-share-alt" aria-hidden="true"></i>
+                </div>
                 <div className="trip-content">
                     <div className="trip-destinations">{destinations.join(',')}</div>
                     <div className="trip-dates">{`${minDate.format('ll')} - ${maxDate.format('ll')}`}</div>

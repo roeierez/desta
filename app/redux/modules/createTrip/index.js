@@ -59,7 +59,6 @@ export const removeDestination = (destination) => ({
     payload: destination
 })
 
-var dbId = 10;
 export const createTrip = (trip) => ({
     type: 'CREATE_TRIP',
     payload: {
@@ -71,6 +70,7 @@ export const createTrip = (trip) => ({
                 credentials: 'include',
                 headers: {'Content-Type': 'application/json'},
                 method: 'POST',
+                shareAudience: 'public',
                 body: JSON.stringify(trip)
             }).then(r => r.json()).then(resolve);
         })

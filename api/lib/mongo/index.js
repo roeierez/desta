@@ -43,6 +43,16 @@ var storage = {
             .then(result => {
                 return result && result[0] && result[0].trips && result[0].trips[0] || null;
             });
+    },
+
+    insertLink: function(generatedLink, link) {
+        return db.collection('links').update({generatedLink}, {link}, {upsert: true});
+    },
+
+    getLink: function(generatedLink) {
+        return db.collection('links').find({generatedLink}).toArray().then(result => {
+            return result && result[0] && result[0].link;
+        });
     }
 }
 

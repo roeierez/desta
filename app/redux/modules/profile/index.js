@@ -11,7 +11,16 @@ const initialState = {
                 second = moment(t2.destinations[0].tripDates.startDate);
             return first.isSame(second) ? 0 : (first.isAfter(second) ? 1 : -1);
         })
-    };
+    },
+    applyUpdatedTrip = (state, payload) => {
+        let {id} = payload,
+            editedTrip = state.trips.find(t => t.id == id),
+            tripAfterEdit = {...editedTrip, ...payload};
+        return {
+            ...state,
+            trips: sortTrips( state.trips.filter(t => t.id != id).concat([tripAfterEdit]) )
+        }
+    }
 
 // For async components
 export default createReducer({
@@ -22,27 +31,44 @@ export default createReducer({
         }
     },
     ['UPDATE_TRIP_SUCCESS']: (state, {payload}) => {
-        let {id} = payload,
-            editedTrip = state.trips.find(t => t.id == id),
-            tripAfterEdit = {...editedTrip, ...payload};
-        return {
-            ...state,
-            trips: sortTrips( state.trips.filter(t => t.id != id).concat([tripAfterEdit]) )
-        }
+        return applyUpdatedTrip(state, payload);
+    },
+    ['UPDATE_TRIP_REQUEST']: (state, {payload}) => {
+        return applyUpdatedTrip(state, payload);
+    },
+    ['GENERATE_TRIP_LINK_SUCCESS'] : (state, {payload}) => {
+        return applyUpdatedTrip(state, payload);
     },
     ['LOAD_PROFILE_SUCCESS']: (state, {payload}) => {
         return {
             ...state,
             trips: sortTrips(payload)
         }
+    },
+    ['ENTER_SHARE_MODE']: (state, {payload}) => {
+        return {
+            ...state,
+            editedTrip: payload.id,
+            editType: 'share'
+        }
+    },
+    ['EXIT_SHARE_MODE']: (state, {payload}) => {
+        return {
+            ...state,
+            editedTrip: null,
+            editType: null
+        }
     }
 }, initialState);
 
 export const updateTrip = (tripInfo) => ({
     type: 'UPDATE_TRIP',
-    payload: {promise: fetch(`/api/trips/${tripInfo.id}`, {credentials: 'include', headers: {'Content-Type': 'application/json'}, method: 'PUT', body: JSON.stringify(tripInfo)}).then(
-        r => r.json()
-    )}
+    payload: {
+        promise: fetch(`/api/trips/${tripInfo.id}`, {credentials: 'include', headers: {'Content-Type': 'application/json'}, method: 'PUT', body: JSON.stringify(tripInfo)}).then(
+            r => r.json()
+        ),
+        data: tripInfo
+    }
 });
 
 export const loadProfile = () => {
@@ -51,3 +77,33 @@ export const loadProfile = () => {
         payload: {promise: fetch('/api/trips', {credentials: 'include'}).then(r => r.json())}
     }
 }
+
+export const enterShareMode = (trip) => {
+    return {
+        type: 'ENTER_SHARE_MODE',
+        payload: trip
+    }
+}
+
+export const exitShareMode = (trip) => {
+    return {
+        type: 'EXIT_SHARE_MODE'
+    }
+}
+
+export const shareTrip = (trip, shareAudience) => {
+    return updateTrip(Object.assign(JSON.parse(JSON.stringify(trip)), {shareAudience}));
+}
+
+export const generateTripLink = (trip) => {
+    return {
+        type: 'GENERATE_TRIP_LINK',
+        payload: {promise: fetch(`/api/trips/${trip.id}/generateLink`, {credentials: 'include'}).then(
+            r => r.json().then(json => ({
+                id: trip.id,
+                ...json
+            }))
+        )}
+    }
+}
+

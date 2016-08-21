@@ -1,0 +1,77 @@
+.share-trip-dialog {
+  .title {
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .trip-heading {
+    margin: 15px;
+    margin-left: 0px;
+    display: flex;
+    align-items: center;
+    .city-image {
+      width: 45px;
+      height: 45px;
+      border-radius: 5px;
+    }
+    .trip-info {
+      margin-left: 15px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+    }
+  }
+  .share-types {
+    .link {
+      .share-text {
+        .icon-wrapper {
+          border-radius: 20px;
+        }
+        button {
+          background-color:transparent;
+          border: none;
+          box-shadow:none;
+          margin-left: 10px;
+        }
+      }
+    }
+    .separator {
+      border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+      margin: 15px -15px 15px -15px;
+      height: 1px;
+    }
+    .share-text {
+      &:hover {
+        cursor: pointer;
+        background-color: rgba(251, 240, 160, 0.6);
+      }
+      display: flex;
+      padding: 10px;
+      padding-left: 0px;
+      align-items: center;
+      .text {
+        flex: 1;
+      }
+      .fa-check {
+        color: rgba(49, 64, 73, 0.76);
+        margin-right: 15px;
+        zoom: 0.75;
+      }
+      .icon-wrapper {
+        margin-right: 15px;
+        width: 40px;
+        height: 40px;
+        background: rgba(23, 72, 173, 0.71);
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+
+        i {
+          transform:translate(2px,2px);
+          align-self: center;
+          color: white;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
