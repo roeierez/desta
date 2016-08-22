@@ -59,11 +59,11 @@ if (isProduction) {
   app.use(Express.static(__dirname + `/../${isProduction ? "dist_production" : "dist"}/`));
 } else {
   app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: true, publicPath: webpackConfig.output.publicPath,
+    noInfo: true, publicPath: webpackConfig.output.publicPath, hot: true, inline: true
   }));
 
   app.use(require('webpack-hot-middleware')(compiler, {
-    log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000,
+    log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000, inline: true
   }));
 }
 

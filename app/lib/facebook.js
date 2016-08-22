@@ -87,6 +87,7 @@ const getFriendsLocationsHistory = () => {
                                 body.data.forEach(data => {
                                     if (data.place.location) {
                                         friendsLocations.push({
+                                            created_time: data.created_time,
                                             user: {...friends[i], photo: formatPhotoURL(friends[i].id, 45)},
                                             place: data.place,
                                             location: {lat: data.place.location.latitude, lng: data.place.location.longitude},

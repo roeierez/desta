@@ -1,5 +1,7 @@
 const webpack = require('webpack');
+const config = require('../config');
 
+const paths = config.get('utils_paths');
 module.exports = {
   // devtool: 'source-map',
   devtool: 'eval-cheap-module-source-map',
@@ -12,7 +14,8 @@ module.exports = {
 
   entry: {
     app: [
-      "webpack-hot-middleware/client"
+      "webpack-hot-middleware/client",
+      "webpack/hot/dev-server"
     ]
   },
 
@@ -28,7 +31,7 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoErrorsPlugin(),
   ],
 };

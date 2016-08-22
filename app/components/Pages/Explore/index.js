@@ -50,7 +50,7 @@ class Explore extends React.Component {
     }
 
     render() {
-        let locations = (this.props.friendsLocations || []).map(fl => ({user: fl.user, place: fl.place, location: fl.location, icon: fl.user.photo, title: fl.title, label: fl.label })),
+        let locations = (this.props.friendsLocations || []).map(fl => ({created_time: fl.created_time, user: fl.user, place: fl.place, location: fl.location, icon: fl.user.photo, title: fl.title, label: fl.label })),
             byCity = {},
             allVisits = [];
 
@@ -67,10 +67,10 @@ class Explore extends React.Component {
 
         if (this.props.params.filter == 'current') {
             allVisits = allVisits.filter(v => {
-                return moment().diff(moment(v.created_date), 'days') < 7;
+                return moment().diff(moment(v.created_time), 'days') < 7;
             })
             allVisits.sort((v1, v2) => {
-                return moment(v1.created_date).diff(moment(v2), 'seconds');
+                return moment(v1.created_time).diff(moment(v2), 'seconds');
             });
 
             allVisits = this.getUniqLastWeekVisits(allVisits);

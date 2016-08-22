@@ -52,7 +52,7 @@ const webpackConfig = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        loaders: ['react-hot',"babel-loader"]
       },
       {
         test: /\.(json)$/,
