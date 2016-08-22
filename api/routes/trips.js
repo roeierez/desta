@@ -5,8 +5,10 @@ import wrap from 'express-async-wrap'; // can use async, await
 const router = new Express.Router();
 var trips = [];
 
-router.get('/', wrap(async function (req, res) {
-    return req.storage.getTrips(req.facebook.user).then(trips => res.json(trips));
+router.get('/', wrap(async function (req, res, next) {
+    return req.storage.getTrips(req.facebook.user).then(trips => res.json(trips), e => {
+        next(e);
+    })
 }));
 router.post('/', wrap(async function (req, res) {
     return req.storage.insertTrip(req.facebook.user, req.body).then(() => res.json(req.body));

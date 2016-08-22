@@ -18,7 +18,11 @@ function connect() {
 var storage = {
     getTrips: function(facebookID){
         return db.collection('users').find({facebookID}, {trips: 1}).toArray()
-            .then(res => res[0] && res[0].trips);
+            .then(res => {
+                return res[0] && res[0].trips;
+            }, err => {
+                return Promise.reject(err);
+            });
     },
 
     insertTrip: function(facebookID, trip){

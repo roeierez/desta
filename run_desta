@@ -1,4 +1,4 @@
 # My first script
 export PATH=/home/ec2-user/node-v6.3.1-linux-x64/bin:$PATH
 export NODE_ENV=production
-node ./api/server.js
+pm2 restart process.json --env production

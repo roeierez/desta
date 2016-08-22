@@ -1,6 +1,7 @@
 import {createReducer} from '../../utils/createReducer';
 import {fetchFriendsLocations} from '../../../lib/destaServices';
 import fetch from 'isomorphic-fetch';
+import { loginAsync, logoutAsync } from 'lib/facebook';
 
 const initialState = {
         friendsLocations: []
@@ -29,9 +30,12 @@ export default createReducer({
 }, initialState);
 
 export const fetchLocations = () => {
+    debugger;
     return {
         type: 'FETCH_FRIENDS_LOCATIONS',
-        payload: {promise: fetchFriendsLocations()}
+        payload: {promise: loginAsync(true).then(user => {
+            return fetchFriendsLocations();
+        })}
     }
 }
 

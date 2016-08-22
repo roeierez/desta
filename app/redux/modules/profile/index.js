@@ -1,6 +1,7 @@
 import {createReducer} from '../../utils/createReducer';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
+import { loginAsync, logoutAsync } from 'lib/facebook';
 
 const initialState = {
         trips: []
@@ -98,7 +99,7 @@ export const shareTrip = (trip, shareAudience) => {
 export const generateTripLink = (trip) => {
     return {
         type: 'GENERATE_TRIP_LINK',
-        payload: {promise: fetch(`/api/trips/${trip.id}/generateLink`, {credentials: 'include'}).then(
+        payload: {promise: loginAsync(true).then(res =>  fetch(`/api/trips/${trip.id}/generateLink`, {credentials: 'include'})).then(
             r => r.json().then(json => ({
                 id: trip.id,
                 ...json

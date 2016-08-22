@@ -2,7 +2,6 @@ import React from 'react';
 import {getCityClassName} from 'lib/tripUtils';
 import moment from 'moment';
 import {Modal} from 'react-bootstrap';
-require('clipboard/dist/clipboard');
 
 class ShareTrip extends React.Component {
 

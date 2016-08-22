@@ -13,9 +13,6 @@ import { browserHistory } from 'react-router'
 class TripPage extends React.Component {
 
     componentDidMount() {
-        var trip = this.props.trips.find(t => {
-            return this.props.params.id == t.id;
-        });
         // this.props.setPageLinks([
         //     {
         //         to: `/profile/trips/${trip.id}/calendar`,
@@ -44,19 +41,19 @@ class TripPage extends React.Component {
         var trip = this.props.trips.find(t => {
             return this.props.params.id == t.id;
         });
+        if (trip == null) {
+            return <div>loading</div>;
+        }
 
         return (
             <div className="trip-info">
                 <div className="top-dashboard">
-                    <ResizeablePanel title="My Scheule">
-                        <TripsCalendar trip={trip} {...this.props} />
-                    </ResizeablePanel>
                     <TripsMap trip={trip} {...this.props} />
                 </div>
                 <div className="right-dashboard">
-                    {/*<ResizeablePanel className="trip-information" title="Trip Information">*/}
-                        {/*<TripInfoEditor trip={trip} {...this.props} />*/}
-                    {/*</ResizeablePanel>*/}
+                    <ResizeablePanel className="trip-schedule" title="My Scheule">
+                        <TripsCalendar trip={trip} {...this.props} />
+                    </ResizeablePanel>
                     <ResizeablePanel title={"Destinations"} className="destinations-list">
                         {trip.destinations.map( d => {
                             return <DestinationListItem onSelected={this.onDestinationSelected.bind(this, d)} destination = {d}/>;

@@ -46,10 +46,16 @@ app.use(function(req, res, next){
 app.use('/api',
     Facebook.loginRequired(),
     (req, res, next) => {
-      req.storage = storage;
-      next();
+        connect().then(db => {
+            req.storage = db;
+            next();
+        },  next);
     },
-    routes);
+    routes,
+    (err, req, res) => {
+        res.status(err.status || 500).send({error: err});
+    }
+);
 
 console.error('isProduction ' + isProduction);
 console.error(__dirname + `/../${isProduction ? "dist_production" : "dist"}/`);
@@ -59,24 +65,21 @@ if (isProduction) {
   app.use(Express.static(__dirname + `/../${isProduction ? "dist_production" : "dist"}/`));
 } else {
   app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: true, publicPath: webpackConfig.output.publicPath, hot: true, inline: true
+    noInfo: true, publicPath: webpackConfig.output.publicPath
   }));
 
   app.use(require('webpack-hot-middleware')(compiler, {
-    log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000, inline: true
+    log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000
   }));
 }
 
 app.use(function (req, res, next) {
-  res.redirect('/');
+  res.redirect(`/?path=${req.originalUrl}`);
 });
 
-connect().then(db => {
-  storage = db;
-  server.listen(3000, () => {
+server.listen(3000, () => {
     const host = server.address().address;
     const port = server.address().port;
 
     console.log('Api is listening on http://%s:%s', host, port);
-  });
 });

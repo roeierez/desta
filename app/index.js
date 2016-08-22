@@ -18,6 +18,10 @@ var initialState = require('./resources/initialState.json');
 // }
 
 export const history = browserHistory;
+let path = window.location.search.split('=');
+if (path[0] == '?path' && path[1]) {
+    history.push(path[1]);
+}
 
 export const store = configureStore();
 
