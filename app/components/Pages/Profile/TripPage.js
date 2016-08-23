@@ -47,9 +47,6 @@ class TripPage extends React.Component {
 
         return (
             <div className="trip-info">
-                <div className="top-dashboard">
-                    <TripsMap trip={trip} {...this.props} />
-                </div>
                 <div className="right-dashboard">
                     <ResizeablePanel className="trip-schedule" title="My Scheule">
                         <TripsCalendar trip={trip} {...this.props} />
@@ -62,6 +59,9 @@ class TripPage extends React.Component {
                     <ResizeablePanel resize={false} className="friends-panel" title="Friends with you">
                         <TripFriends classname="trip-friends" trip={trip} />
                     </ResizeablePanel>
+                </div>
+                <div className="top-dashboard">
+                    <TripsMap trip={trip} {...this.props} />
                 </div>
             </div>
         );

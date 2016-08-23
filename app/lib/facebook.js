@@ -12,7 +12,10 @@ const loginAsync = (silent) => {
 
             return new Promise((resolve, reject) => FB.login((response) => {
                 if (response.authResponse) {
-                    return getUserDetails().then(resolve, reject);
+                    return getUserDetails().then(user => {
+                        initPromise = Promise.resolve(user);
+                        resolve(user);
+                    }, reject);
                 } else {
                     reject();
                 }
@@ -149,32 +152,39 @@ const api = (...args) => {
     });
 }
 
+let initPromise = null;
 const init = () => {
-    if (window.FB) {
-        return getLoginStatus();
+    if (!initPromise) {
+        if (window.FB) {
+            initPromise = getLoginStatus();
+        }
+
+        initPromise = new Promise((resolve, reject) => {
+            window.fbAsyncInit = function () {
+                FB.init({
+                    appId: window.location.hostname == 'test.robustico.com' ? '289224691444677' : '280958242271322',
+                    xfbml: true,
+                    cookie: true,
+                    version: 'v2.7'
+                });
+                getLoginStatus().then(resolve, () => resolve(null));
+                // FB.Event.subscribe('auth.logout',function(){alert('logged out')});
+                // FB.Event.subscribe('auth.login',function(){alert('logged in')});
+            };
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        });
     }
-
-    return new Promise((resolve, reject) => {
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId      : window.location.hostname == 'test.robustico.com' ? '289224691444677' : '280958242271322',
-                xfbml      : true,
-                cookie: true,
-                version    : 'v2.7'
-            });
-            getLoginStatus().then(resolve, () => resolve(null));
-            // FB.Event.subscribe('auth.logout',function(){alert('logged out')});
-            // FB.Event.subscribe('auth.login',function(){alert('logged in')});
-        };
-
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    });
+    return initPromise;
 }
 
 export {loginAsync};
