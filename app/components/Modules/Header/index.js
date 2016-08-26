@@ -37,6 +37,20 @@ class Header extends React.Component {
         )         
     }
 
+    getPageTitle() {
+        let pageTitle = 'Home',
+            routePath = this.props.location.pathname;
+        if (routePath.indexOf('/profile') == 0) {
+            pageTitle = 'My Desta';
+        }
+
+        if (routePath.indexOf('/explore') == 0) {
+            pageTitle = 'Explore'
+        }
+
+        return pageTitle;
+    }
+
     render (){
         let {login, loggedInUser, selectLocation, pageLinks} = this.props;
         var userPhothURL = loggedInUser ? `https://graph.facebook.com/v2.7/${loggedInUser.id}/picture?type=small&width=45&height=45` : null;
@@ -49,7 +63,7 @@ class Header extends React.Component {
                             className="logo-travel">Travel</span></a>
                     </div>
                     <div className="main-header">
-                        <span className="page-title">Home</span>
+                        <span className="page-title">{ this.getPageTitle()}</span>
                         <div className="search" >
                             <PlacesAutocompleteInput 
                                     onBlur={this.onAutocompleteBlur.bind(this)} 

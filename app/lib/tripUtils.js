@@ -10,6 +10,13 @@ export const getCityClassName = (cityName) => {
     return 'city-image ' + cityName.replace(/\s/g, '_').toLowerCase();
 }
 
+export const findTripByIdOrLink = (trips, idOrLink) => {
+    return trips.find(t => {
+        var link = t.link && t.link.split('/').pop();
+        return idOrLink == t.id || idOrLink == link;
+    });
+}
+
 export const isBookedDate = (trip, date) => {
     let destinations = trip.destinations,
         bookedDatesRanges = destinations.map(d => {

@@ -46,10 +46,15 @@ class TripsCalendar extends React.Component {
             }),
             EventComponent = (props) => (
                 <RangePicker isInvalidDate={this.isInvalidDate.bind(this, props.event)} onChange={this.onDestinationDateChange.bind(this, props.event)} innerComponent={props.title} title={props.title} value={{startDate: props.event.start, endDate: props.event.end}} />
-            )
+            );
+
+        let props = {events};
+        if (this.props.loggedInUser.id == this.props.trip.owner) {
+            props.components = {event: EventComponent};
+        }
         return (
             <div className="calendar modal-container">
-                <Calendar components={{event: EventComponent}} events={events} />
+                <Calendar {...props} />
             </div>
         );
     }

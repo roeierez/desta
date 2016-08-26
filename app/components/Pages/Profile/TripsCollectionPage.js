@@ -15,7 +15,7 @@ class TripsCollectionPage extends React.Component {
                         <ShareTrip generateTripLink={generateTripLink} shareTrip={shareTrip} trip={tripToShare} onHide={exitShareMode} container={this} show={shareDialogOpened} />
                     )
                 }
-                <TripsGallery enterShareMode={this.props.enterShareMode} trips= {this.props.trips} />
+                <TripsGallery enterShareMode={this.props.enterShareMode} trips= {this.props.trips.filter(t => t.owner == (this.props.loggedInUser && this.props.loggedInUser.id))} />
             </div>
         );
     }

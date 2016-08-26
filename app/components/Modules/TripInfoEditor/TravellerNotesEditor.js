@@ -43,7 +43,7 @@ class TravellerNotesEditor extends React.Component {
                             {this.props.notes.map(h => <NoteInfo note={h}/>) }
                         </ul>
                     </div>
-                    {!this.state.editMode && (
+                    {!this.state.editMode && this.props.canEdit && (
                         <div className="actions-bar">
                             <Button bsStyle="primary" onClick={this.showForm.bind(this)}><span className="font-icon font-icon-plus-1">New Note</span></Button>
                         </div>)

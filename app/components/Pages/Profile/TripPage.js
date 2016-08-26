@@ -9,59 +9,63 @@ import ResizeablePanel from 'components/Modules/ResizeablePanel';
 import TripFriends from 'components/Modules/TripFriends';
 import DestinationListItem from './DestinationListItem';
 import { browserHistory } from 'react-router'
+import moment from 'moment';
+import Avatar from 'components/Modules/Avatar';
+import {findTripByIdOrLink} from 'lib/tripUtils';
 
 class TripPage extends React.Component {
 
     componentDidMount() {
-        // this.props.setPageLinks([
-        //     {
-        //         to: `/profile/trips/${trip.id}/calendar`,
-        //         label: 'Calendar'
-        //     },
-        //     {
-        //         to: `/profile/trips/${trip.id}/map`,
-        //         label: 'Map'
-        //     }
-        // ])
+        this.props.fetchTrip(this.props.params.id);
     }
 
     componentWillUnmount () {
-        this.props.setPageLinks(null);
     }
 
     onDestinationSelected(destination) {
-        var trip = this.props.trips.find(t => {
-            return this.props.params.id == t.id;
-        });
+        var trip = findTripByIdOrLink(this.props.trips, this.props.params.id);
         let index = trip.destinations.indexOf(destination);
         browserHistory.push(`/profile/trips/${trip.id}/destination/${index}`);
     }
 
     render() {
-        var trip = this.props.trips.find(t => {
-            return this.props.params.id == t.id;
-        });
-        if (trip == null) {
+        var trip = findTripByIdOrLink(this.props.trips, this.props.params.id);
+
+        if (trip == null || this.props.fetchingTrip) {
             return <div>loading</div>;
         }
 
+        var startDates = trip.destinations.map(d => moment(d.tripDates.startDate)),
+            endDates = trip.destinations.map(d => moment(d.tripDates.endDate)),
+            minDate = moment.min(startDates),
+            maxDate = moment.max(endDates);
+
         return (
-            <div className="trip-info">
-                <div className="right-dashboard">
-                    <ResizeablePanel className="trip-schedule" title="My Scheule">
-                        <TripsCalendar trip={trip} {...this.props} />
-                    </ResizeablePanel>
-                    <ResizeablePanel title={"Destinations"} className="destinations-list">
-                        {trip.destinations.map( d => {
-                            return <DestinationListItem onSelected={this.onDestinationSelected.bind(this, d)} destination = {d}/>;
-                        })}
-                    </ResizeablePanel>
-                    <ResizeablePanel resize={false} className="friends-panel" title="Friends with you">
-                        <TripFriends classname="trip-friends" trip={trip} />
-                    </ResizeablePanel>
+            <div className="trip-page">
+                <div className="trip-header">
+                    <Avatar id={trip.owner} height={60} width={60} />
+                    <div className="trip-title">
+                        <div className="trip-destinations">{trip.destinations.map(d => d.tripDestination.cityName).join(', ')}</div>
+                        <div className="trip-dates">{`${minDate.format('ll')} - ${maxDate.format('ll')}`}</div>
+                    </div>
                 </div>
-                <div className="top-dashboard">
-                    <TripsMap trip={trip} {...this.props} />
+                <div className="trip-info">
+                    <div className="right-dashboard">
+                        <ResizeablePanel className="trip-schedule" title="My Scheule">
+                            <TripsCalendar trip={trip} {...this.props} />
+                        </ResizeablePanel>
+                        <ResizeablePanel title={"Destinations"} className="destinations-list">
+                            {trip.destinations.map( d => {
+                                return <DestinationListItem onSelected={this.onDestinationSelected.bind(this, d)} destination = {d}/>;
+                            })}
+                        </ResizeablePanel>
+                        <ResizeablePanel resize={false} className="friends-panel" title="Friends with you">
+                            <TripFriends classname="trip-friends" trip={trip} />
+                        </ResizeablePanel>
+                    </div>
+                    <div className="top-dashboard">
+                        <TripsMap trip={trip} {...this.props} />
+                    </div>
                 </div>
             </div>
         );

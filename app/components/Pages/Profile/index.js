@@ -10,16 +10,25 @@ import * as actionCreators from 'redux-modules';
     },
     dispatch => bindActionCreators({
         ...actionCreators.profile,
+        ...actionCreators.app,
     }, dispatch),
 )
 class Profile extends React.Component {
 
     componentDidMount () {
-        this.props.loadProfile();
+        debugger;
+        var login = this.props.login();
+        login.payload.promise.then(() => {
+            return this.props.loadProfile();
+        })
     }
 
     render (){
        // const props = Object.assign({}, this.props, this.props.children.props.children.prop);
+        if (!this.props.loggedInUser) {
+            return <div>Loading...</div>;
+        }
+
         return (
             <div className="profilePage layout-column">
                 { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }

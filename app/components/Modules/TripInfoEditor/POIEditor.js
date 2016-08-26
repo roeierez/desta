@@ -36,6 +36,7 @@ class POIEditor extends React.Component {
     }
 
     render() {
+        debugger;
         return (
             <div className="hotels-editor">
                 <div className="section-content">
@@ -44,7 +45,7 @@ class POIEditor extends React.Component {
                             {this.props.pois.map(h => <POIInfo poi={h}/>) }
                         </ul>
                     </div>
-                    {!this.state.editMode && (
+                    {!this.state.editMode && this.props.canEdit && (
                         <div className="actions-bar">
                             <Button bsStyle="primary" onClick={this.showForm.bind(this)}><span className="font-icon font-icon-plus-1">New Point</span></Button>
                         </div>)
@@ -60,8 +61,8 @@ class POIEditor extends React.Component {
                                 }
                             }),
                             {
-                                submitText: 'Add Point',
-                                onSubmit: this.onAdd.bind(this),
+                                submitText: this.props.canEdit && 'Add Point',
+                                onSubmit: this.props.canEdit && this.onAdd.bind(this),
                                 cancelText: 'Cancel',
                                 onCancel: this.onCancel.bind(this)
                             }

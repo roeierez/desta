@@ -39,15 +39,18 @@ class TripInfoEditor extends React.Component {
                 </TabList>
                 <TabPanel>
                     <HotelEditor hotels={destination.hotels}
+                                 canEdit = {this.props.canEdit}
                                  onChange={this.updateTrip.bind(this, 'hotels')} />
                 </TabPanel>
                 <TabPanel>
                     <POIEditor pois={destination.pois}
+                               canEdit = {this.props.canEdit}
                                 onChange={this.updateTrip.bind(this, 'pois')} />
                 </TabPanel>
                 <TabPanel>
                     <TravellerNotesEditor notes={destination.notes}
-                                onChange={this.updateTrip.bind(this, 'notes')} />
+                                          canEdit = {this.props.canEdit}
+                                          onChange={this.updateTrip.bind(this, 'notes')} />
                 </TabPanel>               
             </Tabs>
         )

@@ -1,7 +1,6 @@
 import {createReducer} from '../../utils/createReducer';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
-import { loginAsync, logoutAsync } from 'lib/facebook';
 
 const initialState = {
         trips: []
@@ -13,13 +12,14 @@ const initialState = {
             return first.isSame(second) ? 0 : (first.isAfter(second) ? 1 : -1);
         })
     },
-    applyUpdatedTrip = (state, payload) => {
+    applyUpdatedTrip = (state, payload, stateProps) => {
         let {id} = payload,
             editedTrip = state.trips.find(t => t.id == id),
             tripAfterEdit = {...editedTrip, ...payload};
         return {
             ...state,
-            trips: sortTrips( state.trips.filter(t => t.id != id).concat([tripAfterEdit]) )
+            trips: sortTrips( state.trips.filter(t => t.id != id).concat([tripAfterEdit]) ),
+            ...stateProps
         }
     }
 
@@ -37,13 +37,28 @@ export default createReducer({
     ['UPDATE_TRIP_REQUEST']: (state, {payload}) => {
         return applyUpdatedTrip(state, payload);
     },
+    ['FETCH_TRIP_SUCCESS']: (state, {payload}) => {
+        return applyUpdatedTrip(state, payload, {fetchingTrip: false});
+    },
+    ['FETCH_TRIP_REQUEST']: (state, {payload}) => {
+        return {
+            ...state,
+            fetchingTrip: true
+        }
+    },
     ['GENERATE_TRIP_LINK_SUCCESS'] : (state, {payload}) => {
         return applyUpdatedTrip(state, payload);
     },
     ['LOAD_PROFILE_SUCCESS']: (state, {payload}) => {
+        debugger;
+        if (!payload.length) {
+            return state;
+        }
+
+        let currentUserId = payload[0].owner;
         return {
             ...state,
-            trips: sortTrips(payload)
+            trips: sortTrips(state.trips.filter(t => t.owner != currentUserId).concat(payload))
         }
     },
     ['ENTER_SHARE_MODE']: (state, {payload}) => {
@@ -79,6 +94,13 @@ export const loadProfile = () => {
     }
 }
 
+export const fetchTrip = (id) => {
+    return {
+        type: 'FETCH_TRIP',
+        payload: {promise: fetch(`/api/trips/${id}`, {credentials: 'include'}).then(r => r.json())}
+    }
+}
+
 export const enterShareMode = (trip) => {
     return {
         type: 'ENTER_SHARE_MODE',
@@ -99,7 +121,7 @@ export const shareTrip = (trip, shareAudience) => {
 export const generateTripLink = (trip) => {
     return {
         type: 'GENERATE_TRIP_LINK',
-        payload: {promise: loginAsync(true).then(res =>  fetch(`/api/trips/${trip.id}/generateLink`, {credentials: 'include'})).then(
+        payload: {promise: fetch(`/api/trips/${trip.id}/generateLink`, {credentials: 'include'}).then(
             r => r.json().then(json => ({
                 id: trip.id,
                 ...json

@@ -17,9 +17,9 @@ function connect() {
 
 var storage = {
     getTrips: function(facebookID){
-        return db.collection('users').find({facebookID}, {trips: 1}).toArray()
+        return db.collection('users').find({facebookID}, {trips: 1, facebookID: 1}).toArray()
             .then(res => {
-                return res[0] && res[0].trips;
+                return res[0] && res[0].trips && res[0].trips.map(t => (Object.assign(t, {owner: res[0].facebookID})));
             }, err => {
                 return Promise.reject(err);
             });
@@ -43,9 +43,26 @@ var storage = {
     },
 
     getTrip: function(facebookID, tripID) {
-        return db.collection('users').find({facebookID}, {trips: {$elemMatch: {id: tripID}}}).toArray()
+        let condition = {
+            trips: {
+                $elemMatch: {
+                    $or:[
+                        {id: tripID},
+                        {link: `/profile/trips/${tripID}`}
+                    ]
+                }
+            }
+        }
+        return db.collection('users').find(condition, {"trips.$":1, facebookID: 1}).toArray()
+        //return db.collection('users').find({facebookID, ...{$or}}, {"trips.$":1}).toArray()
             .then(result => {
-                return result && result[0] && result[0].trips && result[0].trips[0] || null;
+                let user = result && result[0],
+                    trip = user && user.trips && user.trips[0];
+                if (trip) {
+                    trip.owner = user.facebookID;
+                }
+
+                return trip || null;
             });
     },
 

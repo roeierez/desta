@@ -48,14 +48,16 @@ class HotelEditForm extends React.Component {
                     <ControlLabel>Who's there?</ControlLabel>
                     <FormControl placeholder="Pick friends" type="text" {...fields.hotelFriends}/>
                 </FormGroup>
-                <div className="form-actions">
-                    <Button type="submit">
-                        Add hotel
-                    </Button>
-                    <Button onClick={this.props.onCancel}>
-                        Cancel
-                    </Button>
-                </div>
+                {this.props.canEdit && (
+                    <div className="form-actions">
+                        <Button type="submit">
+                            Add hotel
+                        </Button>
+                        <Button onClick={this.props.onCancel}>
+                            Cancel
+                        </Button>
+                    </div>
+                )}
             </form>
         )
     }
@@ -93,7 +95,7 @@ class HotelsEditor extends React.Component {
                             {this.props.hotels.map(h => <HotelInfo hotel={h}/>) }
                         </ul>
                     </div>
-                    {!this.state.editMode && (
+                    {!this.state.editMode && this.props.canEdit && (
                         <div className="actions-bar">
                             <Button bsStyle="primary" onClick={this.showHotelForm.bind(this)}><span className="font-icon font-icon-plus-1">New Hotel</span></Button>
                         </div>)
