@@ -16,6 +16,20 @@ function connect() {
 }
 
 var storage = {
+
+    getUser: function(facebookID) {
+        return db.collection('users').find({facebookID}, {access_token: 1, facebookID: 1}).toArray()
+            .then(res => res[0]);
+    },
+
+    setAccessToken: function(facebookID, access_token) {
+        return db.collection('users').update({facebookID}, {$set: {facebookID, access_token}}, {upsert: true});
+    },
+
+    setUserFriends: function(facebookID, friends) {
+        return db.collection('users').update({facebookID}, {$set: {friends}}, {upsert: true});
+    },
+
     getTrips: function(facebookID){
         return db.collection('users').find({facebookID}, {trips: 1, facebookID: 1}).toArray()
             .then(res => {
