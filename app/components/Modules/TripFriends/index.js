@@ -1,4 +1,5 @@
 import React from 'react';
+import Avatar from 'components/Modules/Avatar';
 
 class TripFriends extends React.Component {
     render() {
@@ -15,7 +16,7 @@ class TripFriends extends React.Component {
         return (
             <div className={"trip-friends-list " + (this.props.className || '')}>
                 {friends.map( f => {
-                    return <img class="avatar" src={`https://graph.facebook.com/v2.7/${f.id}/picture?type=small&width=100&height=100`} />
+                    return <Avatar id={f.id} width={45} height={45}/>
                 })}
             </div>
         )

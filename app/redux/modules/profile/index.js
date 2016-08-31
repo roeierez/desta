@@ -61,11 +61,10 @@ export default createReducer({
             return state;
         }
 
-        let currentUserId = payload[0].owner;
         return {
             ...state,
             loadingProfile: false,
-            trips: sortTrips(state.trips.filter(t => t.owner != currentUserId).concat(payload))
+            trips: sortTrips(payload)
         }
     },
     ['ENTER_SHARE_MODE']: (state, {payload}) => {
@@ -94,10 +93,10 @@ export const updateTrip = (tripInfo) => ({
     }
 });
 
-export const loadProfile = () => {
+export const loadProfile = (owner) => {
     return {
         type: 'LOAD_PROFILE',
-        payload: {promise: fetch('/api/trips', {credentials: 'include'}).then(r => r.json())}
+        payload: {promise: fetch('/api/trips?owner=' + owner, {credentials: 'include'}).then(r => r.json())}
     }
 }
 

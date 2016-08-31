@@ -3,16 +3,30 @@ import generateLink from '../lib/linkGenerator';
 import wrap from 'express-async-wrap'; // can use async, await
 
 const router = new Express.Router();
-var trips = [];
 
 router.get('/', wrap(async function (req, res, next) {
-    return req.storage.getTrips(req.user.facebookID).then(trips => res.json(trips), e => {
+    let owner = req.query.owner || req.user.facebookID,
+        viewerIsOwner = ( owner == req.user.facebookID ),
+        query = null,
+        notAllowedAudience = ['private'];
+
+    if (!viewerIsOwner) {
+        let isFriend = await req.storage.isFriendOfMine(req.user.facebookID, owner);
+        if (!isFriend) {
+            notAllowedAudience.push('friends');
+        }
+        query = {shareAudience: {$nin: notAllowedAudience}};
+    }
+
+    return req.storage.getTrips(owner, query).then(trips => res.json(trips), e => {
         next(e);
     })
 }));
+
 router.post('/', wrap(async function (req, res) {
     return req.storage.insertTrip(req.user.facebookID, req.body).then(() => res.json(req.body));
 }));
+
 router.get('/:id', wrap(async function (req, res) {
     return req.storage.getTrip(req.user.facebookID, req.params.id).then( trip => {
         res.json(trip);

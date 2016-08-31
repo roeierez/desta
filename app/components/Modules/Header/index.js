@@ -40,7 +40,7 @@ class Header extends React.Component {
     getPageTitle() {
         let pageTitle = 'Home',
             routePath = this.props.location.pathname;
-        if (routePath.indexOf('/profile') == 0) {
+        if (routePath.split('/').indexOf('profile') == 1) {
             pageTitle = 'My Desta';
         }
 

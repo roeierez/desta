@@ -7,7 +7,7 @@ import PageSpinner from 'components/Modules/PageSpinner';
 class TripsCollectionPage extends React.Component {
 
     componentDidMount() {
-        this.props.loadProfile();
+        this.props.loadProfile(this.props.params.user_id);
     }
 
     render (){
@@ -25,7 +25,7 @@ class TripsCollectionPage extends React.Component {
                         <ShareTrip generateTripLink={generateTripLink} shareTrip={shareTrip} trip={tripToShare} onHide={exitShareMode} container={this} show={shareDialogOpened} />
                     )
                 }
-                <TripsGallery enterShareMode={this.props.enterShareMode} trips= {this.props.trips.filter(t => t.owner == (this.props.loggedInUser && this.props.loggedInUser.id))} />
+                <TripsGallery enterShareMode={this.props.enterShareMode} trips= {this.props.trips.filter(t => t.owner == this.props.params.user_id)} />
             </div>
         );
     }
