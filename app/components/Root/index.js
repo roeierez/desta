@@ -32,7 +32,7 @@ export default class Root extends Component {
             <div className="root-page container-fluid">
                 <Header {...this.props} />
                 <div className={classNames("page-content-wrapper", "layout-row", {"with-page-links": (this.props.pageLinks != null)})}>
-                    <MainMenu className="main-menu"/>
+                    <MainMenu {...this.props} className="main-menu"/>
                     <div className="page-content use-all-space">
                         {/*<TripInfoEditor />*/}
                         { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }

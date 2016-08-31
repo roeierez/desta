@@ -21,11 +21,6 @@ class Profile extends React.Component {
     }
 
     render (){
-       // const props = Object.assign({}, this.props, this.props.children.props.children.prop);
-        if (!this.props.loggedInUser) {
-            return <div>Loading...</div>;
-        }
-
         return (
             <div className="profilePage layout-column">
                 { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }

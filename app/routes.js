@@ -12,13 +12,13 @@ import Explore from './components/Pages/Explore';
 export default (
     <Route path="/" component={Root}>
         <IndexRoute component={CreateTrip}/>
-        <Route path="/profile" component={Profile}>
-            <Route path="/profile/trips" component={TripsCollectionPage} />
-            <Route path="/profile/trips/:id" component={TripPage} >
+        <Route path="/:user_id/profile" component={Profile}>
+            <Route path="/:user_id/profile/trips" component={TripsCollectionPage} />
+            <Route path="/:user_id/profile/trips/:id" component={TripPage} >
                 {/*<Route path="/profile/trips/:id/calendar" component={TripsCalendar} />*/}
                 {/*<Route path="/profile/trips/:id/map" component={TripsMap} />*/}
             </Route>
-            <Route path="/profile/trips/:id/destination/:destinationId" component={TripDestination} >
+            <Route path="/:user_id/profile/trips/:id/destination/:destinationId" component={TripDestination} >
             </Route>
         </Route>
         <Route path="/explore/:filter" component={Explore} />

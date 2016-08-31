@@ -1,6 +1,7 @@
 import React from 'react';
 import TripInfoEditor from 'components/Modules/TripInfoEditor';
 import {findTripByIdOrLink} from 'lib/tripUtils';
+import PageSpinner from 'components/Modules/PageSpinner';
 
 class TripDestination extends React.Component {
 
@@ -11,7 +12,7 @@ class TripDestination extends React.Component {
     render() {
         let trip = findTripByIdOrLink(this.props.trips, this.props.params.id);
         if (trip == null || this.props.fetchingTrip) {
-            return <div>loading</div>;
+            return <PageSpinner />
         }
 
         let destination = trip.destinations[+this.props.params.destinationId],

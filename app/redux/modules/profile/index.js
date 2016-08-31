@@ -3,7 +3,8 @@ import moment from 'moment';
 import fetch from 'isomorphic-fetch';
 
 const initialState = {
-        trips: []
+        trips: [],
+        loadingProfile: false
     },
     sortTrips = (trips) => {
         return trips.sort( (t1, t2) => {
@@ -49,8 +50,13 @@ export default createReducer({
     ['GENERATE_TRIP_LINK_SUCCESS'] : (state, {payload}) => {
         return applyUpdatedTrip(state, payload);
     },
+    ['LOAD_PROFILE_REQUEST']: (state, {payload}) => {
+        return {
+            ...state,
+            loadingProfile: true
+        }
+    },
     ['LOAD_PROFILE_SUCCESS']: (state, {payload}) => {
-        debugger;
         if (!payload.length) {
             return state;
         }
@@ -58,6 +64,7 @@ export default createReducer({
         let currentUserId = payload[0].owner;
         return {
             ...state,
+            loadingProfile: false,
             trips: sortTrips(state.trips.filter(t => t.owner != currentUserId).concat(payload))
         }
     },

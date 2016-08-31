@@ -12,6 +12,7 @@ import { browserHistory } from 'react-router'
 import moment from 'moment';
 import Avatar from 'components/Modules/Avatar';
 import {findTripByIdOrLink} from 'lib/tripUtils';
+import PageSpinner from 'components/Modules/PageSpinner';
 
 class TripPage extends React.Component {
 
@@ -25,14 +26,14 @@ class TripPage extends React.Component {
     onDestinationSelected(destination) {
         var trip = findTripByIdOrLink(this.props.trips, this.props.params.id);
         let index = trip.destinations.indexOf(destination);
-        browserHistory.push(`/profile/trips/${trip.id}/destination/${index}`);
+        browserHistory.push(`/${trip.owner}/profile/trips/${trip.id}/destination/${index}`);
     }
 
     render() {
         var trip = findTripByIdOrLink(this.props.trips, this.props.params.id);
 
         if (trip == null || this.props.fetchingTrip) {
-            return <div>loading</div>;
+            return <PageSpinner />;
         }
 
         var startDates = trip.destinations.map(d => moment(d.tripDates.startDate)),
