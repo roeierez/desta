@@ -17,10 +17,7 @@ class Profile extends React.Component {
 
     componentDidMount () {
         debugger;
-        var login = this.props.login();
-        login.payload.promise.then(() => {
-            return this.props.loadProfile();
-        })
+        this.props.login();
     }
 
     render (){

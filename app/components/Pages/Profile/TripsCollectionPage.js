@@ -5,6 +5,10 @@ import ShareTrip from 'components/Modules/ShareTrip';
 
 class TripsCollectionPage extends React.Component {
 
+    componentDidMount() {
+        this.props.loadProfile();
+    }
+
     render (){
         var {trips, editedTrip, editType, exitShareMode, shareTrip, generateTripLink} = this.props,
             shareDialogOpened = editedTrip != null && editType == 'share',

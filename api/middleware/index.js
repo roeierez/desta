@@ -4,36 +4,54 @@ import wrap from 'express-async-wrap'; // can use async, await
 import moment from 'moment';
 const router = new Express.Router();
 
-const syncFriends = (req, res, next) => {
+const syncFriends = async (req, res, next) => {
+    next();
     let fbAPI = req.facebook.api;
     if (!req.user.last_friends_sync || moment().diff( moment(req.user.last_friends_sync), 'hours') > 1 ) {
-        fbAPI.apiPromise('/me/friends')
-            .then(res => {
-                req.storage.setUserFriends(req.user.facebookID, res.data);
-                console.log(res);
-            })
+        let res = await fbAPI.apiPromise('/me/friends')
+        req.storage.setUserFriends(req.user.facebookID, res.data);
+        console.log(res);
     }
-    next();
 }
 
 const ensureSignedRequest = async (req, res, next) => {
     var cookieName = 'fbsr_289224691444677',
         cookie = req.cookies[cookieName],
+        storage = req.storage,
         facebook = new Facebook({appSecret: 'e2b4625345691924797bfc495078fbc4'});
 
     facebook.apiPromise = function(){
-        return new Promise((resolve, reject) => {
-            let args = Array.prototype.slice.call(arguments);
-            args.push(function(res){
-                if(!res || res.error) {
-                    console.log(!res ? 'error occurred' : res.error);
-                    reject(res && res.error);
-                } else {
-                    resolve(res);
-                }
-            })
-            facebook.api.apply(facebook, args);
-        });
+        var invokePromise = (retry) => {
+            return new Promise((resolve, reject) => {
+                let args = Array.prototype.slice.call(arguments);
+                args.push(async function(res){
+                    try {
+                        if (res && res.error && res.error.code == 190 && !retry) {
+                            let accessToken = await requestAccessToken(facebook, req.facebook.signedRequest);
+                            await storage.setAccessToken(req.user.facebookID, accessToken);
+                            req.user.access_token = accessToken;
+                            facebook.setAccessToken(accessToken);
+                            let retryResult = await invokePromise(true);
+                            resolve(retryResult);
+                        }
+
+                        if (!res || res.error) {
+                            console.log(!res ? 'error occurred' : res.error);
+                            reject(res && res.error);
+                        } else {
+                            resolve(res);
+                        }
+                    } catch(error) {
+                        reject(error);
+                    }
+                });
+
+                facebook.api.apply(facebook, args);
+            });
+        }
+
+        return invokePromise();
+
     };
 
     if (cookie) {
@@ -49,12 +67,11 @@ const ensureSignedRequest = async (req, res, next) => {
 }
 
 const ensureUser = async (req, res, next) => {
-    var storage = req.storage;
-    return storage.getUser(req.facebook.signedRequest.user_id)
-        .then(user => {
-            req.user = user;
-            next();
-        })
+    let storage = req.storage,
+        user = await storage.getUser(req.facebook.signedRequest.user_id);
+
+    req.user = user;
+    next();
 }
 
 const ensureAccessToken = async(req, res, next) => {
@@ -65,25 +82,22 @@ const ensureAccessToken = async(req, res, next) => {
         req.facebook.api.setAccessToken(user.access_token);
         next();
     } else {
-        return requestAccessToken(req.facebook.api, req.facebook.signedRequest)
-            .then(token => {
-                req.facebook.api.setAccessToken(token);
-                req.user.access_token = token;
-                return storage.setAccessToken(req.user.facebookID, token);
-            })
+        var token = await requestAccessToken(req.facebook.api, req.facebook.signedRequest)
+        req.facebook.api.setAccessToken(token);
+        req.user.access_token = token;
+        return await storage.setAccessToken(req.user.facebookID, token);
     }
 }
 
-const requestAccessToken = (fbAPI, user) => {
+const requestAccessToken = async (fbAPI, user) => {
 
-    return fbAPI.apiPromise('oauth/access_token', {
+    let res = await fbAPI.apiPromise('oauth/access_token', {
         client_id: '289224691444677',
         client_secret: 'e2b4625345691924797bfc495078fbc4',
         redirect_uri: '',
         code: user.code
-    }).then(res => {
-        return res.access_token;
-    })
+    });
+    return res.access_token;
 }
 
 router.use(wrap(ensureSignedRequest));
