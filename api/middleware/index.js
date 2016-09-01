@@ -3,6 +3,7 @@ import Express from 'express';
 import wrap from 'express-async-wrap'; // can use async, await
 import moment from 'moment';
 const router = new Express.Router();
+const isProduction = process.env.NODE_ENV == 'production';
 
 const syncFriends = async (req, res, next) => {
     next();
@@ -15,10 +16,10 @@ const syncFriends = async (req, res, next) => {
 }
 
 const ensureSignedRequest = async (req, res, next) => {
-    var cookieName = 'fbsr_289224691444677',
+    var cookieName = `fbsr_${ isProduction ? '280958242271322' : '289224691444677'}`,
         cookie = req.cookies[cookieName],
         storage = req.storage,
-        facebook = new Facebook({appSecret: 'e2b4625345691924797bfc495078fbc4'});
+        facebook = new Facebook({appSecret: isProduction ? '7e10754c21b67603eeb19dea900d1d07' : 'e2b4625345691924797bfc495078fbc4'});
 
     facebook.apiPromise = function(){
         var invokePromise = (retry) => {
@@ -55,7 +56,7 @@ const ensureSignedRequest = async (req, res, next) => {
     };
 
     if (cookie) {
-        var parsed = facebook.parseSignedRequest(cookie, 'e2b4625345691924797bfc495078fbc4');
+        var parsed = facebook.parseSignedRequest(cookie, isProduction ? '7e10754c21b67603eeb19dea900d1d07' : 'e2b4625345691924797bfc495078fbc4');
         req.facebook = {api: facebook, signedRequest: parsed};
     }
 
@@ -92,8 +93,8 @@ const ensureAccessToken = async(req, res, next) => {
 const requestAccessToken = async (fbAPI, user) => {
 
     let res = await fbAPI.apiPromise('oauth/access_token', {
-        client_id: '289224691444677',
-        client_secret: 'e2b4625345691924797bfc495078fbc4',
+        client_id: isProduction ? '280958242271322' : '289224691444677',
+        client_secret: isProduction ? '7e10754c21b67603eeb19dea900d1d07' : 'e2b4625345691924797bfc495078fbc4',
         redirect_uri: '',
         code: user.code
     });
