@@ -12,7 +12,7 @@ class TripSummary extends React.Component {
 
     handleClick (event) {
         event.preventDefault();
-        browserHistory.push(`/${this.props.tripInfo.owner}/profile/trips/${this.props.tripInfo.id}`)
+        browserHistory.push(`/${this.props.tripInfo.owner.facebookID}/profile/trips/${this.props.tripInfo.id}`)
     }
 
     onShare (event) {

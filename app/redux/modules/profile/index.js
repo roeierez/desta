@@ -4,6 +4,7 @@ import fetch from 'isomorphic-fetch';
 
 const initialState = {
         trips: [],
+        owner: null,
         loadingProfile: false
     },
     sortTrips = (trips) => {
@@ -26,12 +27,12 @@ const initialState = {
 
 // For async components
 export default createReducer({
-    ['CREATE_TRIP_SUCCESS']: (state, {payload}) => {
-        return {
-            ...state,
-            trips: sortTrips(state.trips.concat(payload))
-        }
-    },
+    // ['CREATE_TRIP_SUCCESS']: (state, {payload}) => {
+    //     return {
+    //         ...state,
+    //         trips: sortTrips(state.trips.concat(payload))
+    //     }
+    // },
     ['UPDATE_TRIP_SUCCESS']: (state, {payload}) => {
         return applyUpdatedTrip(state, payload);
     },
@@ -53,18 +54,17 @@ export default createReducer({
     ['LOAD_PROFILE_REQUEST']: (state, {payload}) => {
         return {
             ...state,
-            loadingProfile: true
+            loadingProfile: true,
+            owner: null,
+            trips: []
         }
     },
     ['LOAD_PROFILE_SUCCESS']: (state, {payload}) => {
-        if (!payload.length) {
-            return state;
-        }
-
         return {
             ...state,
             loadingProfile: false,
-            trips: sortTrips(payload)
+            owner: {facebookID: payload.facebookID, name: payload.name},
+            trips: sortTrips(payload.trips || [])
         }
     },
     ['ENTER_SHARE_MODE']: (state, {payload}) => {
@@ -93,10 +93,10 @@ export const updateTrip = (tripInfo) => ({
     }
 });
 
-export const loadProfile = (owner) => {
+export const loadProfile = (ownerID) => {
     return {
         type: 'LOAD_PROFILE',
-        payload: {promise: fetch('/api/trips?owner=' + owner, {credentials: 'include'}).then(r => r.json())}
+        payload: {promise: fetch('/api/trips?owner=' + ownerID, {credentials: 'include'}).then(r => r.json())}
     }
 }
 

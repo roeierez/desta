@@ -6,8 +6,15 @@ const router = new Express.Router();
 const isProduction = process.env.NODE_ENV == 'production';
 
 const syncFriends = async (req, res, next) => {
+    let user = req.user,
+        fbAPI = req.facebook.api;
+
+    if (!user.name) {
+        let userDetails = await fbAPI.apiPromise('/me/');
+        user.name = userDetails.name;
+        await req.storage.updateUser(user.facebookID, {name: user.name});
+    }
     next();
-    let fbAPI = req.facebook.api;
     if (!req.user.last_friends_sync || moment().diff( moment(req.user.last_friends_sync), 'hours') > 1 ) {
         let res = await fbAPI.apiPromise('/me/friends')
         req.storage.setUserFriends(req.user.facebookID, res.data);
@@ -70,7 +77,6 @@ const ensureSignedRequest = async (req, res, next) => {
 const ensureUser = async (req, res, next) => {
     let storage = req.storage,
         user = await storage.getUser(req.facebook.signedRequest.user_id);
-
     req.user = user;
     next();
 }
@@ -79,12 +85,15 @@ const ensureAccessToken = async(req, res, next) => {
     var storage = req.storage,
         user = req.user;
 
-    if (user.access_token) {
+    if (user && user.access_token) {
         req.facebook.api.setAccessToken(user.access_token);
         next();
     } else {
         var token = await requestAccessToken(req.facebook.api, req.facebook.signedRequest)
         req.facebook.api.setAccessToken(token);
+        if (!req.user) {
+            req.user = {facebookID: req.facebook.signedRequest.user_id};
+        }
         req.user.access_token = token;
         return await storage.setAccessToken(req.user.facebookID, token);
     }

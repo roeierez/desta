@@ -16,7 +16,7 @@ class TripDestination extends React.Component {
         }
 
         let destination = trip.destinations[+this.props.params.destinationId],
-            canEdit = this.props.loggedInUser.id == trip.owner;
+            canEdit = this.props.loggedInUser.id == trip.owner.facebookID;
 
         return (
             <TripInfoEditor destination={destination} canEdit={canEdit} trip={trip} {...this.props} />

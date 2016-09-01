@@ -7,20 +7,26 @@ const router = new Express.Router();
 router.get('/', wrap(async function (req, res, next) {
     let owner = req.query.owner || req.user.facebookID,
         viewerIsOwner = ( owner == req.user.facebookID ),
-        query = null,
         notAllowedAudience = ['private'];
 
+    let profile = await req.storage.getProfile(owner);
+    if (!profile.trips) {
+        profile.trips = [];
+    }
     if (!viewerIsOwner) {
         let isFriend = await req.storage.isFriendOfMine(req.user.facebookID, owner);
         if (!isFriend) {
             notAllowedAudience.push('friends');
         }
-        query = {shareAudience: {$nin: notAllowedAudience}};
+        profile.trips = profile.trips.filter( t => {
+            return notAllowedAudience.indexOf(t.shareAudience) < 0;
+        });
     }
 
-    return req.storage.getTrips(owner, query).then(trips => res.json(trips), e => {
-        next(e);
-    })
+    profile.trips.forEach(t => {
+        t.owner = {facebookID: profile.facebookID, name: profile.name};
+    });
+    res.json(profile);
 }));
 
 router.post('/', wrap(async function (req, res) {

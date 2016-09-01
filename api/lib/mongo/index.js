@@ -22,6 +22,10 @@ var storage = {
             .then(res => res[0]);
     },
 
+    updateUser: function(facebookID, props) {
+        return db.collection('users').update({facebookID}, {$set: props});
+    },
+
     isFriendOfMine: async function(me, him) {
         let count = await db.collection('users').count({facebookID: me, friends: {$elemMatch: {id: him}} });
         return count == 1;
@@ -35,18 +39,10 @@ var storage = {
         return db.collection('users').update({facebookID}, {$set: {friends}, $currentDate: { last_friends_sync: true} }, {upsert: true});
     },
 
-    getTrips: function(facebookID, query){
-        let tripsQuery = query ? {
-                trips: {
-                    $elemMatch: query
-                }
-            } : {},
-            tripsProjection = {
-                trips: query ? {$elemMatch: query} : 1
-            }
-        return db.collection('users').find({facebookID, ...tripsQuery}, {...tripsProjection, facebookID: 1}).toArray()
+    getProfile: function(facebookID){
+        return db.collection('users').find({facebookID}, {trips: 1, facebookID: 1, name: 1}).toArray()
             .then(res => {
-                return res[0] && res[0].trips && res[0].trips.map(t => (Object.assign(t, {owner: res[0].facebookID})));
+                return res[0];
             }, err => {
                 return Promise.reject(err);
             });
@@ -86,7 +82,7 @@ var storage = {
                 let user = result && result[0],
                     trip = user && user.trips && user.trips[0];
                 if (trip) {
-                    trip.owner = user.facebookID;
+                    trip.owner = {facebookID: user.facebookID, name: user.name};
                 }
 
                 return trip || null;

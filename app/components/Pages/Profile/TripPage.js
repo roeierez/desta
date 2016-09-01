@@ -26,7 +26,7 @@ class TripPage extends React.Component {
     onDestinationSelected(destination) {
         var trip = findTripByIdOrLink(this.props.trips, this.props.params.id);
         let index = trip.destinations.indexOf(destination);
-        browserHistory.push(`/${trip.owner}/profile/trips/${trip.id}/destination/${index}`);
+        browserHistory.push(`/${trip.owner.facebookID}/profile/trips/${trip.id}/destination/${index}`);
     }
 
     render() {
@@ -44,7 +44,7 @@ class TripPage extends React.Component {
         return (
             <div className="trip-page">
                 <div className="trip-header">
-                    <Avatar id={trip.owner} height={60} width={60} />
+                    <Avatar id={trip.owner.facebookID} height={60} width={60} />
                     <div className="trip-title">
                         <div className="trip-destinations">{trip.destinations.map(d => d.tripDestination.cityName).join(', ')}</div>
                         <div className="trip-dates">{`${minDate.format('ll')} - ${maxDate.format('ll')}`}</div>
