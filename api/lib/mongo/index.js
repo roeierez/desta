@@ -71,7 +71,7 @@ var storage = {
                 $elemMatch: {
                     $or:[
                         {id: tripID},
-                        {link: `/profile/trips/${tripID}`}
+                        {link: tripID}
                     ]
                 }
             }

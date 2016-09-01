@@ -44,8 +44,9 @@ router.put('/:id', wrap(async function (req, res) {
     });
 }));
 router.get('/:id/generateLink', wrap(async function (req, res) {
-    var link = `/profile/trips/${generateLink()}`;
-    return req.storage.updateTrip(req.user.facebookID, req.params.id, {link}).then(() => res.json({link}));
+    var linkID = generateLink();
+    var link = `/${req.user.facebookID}/profile/trips/${linkID}`;
+    return req.storage.updateTrip(req.user.facebookID, req.params.id, {link: linkID}).then(() => res.json({link}));
 }));
 router.delete('/:id', wrap(async function (req, res) {
     trips = trips.filter(t => t.id != req.params.id);
