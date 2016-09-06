@@ -3,7 +3,8 @@ import { loginAsync, logoutAsync } from 'lib/facebook';
 
 const initialState = {
     loggedInUser: null,
-    pageLinks: null
+    pageLinks: null,
+    menuOpened: true
 };
 
 // For async components
@@ -14,7 +15,7 @@ export default createReducer({
             loggedInUser: payload
         }
     },
-    ['LOGOUT']: (state, { payload } ) => {
+    ['LOGOUT_SUCCESS']: (state, { payload } ) => {
         return {
             ...state,
             loggedInUser: null
@@ -24,6 +25,12 @@ export default createReducer({
         return {
             ...state,
             pageLinks: payload
+        }
+    },
+    ['TOGGLE_MENU']: (state, {payload}) => {
+        return {
+            ...state,
+            menuOpened: !state.menuOpened
         }
     }
 }, initialState);
@@ -41,4 +48,8 @@ export const logout = () => ({
 export const setPageLinks = (links) => ({
     type: 'PAGE_LINKS',
     payload: links
+})
+
+export const toggleMenu = () => ({
+    type: 'TOGGLE_MENU'
 })

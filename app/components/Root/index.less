@@ -16,6 +16,7 @@ html {
         display: flex;
         flex-direction: column;
         .page-content {
+          max-width: ~"calc(100% - 200px)";
           position: relative;
           flex: 1;
         }
@@ -28,7 +29,7 @@ h1 {
 }
 
 .root-page {
-  background-color: @color-bg-page;
+  background-color: #eaedf1;
   padding-left: 0px;
 }
 
@@ -36,9 +37,12 @@ h1 {
   flex: 1;
   transition: padding-top 0.1s ease;
   transition-delay: 0.1s;
-  padding-top: 80px;
+  //padding-top: 80px;
+  margin-top: 20px;
+  margin-right:20px;
+  margin-left: 20px;
   &.with-page-links {
-    padding-top: 130px;
+    //padding-top: 130px;
   }
   .main-navigation {
     margin-right: 10px;

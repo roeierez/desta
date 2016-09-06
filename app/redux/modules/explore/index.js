@@ -26,6 +26,12 @@ export default createReducer({
             ...state,
             selectedTravelingFriend: payload
         }
+    },
+    ['SELECT_COUNTRY']: (state, {payload}) => {
+        return {
+            ...state,
+            selectedCountry: payload
+        }
     }
 }, initialState);
 
@@ -39,10 +45,17 @@ export const fetchLocations = () => {
     }
 }
 
-export const selectPopularCity = (cityAndCountry) => {
+export const selectPopularCity = (city) => {
     return {
         type: 'SELECT_POPULAR_CITY',
-        payload: cityAndCountry
+        payload: city
+    }
+}
+
+export const selectCountry = (country) => {
+    return {
+        type: 'SELECT_COUNTRY',
+        payload: country
     }
 }
 

@@ -21,6 +21,6 @@ export default (
             <Route path="/:user_id/profile/trips/:id/destination/:destinationId" component={TripDestination} >
             </Route>
         </Route>
-        <Route path="/explore/:filter" component={Explore} />
+        <Route path="/explore/:country" component={Explore} />
     </Route>
 );

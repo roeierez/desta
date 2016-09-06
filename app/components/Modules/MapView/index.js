@@ -21,10 +21,14 @@ class MapView extends React.Component {
         var {locations, selectedLocation, containerElementProps} = this.props;
 
         if (this.props.heatmap) {
-            this.heatmap = new google.maps.visualization.HeatmapLayer({
-                data: (locations || []).concat(selectedLocation && [selectedLocation] || []).map(l => new google.maps.LatLng(l.location.lat, l.location.lng)),
-                map: this.refs.map.props.map
-            });
+            if (!this.heatmap) {
+                this.heatmap = new google.maps.visualization.HeatmapLayer({
+                    data: (locations || []).concat(selectedLocation && [selectedLocation] || []).map(l => new google.maps.LatLng(l.location.lat, l.location.lng)),
+                    map: this.refs.map.props.map
+                });
+            } else {
+                this.heatmap.setData((locations || []).concat(selectedLocation && [selectedLocation] || []).map(l => new google.maps.LatLng(l.location.lat, l.location.lng)));
+            }
         }
         else {
             if (this.heatmap) {

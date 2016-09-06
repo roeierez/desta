@@ -29,7 +29,7 @@ export default class Root extends Component {
     render() {
 
         return (
-            <div className="root-page container-fluid">
+            <div className="root-page">
                 <Header {...this.props} />
                 <div className={classNames("page-content-wrapper", "layout-row", {"with-page-links": (this.props.pageLinks != null)})}>
                     <MainMenu {...this.props} className="main-menu"/>

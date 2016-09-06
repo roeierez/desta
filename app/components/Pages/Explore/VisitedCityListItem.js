@@ -6,18 +6,17 @@ import Avatar from 'components/Modules/Avatar';
 
 class VisitedCityListItem extends React.Component {
     render() {
-        let {city, visits, country} = this.props,
+        let {label, visits, city} = this.props,
             visitorsSet = new Set(visits.map(v => {
                 return v.user.id
             }))
 
         return (
             <div onClick={this.props.onSelected} className={"visit-list-item " + this.props.className || ""}>
-                <div className={getCityClassName(city)} />
+                {city && <div className={getCityClassName(city)} />}
                 <div className="destination-info">
                     <div className="cityAndCountry">
-                        <div className="title">{`${city}`}</div>
-                        <div className="country">{`${country}`}</div>
+                        <div className="title">{label}</div>
                     </div>
                     <span className="details"></span>
                 </div>

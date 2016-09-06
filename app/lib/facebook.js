@@ -24,6 +24,14 @@ const loginAsync = (silent) => {
         })
 }
 
+const logoutAsync = () => {
+    return new Promise((resolve, reject) => {
+        FB.logout(function(response) {
+            resolve();
+        });
+    })
+}
+
 const getUserDetails = () => {
     return new Promise((resolve, reject) => {
         FB.api('/me', function (response) {
@@ -188,6 +196,7 @@ const init = () => {
 }
 
 export {loginAsync};
+export {logoutAsync};
 export {getFriendsAsync};
 export {getUserDetails};
 export {init};

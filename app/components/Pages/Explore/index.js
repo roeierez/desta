@@ -6,6 +6,7 @@ import * as actionCreators from 'redux-modules';
 import VisitedCityListItem from './VisitedCityListItem';
 import PersonVisitListItem from './PersonVisitListItem';
 import ResizeablePanel from 'components/Modules/ResizeablePanel';
+import { browserHistory } from 'react-router'
 import moment from 'moment';
 
 @connect(
@@ -41,8 +42,13 @@ class Explore extends React.Component {
         this.props.selectPopularCity && this.props.selectPopularCity(null);
     }
 
-    onDestinationSelected (cityAndCountry) {
-        this.props.selectPopularCity && this.props.selectPopularCity(this.props.selectedPopularCity == cityAndCountry ? null : cityAndCountry);
+    onDestinationSelected (place) {
+        if (place.city) {
+            this.props.selectPopularCity && this.props.selectPopularCity(this.props.selectedPopularCity == place.city ? null : place.city);
+        } else {
+            browserHistory.push(`/explore/${place.label}`);
+            //this.props.selectCountry(place.label);
+        }
     }
 
     onPersonSelected(userId) {
@@ -51,50 +57,76 @@ class Explore extends React.Component {
 
     render() {
         let locations = (this.props.friendsLocations || []).map(fl => ({created_time: fl.created_time, user: fl.user, place: fl.place, location: fl.location, icon: fl.user.photo, title: fl.title, label: fl.label })),
+            selectedCountry = this.props.params.country,
             byCity = {},
+            byCountry = {},
             allVisits = [];
 
 
         locations.forEach(l => {
-            let currentCity = byCity[l.place.location.city + ', ' + l.place.location.country];
-            if (currentCity == null) {
-                currentCity = byCity[l.place.location.city + ', ' + l.place.location.country] = {city: l.place.location.city, country: l.place.location.country,  visits: []};
+            let location = l.place.location,
+                currentCountry = byCountry[location.country];
+
+            if (!currentCountry) {
+                currentCountry = byCountry[location.country] = {
+                    label: location.country,
+                    id: location.country,
+                    cities: {},
+                    visits: []
+                }
+            }
+
+            currentCountry.visits.push(l);
+            let currentCity = currentCountry.cities[location.city];
+            if (!currentCity) {
+                currentCity = currentCountry.cities[location.city] = {
+                    label: location.city,
+                    city: location.city,
+                    id: location.country + ', ' + location.city,
+                    visits: []
+                }
             }
 
             currentCity.visits.push(l);
-            allVisits.push(l);
+
+            currentCity.visits.push(l);
+            //let currentCity = byCity[l.place.location.city + ', ' + l.place.location.country];
+            // if (currentCity == null) {
+            //     currentCity = byCity[l.place.location.city + ', ' + l.place.location.country] = {city: l.place.location.city, country: l.place.location.country,  visits: []};
+            // }
+            // ;
+            // allVisits.push(l);
         });
 
-        if (this.props.params.filter == 'current') {
-            allVisits = allVisits.filter(v => {
-                return moment().diff(moment(v.created_time), 'days') < 7;
-            })
-            allVisits.sort((v1, v2) => {
-                return moment(v1.created_time).diff(moment(v2), 'seconds');
-            });
+        {/*if (this.props.params.filter == 'current') {*/}
+            {/*allVisits = allVisits.filter(v => {*/}
+                {/*return moment().diff(moment(v.created_time), 'days') < 7;*/}
+            {/*})*/}
+            {/*allVisits.sort((v1, v2) => {*/}
+                {/*return moment(v1.created_time).diff(moment(v2), 'seconds');*/}
+            {/*});*/}
 
-            allVisits = this.getUniqLastWeekVisits(allVisits);
-            locations = allVisits;
-        }
+            {/*allVisits = this.getUniqLastWeekVisits(allVisits);*/}
+            {/*locations = allVisits;*/}
+        {/*}*/}
 
-        if (this.props.selectedPopularCity && this.props.params.filter == 'past') {
-            locations = locations.filter(l => {
-                return (l.place.location.city + ', ' + l.place.location.country) ==  this.props.selectedPopularCity;
-            })
-        }
-
-        if (this.props.selectedTravelingFriend && this.props.params.filter == 'current') {
-            locations = locations.filter(l => {
-                return l.user.id ==  this.props.selectedTravelingFriend;
-            })
-        }
+        {/*if (this.props.selectedPopularCity && this.props.params.filter == 'past') {*/}
+            {/*locations = locations.filter(l => {*/}
+                {/*return (l.place.location.city + ', ' + l.place.location.country) ==  this.props.selectedPopularCity;*/}
+        //     })
+        // }
+        //
+        // if (this.props.selectedTravelingFriend && this.props.params.filter == 'current') {
+        //     locations = locations.filter(l => {
+        //         return l.user.id ==  this.props.selectedTravelingFriend;
+        //     })
+        // }
 
         return (
             <div className="explore-page">
                 <div className="content">
                     <div className="left-panel">
-                        {this.props.params.filter == "past" && this.renderByVityVisitsList(byCity)}
-                        {this.props.params.filter == "current" && this.renderPeopleVisitsList(allVisits)}
+                        {this.renderVisits(byCountry, selectedCountry)}
                     </div>
                     <MapView heatmap={this.props.selectedPopularCity == null && this.props.params.filter == 'past'} locations={locations} />
                 </div>
@@ -102,17 +134,25 @@ class Explore extends React.Component {
         )
     }
 
-    renderByVityVisitsList(byCity) {
+    renderVisits(byCountry, country) {
+        var placesObject = country && byCountry[country] ? byCountry[country].cities : byCountry,
+            places = Object.keys(placesObject).map(k => placesObject[k]);
+
+        let visitedPlaces = places.map( place => {
+            return {
+                label: place.label,
+                visits: place.visits,
+                city: place.city,
+                className: place.city && this.props.selectedPopularCity == place.city ? 'selected' : '',
+                onSelected: this.onDestinationSelected.bind(this, place)
+            }
+        });
+
         return (
-            <ResizeablePanel title={"Popular Destinations"} className="visited-cities-list">
-                {Object.keys(byCity).map( cityAndCountry => {
+            <ResizeablePanel title={byCountry[country] && country || "All Countries"} className="visited-cities-list">
+                {visitedPlaces.map( visit => {
                     return (
-                        <VisitedCityListItem
-                            className={this.props.selectedPopularCity == cityAndCountry ? 'selected' : ''}
-                            onSelected={this.onDestinationSelected.bind(this, cityAndCountry)}
-                            city = {byCity[cityAndCountry].city}
-                            country = {byCity[cityAndCountry].country}
-                            visits={byCity[cityAndCountry].visits}/>
+                        <VisitedCityListItem {...visit} />
                     );
                 })}
             </ResizeablePanel>

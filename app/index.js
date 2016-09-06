@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import configureStore from './redux/store/configureStore';
 import routes from './routes';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 if (__DEVELOPMENT__) {
   // https://facebook.github.io/react/docs/advanced-performance.html
@@ -25,11 +27,15 @@ if (path[0] == '?path' && path[1]) {
 
 export const store = configureStore();
 
+injectTapEventPlugin();
+
 ReactDOM.render(
     <Provider store={store}>
-        <Router history={history}>
-            {routes}
-        </Router>
+        <MuiThemeProvider>
+            <Router history={history}>
+                {routes}
+            </Router>
+        </MuiThemeProvider>
     </Provider>,
     document.getElementById('root')
 );
