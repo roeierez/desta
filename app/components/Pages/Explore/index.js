@@ -6,7 +6,8 @@ import * as actionCreators from 'redux-modules';
 import VisitedCityListItem from './VisitedCityListItem';
 import PersonVisitListItem from './PersonVisitListItem';
 import ResizeablePanel from 'components/Modules/ResizeablePanel';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
+import PlacesList from './PlacesList';
 import moment from 'moment';
 
 @connect(
@@ -43,11 +44,11 @@ class Explore extends React.Component {
     }
 
     onDestinationSelected (place) {
+        this.props.selectCountry(place.country);
         if (place.city) {
             this.props.selectPopularCity && this.props.selectPopularCity(this.props.selectedPopularCity == place.city ? null : place.city);
         } else {
-            browserHistory.push(`/explore/${place.label}`);
-            //this.props.selectCountry(place.label);
+            this.props.selectPopularCity(null);
         }
     }
 
@@ -57,7 +58,8 @@ class Explore extends React.Component {
 
     render() {
         let locations = (this.props.friendsLocations || []).map(fl => ({created_time: fl.created_time, user: fl.user, place: fl.place, location: fl.location, icon: fl.user.photo, title: fl.title, label: fl.label })),
-            selectedCountry = this.props.params.country,
+            selectedCountry = this.props.selectedCountry,
+            selectedPopularCity = this.props.selectedPopularCity,
             byCity = {},
             byCountry = {},
             allVisits = [];
@@ -122,11 +124,18 @@ class Explore extends React.Component {
         //     })
         // }
 
+        var selectedValue = {};
+        if (selectedCountry) {
+            selectedValue.country = selectedCountry;
+        }
+        if (selectedPopularCity) {
+            selectedValue.city = selectedPopularCity;
+        }
         return (
             <div className="explore-page">
                 <div className="content">
                     <div className="left-panel">
-                        {this.renderVisits(byCountry, selectedCountry)}
+                        <PlacesList selectedValue={selectedValue} onSelect={this.onDestinationSelected.bind(this)} byCountry={byCountry} />
                     </div>
                     <MapView heatmap={this.props.selectedPopularCity == null && this.props.params.filter == 'past'} locations={locations} />
                 </div>
