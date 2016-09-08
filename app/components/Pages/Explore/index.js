@@ -92,14 +92,6 @@ class Explore extends React.Component {
         toDate = moment(toDate);
 
         locations = locations.filter(l => {
-            if (selectedCountry && l.place.location.country != selectedCountry) {
-                return false;
-            }
-
-            if (selectedPopularCity && l.place.location.city != selectedPopularCity) {
-                return false;
-            }
-
             let createdTime = moment(l.created_time);
             if (fromDate.isAfter(createdTime) || toDate.isBefore(moment(l.created_time))) {
                 return;
@@ -143,6 +135,17 @@ class Explore extends React.Component {
         if (selectedPopularCity) {
             selectedValue.city = selectedPopularCity;
         }
+
+        locations = locations.filter(l => {
+            if (selectedCountry && l.place.location.country != selectedCountry) {
+                return false;
+            }
+
+            if (selectedPopularCity && l.place.location.city != selectedPopularCity) {
+                return false;
+            }
+        });
+
         return (
                 <div className="explore-page">
                     <Toolbar style={{marginBottom: "20px"}}>
