@@ -11,6 +11,12 @@ class TripsCollectionPage extends React.Component {
         this.props.loadProfile(this.props.params.user_id);
     }
 
+    componentWillUpdate(newProps) {
+        if (this.props.params.user_id != newProps.params.user_id) {
+            this.props.loadProfile(newProps.params.user_id);
+        }
+    }
+
     render (){
         var {loadingProfile, trips, editedTrip, editType, exitShareMode, shareTrip, generateTripLink} = this.props,
             shareDialogOpened = editedTrip != null && editType == 'share',

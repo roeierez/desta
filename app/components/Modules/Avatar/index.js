@@ -11,7 +11,7 @@ class Avatar extends React.Component {
     render() {
         let {width, height, id, name} = this.props;
         if (!name) {
-            return <MUIAvatar onClick={this.props.onClick} src={`https://graph.facebook.com/v2.7/${id}/picture?type=small&width=${width}&height=${height}`} />
+            return <MUIAvatar onClick={this.handleClick.bind(this)} src={`https://graph.facebook.com/v2.7/${id}/picture?type=small&width=${width}&height=${height}`} />
             //return <img onClick={this.handleClick.bind(this)} style={{width,height, borderRadius: width/2 + 'px'}} className="avatar" src={`https://graph.facebook.com/v2.7/${id}/picture?type=small&width=${width}&height=${height}`} />;
         }
 

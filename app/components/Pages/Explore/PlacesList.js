@@ -2,6 +2,7 @@ import React from 'react';
 import {List, ListItem, MakeSelectable} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import Subheader from 'material-ui/Subheader';
+import countryNameToCode from 'lib/countryCodes';
 
 let SelectableList = MakeSelectable(List),
     styles = {
@@ -27,11 +28,12 @@ class PlacesList extends React.Component {
                 <Subheader>Friends Locations</Subheader>
                 {
                     Object.keys(byCountry).map(country => {
-                        let visits = this.getUniqVisits(byCountry[country].visits).length;
+                        let visits = this.getUniqVisits(byCountry[country].visits).length,
+                            countryCode = countryNameToCode[country.toLowerCase()];
                         return (
                             <ListItem
                                 value={JSON.stringify({country})}
-                                primaryText={<div className="list-item"><div className="left">{country}</div><div className="right">{`${visits} Friends`}</div></div>}
+                                primaryText={<div className="list-item"><div className="left"><span className={`flag-icon flag-icon-${countryCode}`} />{country}</div><div className="right">{`${visits} Friends`}</div></div>}
                                 nestedItems = {
                                     Object.keys(byCountry[country].cities).map(city => {
                                         let cityVisits = this.getUniqVisits(byCountry[country].cities[city].visits).length;

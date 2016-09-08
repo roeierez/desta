@@ -6,6 +6,7 @@ import configureStore from './redux/store/configureStore';
 import routes from './routes';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import 'flag-icon-css/css/flag-icon.min.css';
 
 if (__DEVELOPMENT__) {
   // https://facebook.github.io/react/docs/advanced-performance.html

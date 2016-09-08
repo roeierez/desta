@@ -63,7 +63,7 @@ class FacebookFriendsAutoComplete extends React.Component {
         return (
             <Autosuggest suggestions={suggestions}
                          onSuggestionSelected={this.onSuggestionSelected.bind(this)}
-                         onSuggestionsUpdateRequested={this.loadSuggestions.bind(this)}
+                         onSuggestionsFetchRequested={this.loadSuggestions.bind(this)}
                          getSuggestionValue={this.getSuggestionValue.bind(this)}
                          renderSuggestion={this.renderSuggestion.bind(this)}
                          inputProps={inputProps} />

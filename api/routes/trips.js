@@ -10,6 +10,11 @@ router.get('/', wrap(async function (req, res, next) {
         notAllowedAudience = ['private'];
 
     let profile = await req.storage.getProfile(owner);
+    if (!profile) {
+        res.json({});
+        return;
+    }
+
     if (!profile.trips) {
         profile.trips = [];
     }
