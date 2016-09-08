@@ -79,7 +79,8 @@ class Header extends React.Component {
         this.setState({userMenuOpened: true, anchorEl: event.currentTarget});
     }
 
-    login() {
+    login(e) {
+        e.preventDefault();
         this.props.login(false);
     }
 
@@ -148,52 +149,6 @@ class Header extends React.Component {
                 </div>
             </AppBar>
         );
-
-        // let {login, loggedInUser, selectLocation, pageLinks} = this.props;
-        // var userPhothURL = loggedInUser ? `https://graph.facebook.com/v2.7/${loggedInUser.id}/picture?type=small&width=45&height=45` : null;
-        // return (
-        //     <div className={classNames("site-header-section", {"with-page-links": pageLinks != null})}>
-        //         <div className="topHeader">
-        //             <span className="menu-button font-icon font-icon-burger" />
-        //             <div className="brand">
-        //                 <a className="logo" href="#"><span className="logo-desta">Desta</span><span
-        //                     className="logo-travel">Travel</span></a>
-        //             </div>
-        //             <div className="main-header">
-        //                 <span className="page-title">{ this.getPageTitle()}</span>
-        //                 <div className="search" >
-        //                     <PlacesAutocompleteInput
-        //                             onBlur={this.onAutocompleteBlur.bind(this)}
-        //                             onFocus={this.onAutocompleteFocus.bind(this)}
-        //                             ref="autoComplete" placeholder="" selectLocation={selectLocation}
-        //                             types={["(cities)"]} />
-        //                     {this.state.placeHolderVisible && <div ref="searchPlaceHolder" onClick={this.onSearchClicked.bind(this)} className="font-icon font-icon-search search-place-holder">Explore:</div>}
-        //                 </div>
-        //             </div>
-        //             <div className="right-navigation">
-        //                 <Link className="notifications" to="notifications">
-        //                     <div className="icon-wrapper">
-        //                         <span className="font-icon font-icon-alarm"></span>
-        //                         <span className="label notification-number label-pill label-danger">4</span>
-        //                     </div>
-        //                 </Link>
-        //                 <Link className="messages" to="messages">
-        //                     <div className="icon-wrapper">
-        //                         <span className="font-icon font-icon-mail"></span>
-        //                         <span className="label notification-number label-pill label-danger">7</span>
-        //                     </div>
-        //                 </Link>
-        //                 {loggedInUser && <div className="avatar-wrapper"><img className="avatar" src={userPhothURL}/></div>}
-        //                 {!loggedInUser &&
-        //                 <a className="sign-in" onClick={() => login(false)}><span className="font-icon font-icon-lock"></span>Sign in</a>}
-        //             </div>
-        //         </div>
-        //         <ReactCSSTransitionGroup transitionLeaveTimeout={0} transitionName="component-fade"
-        //                                  transitionAppear={true} transitionAppearTimeout={1000}>
-        //             {pageLinks != null && this.renderLinks(pageLinks)}
-        //         </ReactCSSTransitionGroup>
-        //     </div>
-        // )
     }
 };
 

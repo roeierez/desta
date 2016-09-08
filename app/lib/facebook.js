@@ -27,6 +27,7 @@ const loginAsync = (silent) => {
 const logoutAsync = () => {
     return new Promise((resolve, reject) => {
         FB.logout(function(response) {
+            initPromise = null;
             resolve();
         });
     })
@@ -112,29 +113,6 @@ const getFriendsLocationsHistory = () => {
                     });
 
                     return friendsLocations;
-
-                    // return [
-                    //     {
-                    //         user: {
-                    //             id: '123',
-                    //             name: 'Gal Erez',
-                    //             photo: formatPhotoURL('10154285576534477', 30)
-                    //         },
-                    //         location: {
-                    //             lat: -25.363882, lng: 131.044922
-                    //         }
-                    //     },
-                    //     {
-                    //         user: {
-                    //             id: '1223',
-                    //             name: 'Gal2 Erez',
-                    //             photo: formatPhotoURL('10154285576534477', 30)
-                    //         },
-                    //         location: {
-                    //             lat: -25.363882, lng: 90.044922
-                    //         }
-                    //     }
-                    // ];
                 })
 
         })
@@ -165,32 +143,33 @@ const init = () => {
     if (!initPromise) {
         if (window.FB) {
             initPromise = getLoginStatus();
+        } else {
+
+            initPromise = new Promise((resolve, reject) => {
+                window.fbAsyncInit = function () {
+                    FB.init({
+                        appId: window.location.hostname == 'test.robustico.com' ? '289224691444677' : '280958242271322',
+                        xfbml: true,
+                        cookie: true,
+                        version: 'v2.7'
+                    });
+                    getLoginStatus().then(resolve, () => resolve(null));
+                    // FB.Event.subscribe('auth.logout',function(){alert('logged out')});
+                    // FB.Event.subscribe('auth.login',function(){alert('logged in')});
+                };
+
+                (function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) {
+                        return;
+                    }
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = "//connect.facebook.net/en_US/sdk.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            });
         }
-
-        initPromise = new Promise((resolve, reject) => {
-            window.fbAsyncInit = function () {
-                FB.init({
-                    appId: window.location.hostname == 'test.robustico.com' ? '289224691444677' : '280958242271322',
-                    xfbml: true,
-                    cookie: true,
-                    version: 'v2.7'
-                });
-                getLoginStatus().then(resolve, () => resolve(null));
-                // FB.Event.subscribe('auth.logout',function(){alert('logged out')});
-                // FB.Event.subscribe('auth.login',function(){alert('logged in')});
-            };
-
-            (function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) {
-                    return;
-                }
-                js = d.createElement(s);
-                js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        });
     }
     return initPromise;
 }

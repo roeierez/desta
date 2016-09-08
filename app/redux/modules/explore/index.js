@@ -2,9 +2,12 @@ import {createReducer} from '../../utils/createReducer';
 import {fetchFriendsLocations} from '../../../lib/destaServices';
 import fetch from 'isomorphic-fetch';
 import { loginAsync, logoutAsync } from 'lib/facebook';
+import moment from 'moment';
 
 const initialState = {
-        friendsLocations: []
+        friendsLocations: [],
+        fromDate: new Date(0),
+        toDate: new Date()
     };
 
 // For async components
@@ -32,6 +35,18 @@ export default createReducer({
             ...state,
             selectedCountry: payload
         }
+    },
+    ['SET_FROM_DATE']: (state, {payload}) => {
+        return {
+            ...state,
+            fromDate: payload
+        }
+    },
+    ['SET_TO_DATE']: (state, {payload}) => {
+        return {
+            ...state,
+            toDate: payload
+        }
     }
 }, initialState);
 
@@ -56,6 +71,20 @@ export const selectCountry = (country) => {
     return {
         type: 'SELECT_COUNTRY',
         payload: country
+    }
+}
+
+export const setFromDate  = (date) => {
+    return {
+        type: 'SET_FROM_DATE',
+        payload: date
+    }
+}
+
+export const setToDate  = (date) => {
+    return {
+        type: 'SET_TO_DATE',
+        payload: date
     }
 }
 

@@ -27,14 +27,14 @@ class PlacesList extends React.Component {
                 <Subheader>Friends Locations</Subheader>
                 {
                     Object.keys(byCountry).map(country => {
-                        let visits = byCountry[country].visits.length;
+                        let visits = this.getUniqVisits(byCountry[country].visits).length;
                         return (
                             <ListItem
                                 value={JSON.stringify({country})}
                                 primaryText={<div className="list-item"><div className="left">{country}</div><div className="right">{`${visits} Friends`}</div></div>}
                                 nestedItems = {
                                     Object.keys(byCountry[country].cities).map(city => {
-                                        let cityVisits = byCountry[country].cities[city].visits.length;
+                                        let cityVisits = this.getUniqVisits(byCountry[country].cities[city].visits).length;
                                             return <ListItem value={JSON.stringify({country,city})}
                                                              primaryText={<div className="list-item"><div className="left">{city}</div><div className="right">{`${cityVisits} Friends`}</div></div>}
                                             />
@@ -48,6 +48,16 @@ class PlacesList extends React.Component {
                 }
             </SelectableList>
         )
+    }
+
+    getUniqVisits(visits) {
+        let uniqVisits = {};
+        visits.forEach(v => {
+            uniqVisits[v.user.id] = v;
+        });
+        return Object.keys(uniqVisits).map(userId => {
+            return uniqVisits[userId];
+        });
     }
 }
 

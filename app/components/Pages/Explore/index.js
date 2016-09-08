@@ -6,8 +6,10 @@ import * as actionCreators from 'redux-modules';
 import VisitedCityListItem from './VisitedCityListItem';
 import PersonVisitListItem from './PersonVisitListItem';
 import ResizeablePanel from 'components/Modules/ResizeablePanel';
-import { browserHistory } from 'react-router';
 import PlacesList from './PlacesList';
+import DatePicker from 'material-ui/DatePicker';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import FlatButton from 'material-ui/FlatButton';
 import moment from 'moment';
 
 @connect(
@@ -56,16 +58,58 @@ class Explore extends React.Component {
         this.props.selectTravelingFriend && this.props.selectTravelingFriend(userId == this.props.selectedTravelingFriend ? null : userId);
     }
 
+    onFromDateChanged (e, date) {
+        this.props.setFromDate(date);
+    }
+
+    onToDateChanged (e, date) {
+        this.props.setToDate(date);
+    }
+
+    setLastWeekFilter () {
+        this.props.setToDate(new Date());
+        this.props.setFromDate(moment(new Date()).subtract(7, 'days').toDate());
+    }
+
+    setLastMonthFilter () {
+        this.props.setToDate(new Date());
+        this.props.setFromDate(moment(new Date()).subtract(1, 'months').toDate());
+    }
+
+    setFutureFilter () {
+        this.props.setFromDate(new Date());
+        this.props.setToDate(moment(new Date()).add(10, 'years').toDate());
+    }
+
     render() {
         let locations = (this.props.friendsLocations || []).map(fl => ({created_time: fl.created_time, user: fl.user, place: fl.place, location: fl.location, icon: fl.user.photo, title: fl.title, label: fl.label })),
             selectedCountry = this.props.selectedCountry,
             selectedPopularCity = this.props.selectedPopularCity,
-            byCity = {},
-            byCountry = {},
-            allVisits = [];
+            {fromDate, toDate} = this.props,
+            byCountry = {};
 
+        fromDate = moment(fromDate);
+        toDate = moment(toDate);
+
+        locations = locations.filter(l => {
+            if (selectedCountry && l.place.location.country != selectedCountry) {
+                return false;
+            }
+
+            if (selectedPopularCity && l.place.location.city != selectedPopularCity) {
+                return false;
+            }
+
+            let createdTime = moment(l.created_time);
+            if (fromDate.isAfter(createdTime) || toDate.isBefore(moment(l.created_time))) {
+                return;
+            }
+
+            return true;
+        });
 
         locations.forEach(l => {
+
             let location = l.place.location,
                 currentCountry = byCountry[location.country];
 
@@ -90,39 +134,7 @@ class Explore extends React.Component {
             }
 
             currentCity.visits.push(l);
-
-            currentCity.visits.push(l);
-            //let currentCity = byCity[l.place.location.city + ', ' + l.place.location.country];
-            // if (currentCity == null) {
-            //     currentCity = byCity[l.place.location.city + ', ' + l.place.location.country] = {city: l.place.location.city, country: l.place.location.country,  visits: []};
-            // }
-            // ;
-            // allVisits.push(l);
         });
-
-        {/*if (this.props.params.filter == 'current') {*/}
-            {/*allVisits = allVisits.filter(v => {*/}
-                {/*return moment().diff(moment(v.created_time), 'days') < 7;*/}
-            {/*})*/}
-            {/*allVisits.sort((v1, v2) => {*/}
-                {/*return moment(v1.created_time).diff(moment(v2), 'seconds');*/}
-            {/*});*/}
-
-            {/*allVisits = this.getUniqLastWeekVisits(allVisits);*/}
-            {/*locations = allVisits;*/}
-        {/*}*/}
-
-        {/*if (this.props.selectedPopularCity && this.props.params.filter == 'past') {*/}
-            {/*locations = locations.filter(l => {*/}
-                {/*return (l.place.location.city + ', ' + l.place.location.country) ==  this.props.selectedPopularCity;*/}
-        //     })
-        // }
-        //
-        // if (this.props.selectedTravelingFriend && this.props.params.filter == 'current') {
-        //     locations = locations.filter(l => {
-        //         return l.user.id ==  this.props.selectedTravelingFriend;
-        //     })
-        // }
 
         var selectedValue = {};
         if (selectedCountry) {
@@ -132,14 +144,40 @@ class Explore extends React.Component {
             selectedValue.city = selectedPopularCity;
         }
         return (
-            <div className="explore-page">
-                <div className="content">
-                    <div className="left-panel">
-                        <PlacesList selectedValue={selectedValue} onSelect={this.onDestinationSelected.bind(this)} byCountry={byCountry} />
+                <div className="explore-page">
+                    <Toolbar style={{marginBottom: "20px"}}>
+                        <ToolbarGroup firstChild={true}>
+                            <DatePicker
+                                onChange={this.onFromDateChanged.bind(this)}
+                                className="date-picker"
+                                hintText="From Date"
+                                value={fromDate.toDate()}
+                                autoOk={true}
+                            />
+                            <span style={{textAlign:'center', lineHeight:'55px'}}>-</span>
+                            <DatePicker
+                                onChange={this.onToDateChanged.bind(this)}
+                                className="date-picker"
+                                hintText="To Date"
+                                value={toDate.toDate()}
+                                autoOk={true}
+                            />
+                            <ToolbarSeparator />
+                            <FlatButton onTouchTap={this.setLastWeekFilter.bind(this)} label="Last Week" primary={true} />
+                            <FlatButton onTouchTap={this.setLastMonthFilter.bind(this)} label="Last Month" primary={true} />
+                            <FlatButton onTouchTap={this.setFutureFilter.bind(this)} label="Future Travels" secondary={true} />
+                        </ToolbarGroup>
+                        <ToolbarGroup>
+
+                        </ToolbarGroup>
+                    </Toolbar>
+                    <div className="content">
+                        <div className="left-panel">
+                            <PlacesList selectedValue={selectedValue} onSelect={this.onDestinationSelected.bind(this)} byCountry={byCountry} />
+                        </div>
+                        <MapView heatmap={this.props.selectedPopularCity == null && this.props.params.filter == 'past'} locations={locations} />
                     </div>
-                    <MapView heatmap={this.props.selectedPopularCity == null && this.props.params.filter == 'past'} locations={locations} />
                 </div>
-            </div>
         )
     }
 
@@ -150,7 +188,7 @@ class Explore extends React.Component {
         let visitedPlaces = places.map( place => {
             return {
                 label: place.label,
-                visits: place.visits,
+                visits: this.getUniqVisits(place.visits),
                 city: place.city,
                 className: place.city && this.props.selectedPopularCity == place.city ? 'selected' : '',
                 onSelected: this.onDestinationSelected.bind(this, place)
@@ -168,7 +206,7 @@ class Explore extends React.Component {
         )
     }
 
-    getUniqLastWeekVisits(visits) {
+    getUniqVisits(visits) {
         let uniqVisits = {};
         visits.forEach(v => {
             uniqVisits[v.user.id] = v;
