@@ -6,7 +6,7 @@ import moment from 'moment';
 
 const initialState = {
         friendsLocations: [],
-        fromDate: new Date(0),
+        fromDate: moment(new Date()).subtract(7,'days').toDate(),
         toDate: new Date()
     };
 
