@@ -144,6 +144,7 @@ class Explore extends React.Component {
             if (selectedPopularCity && l.place.location.city != selectedPopularCity) {
                 return false;
             }
+            return true;
         });
 
         return (
