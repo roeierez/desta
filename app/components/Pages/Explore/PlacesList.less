@@ -6,8 +6,20 @@
     }
   }
   .right {
+    display: flex;
     flex: 1;
     margin-right: 55px;
     text-align: end;
+    .visits {
+      flex: 1;
+      margin-right: 10px;
+    }
+    .view-people {
+      cursor: pointer;
+      color: #00bcd4;
+      &:hover {
+        border-bottom: 1px solid darkgray;
+      }
+    }
   }
 }

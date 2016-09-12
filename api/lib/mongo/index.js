@@ -39,10 +39,23 @@ var storage = {
         return db.collection('users').update({facebookID}, {$set: {friends}, $currentDate: { last_friends_sync: true} }, {upsert: true});
     },
 
-    getProfile: function(facebookID){
-        return db.collection('users').find({facebookID}, {trips: 1, facebookID: 1, name: 1}).toArray()
+    getProfile: function(facebookID, withFriends=false){
+        let projection = {trips: 1, facebookID: 1, name: 1};
+        if (withFriends) {
+            projection.friends = 1;
+        }
+        return db.collection('users').find({facebookID}, projection).toArray()
             .then(res => {
                 return res[0];
+            }, err => {
+                return Promise.reject(err);
+            });
+    },
+
+    getProfiles: function( facebookIDs) {
+        return db.collection('users').find({facebookID: {$in: facebookIDs}}, {trips: 1, facebookID: 1, name: 1}).toArray()
+            .then(res => {
+                return res;
             }, err => {
                 return Promise.reject(err);
             });

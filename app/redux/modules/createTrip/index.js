@@ -1,4 +1,5 @@
 import {createReducer} from '../../utils/createReducer';
+import {findDestinationCountry} from 'lib/tripUtils';
 
 const initialState = {
     workingTrip: {
@@ -14,6 +15,9 @@ export default createReducer({
         selectedLocation: payload
     }),
     ['ADD_DESTINATION']: (state, {payload}) => {
+        if (payload.gmaps) {
+            payload.country = findDestinationCountry(payload);
+        }
         return {
             ...state,
             workingTrip: {

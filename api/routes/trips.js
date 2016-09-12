@@ -34,6 +34,28 @@ router.get('/', wrap(async function (req, res, next) {
     res.json(profile);
 }));
 
+router.get('/friends', wrap(async function (req, res, next) {
+    let profile = await req.storage.getProfile(req.user.facebookID, true);
+    if (!profile || !profile.friends) {
+        res.json({trips: []});
+        return;
+    }
+
+    let friendsProfile = await req.storage.getProfiles(profile.friends.map(f => f.id)),
+        trips = [];
+    friendsProfile.forEach(fp => {
+        fp.trips.forEach(t => {
+            if (t.shareAudience != 'private') {
+                t.owner = {facebookID: fp.facebookID, name: fp.name};
+                trips.push(t);
+            }
+        })
+    })
+
+    res.json( {trips} );
+
+}));
+
 router.post('/', wrap(async function (req, res) {
     return req.storage.insertTrip(req.user.facebookID, req.body).then(() => res.json(req.body));
 }));

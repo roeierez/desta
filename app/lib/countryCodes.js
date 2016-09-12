@@ -252,3 +252,4 @@ for (var p in isoCountries) {
 }
 
 export default countryNameToCode;
+export {isoCountries};

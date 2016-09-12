@@ -1,6 +1,5 @@
 import React from 'react';
 import {List, ListItem, MakeSelectable} from 'material-ui/List';
-import Avatar from 'material-ui/Avatar';
 import Subheader from 'material-ui/Subheader';
 import countryNameToCode from 'lib/countryCodes';
 
@@ -21,11 +20,35 @@ class PlacesList extends React.Component {
         this.props.onSelect(value && JSON.parse(value));
     }
 
+    onViewCity(event, country, city) {
+        event.preventDefault();
+        this.props.onViewCity({country, city});
+    }
+
     render() {
-        let {byCountry, onSelect, selectedValue} = this.props;
+        let {byCountry, onSelect, selectedValue, header} = this.props,
+            CountryListItem = ({country, countryCode, visits}) =>  (
+                <div className="list-item">
+                    <div className="left">
+                        <span className={`flag-icon flag-icon-${countryCode}`} />{country}
+                    </div>
+                    <div className="right">
+                        <div className="visits">{`${visits} Friends`}</div>
+                    </div>
+                </div>
+            ),
+            CityListItem = ({country, city, cityVisits, selected}) => (
+                <div className="list-item">
+                    <div className="left">{city}</div>
+                    <div className="right">
+                        <div className="visits">{`${cityVisits} Friends`}</div>
+                        {selected && (<span className="view-people" onClick={(e) => this.onViewCity(e, country, city)}>View</span>)}
+                    </div>
+                </div>
+            );
         return(
             <SelectableList style={styles.list} value={JSON.stringify(selectedValue)} defaultValue={3} onChange = {this.onChange.bind(this)}>
-                <Subheader>Friends Locations</Subheader>
+                <Subheader>{header}</Subheader>
                 {
                     Object.keys(byCountry).map(country => {
                         let visits = this.getUniqVisits(byCountry[country].visits).length,
@@ -33,12 +56,12 @@ class PlacesList extends React.Component {
                         return (
                             <ListItem
                                 value={JSON.stringify({country})}
-                                primaryText={<div className="list-item"><div className="left"><span className={`flag-icon flag-icon-${countryCode}`} />{country}</div><div className="right">{`${visits} Friends`}</div></div>}
+                                primaryText={<CountryListItem country={country} countryCode={countryCode} visits={visits} />}
                                 nestedItems = {
                                     Object.keys(byCountry[country].cities).map(city => {
                                         let cityVisits = this.getUniqVisits(byCountry[country].cities[city].visits).length;
                                             return <ListItem value={JSON.stringify({country,city})}
-                                                             primaryText={<div className="list-item"><div className="left">{city}</div><div className="right">{`${cityVisits} Friends`}</div></div>}
+                                                             primaryText={<CityListItem country={country} city={city} cityVisits={cityVisits} selected={ this.props.selectedPopularCity == city}/>}
                                             />
                                         }
                                     )

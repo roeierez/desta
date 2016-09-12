@@ -1,5 +1,5 @@
 import {createReducer} from '../../utils/createReducer';
-import {fetchFriendsLocations} from '../../../lib/destaServices';
+import {fetchFriendsLocations, getFriendsTrips} from '../../../lib/destaServices';
 import fetch from 'isomorphic-fetch';
 import { loginAsync, logoutAsync } from 'lib/facebook';
 import moment from 'moment';
@@ -7,7 +7,11 @@ import moment from 'moment';
 const initialState = {
         friendsLocations: [],
         fromDate: moment(new Date()).subtract(1,'years').toDate(),
-        toDate: new Date()
+        toDate: new Date(),
+        loadingFriendsLocations: false,
+        friendsTrips: [],
+        loadingFriendsTrips: false,
+        cityToShow: null
     };
 
 // For async components
@@ -15,15 +19,54 @@ export default createReducer({
     ['FETCH_FRIENDS_LOCATIONS_SUCCESS']: (state, {payload}) => {
         return {
             ...state,
-            friendsLocations: payload
+            friendsLocations: payload,
+            loadingFriendsLocations: false
         }
     },
+    ['FETCH_FRIENDS_LOCATIONS_REQUEST']: (state, {payload}) => {
+        return {
+            ...state,
+            friendsLocations: [],
+            loadingFriendsLocations: true
+        }
+    },
+
+    ['FETCH_FRIENDS_TRIPS_REQUEST']: (state, {payload}) => {
+        return {
+            ...state,
+            friendsTrips: [],
+            loadingFriendsTrips: true
+        }
+    },
+    ['FETCH_FRIENDS_TRIPS_SUCCESS']: (state, {payload}) => {
+        return {
+            ...state,
+            friendsTrips: payload.trips,
+            loadingFriendsTrips: false
+        }
+    },
+
     ['SELECT_POPULAR_CITY']: (state, {payload}) => {
         return {
             ...state,
             selectedPopularCity: payload
         }
     },
+
+    ['SET_CITY_TO_SHOW']: (state, {payload}) => {
+        return {
+            ...state,
+            cityToShow: payload
+        }
+    },
+
+    ['SET_VISIT_TO_SHOW']: (state, {payload}) => {
+        return {
+            ...state,
+            visitToShow: payload
+        }
+    },
+
     ['SELECT_TRAVELING_FRIEND']: (state, {payload}) => {
         return {
             ...state,
@@ -51,12 +94,16 @@ export default createReducer({
 }, initialState);
 
 export const fetchLocations = () => {
-    debugger;
     return {
         type: 'FETCH_FRIENDS_LOCATIONS',
-        payload: {promise: loginAsync(true).then(user => {
-            return fetchFriendsLocations();
-        })}
+        payload: {promise: fetchFriendsLocations()}
+    }
+}
+
+export const fetchFriendsTrips = () => {
+    return {
+        type: 'FETCH_FRIENDS_TRIPS',
+        payload: {promise: getFriendsTrips()}
     }
 }
 
@@ -85,6 +132,20 @@ export const setToDate  = (date) => {
     return {
         type: 'SET_TO_DATE',
         payload: date
+    }
+}
+
+export const setCityToShow = (city) => {
+    return {
+        type: 'SET_CITY_TO_SHOW',
+        payload: city
+    }
+}
+
+export const selectVisitToShow = (visit) => {
+    return {
+        type: 'SET_VISIT_TO_SHOW',
+        payload: visit
     }
 }
 

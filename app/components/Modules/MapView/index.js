@@ -35,7 +35,7 @@ class MapView extends React.Component {
                 this.heatmap.setMap(null);
             }
 
-            if (locations && locations.length > 1 && JSON.stringify(prevProps.locations) != JSON.stringify(this.props.locations)) {
+            if (locations && locations.length > 1 && JSON.stringify(prevProps.locations.map(l => l.location)) != JSON.stringify(this.props.locations.map(l => l.location))) {
                 var bounds = new google.maps.LatLngBounds();
                 this.props.locations.forEach(l => {
                     bounds.extend(new google.maps.LatLng(l.location.lat ,l.location.lng));
@@ -93,14 +93,16 @@ class MapView extends React.Component {
 
                                     locations.map((dest, i) => {
                                         return (
-                                        dest.icon ?
+                                            (dest.icon || dest.component) ?
                                             <OverlayView
                                                 key={i.toString() + dest.location.lat.toString() + dest.location.lng.toString()}
                                                 position={dest.location}
                                                 mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
-                                                <div>
-                                                    <div style={{width:"45px", height:"45px", borderRadius: "22px", backgroundImage: `url(${dest.icon})`}} />
-                                                </div>
+                                                { (
+                                                    <div>
+                                                        <div style={{width:"45px", height:"45px", borderRadius: "22px", backgroundImage: `url(${dest.icon})`}} />
+                                                    </div>
+                                                )}
                                             </OverlayView>
                                             :
                                             <Marker

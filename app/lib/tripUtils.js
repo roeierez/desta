@@ -1,6 +1,7 @@
 
 import {parseShortDate} from './dateUtils';
 import moment from 'moment';
+import countryCodes, {isoCountries} from './countryCodes';
 
 export const formatTripName = (trip, short) => {
     return trip.destinations.map(des => des.tripDestination.cityName).join(',');
@@ -32,3 +33,8 @@ export const isBookedDate = (trip, date) => {
     });
     return !valid;
 };
+
+export const findDestinationCountry = (tripDestination) => {
+    let countryComponent = tripDestination.gmaps.address_components.find(ad => ad.types.indexOf('country') >= 0);
+    return isoCountries[countryComponent.short_name];
+}
