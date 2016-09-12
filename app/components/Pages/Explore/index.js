@@ -237,7 +237,7 @@ class Explore extends React.Component {
                 <div className="content">
                     <div className="left-panel">
                         {!cityToShow && (
-                            <PlacesList header={<ListNavigationHeader title="FRIENDS LOCATIONS" />} selectedValue={selectedValue} selectedPopularCity={selectedPopularCity} onViewCity={this.props.setCityToShow} onSelect={this.onDestinationSelected.bind(this)}
+                            <PlacesList header={<ListNavigationHeader onRightLinkClick={() => {this.onDestinationSelected({country: null});}} rightLink="ALL" title="FRIENDS LOCATIONS" />} selectedValue={selectedValue} selectedPopularCity={selectedPopularCity} onViewCity={this.props.setCityToShow} onSelect={this.onDestinationSelected.bind(this)}
                                         byCountry={byCountry}/>
                         )}
                         {cityToShow && (
