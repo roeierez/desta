@@ -116,18 +116,21 @@ class Explore extends React.Component {
 
         this.props.friendsTrips.forEach(trip => {
             trip.destinations.forEach(destination => {
-                let location = {
-                    arrivalTime: moment(destination.tripDates.startDate),
-                    leaveTime: moment(destination.tripDates.endDate),
-                    user: {id: trip.owner.facebookID, name: trip.owner.name},
-                    country: destination.tripDestination.country || findDestinationCountry(destination.tripDestination),
-                    city: destination.tripDestination.cityName,
-                    location: destination.tripDestination.location,
-                    icon: formatPhotoURL(trip.owner.facebookID, 45),
-                    trip: trip
-                };
+                let country = findDestinationCountry(destination.tripDestination);
+                if (country) {
+                    let location = {
+                        arrivalTime: moment(destination.tripDates.startDate),
+                        leaveTime: moment(destination.tripDates.endDate),
+                        user: {id: trip.owner.facebookID, name: trip.owner.name},
+                        country: destination.tripDestination.country || findDestinationCountry(destination.tripDestination),
+                        city: destination.tripDestination.cityName,
+                        location: destination.tripDestination.location,
+                        icon: formatPhotoURL(trip.owner.facebookID, 45),
+                        trip: trip
+                    };
 
-                locations.push(location);
+                    locations.push(location);
+                }
             })
         });
 

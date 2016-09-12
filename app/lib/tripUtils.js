@@ -35,6 +35,9 @@ export const isBookedDate = (trip, date) => {
 };
 
 export const findDestinationCountry = (tripDestination) => {
+    if (!tripDestination.gmaps.address_components) {
+        return null;
+    }
     let countryComponent = tripDestination.gmaps.address_components.find(ad => ad.types.indexOf('country') >= 0);
     return isoCountries[countryComponent.short_name];
 }
