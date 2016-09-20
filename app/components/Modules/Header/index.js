@@ -92,9 +92,10 @@ class Header extends React.Component {
         return (
             <AppBar
                 title="Desta Travel"
-                titleStyle={{flex: "initial"}}
+                titleStyle={{flex: "initial", fontWeight: "300", fontSize: "22px"}}
                 onLeftIconButtonTouchTap={this.toggleLeftMenu.bind(this)}>
                 <div className="app-nav-bar">
+                    <div className="separator" ></div>
                     <div className="left-nav-bar">
                         <span className="page-title">{ this.getPageTitle()}</span>
                         <div className="search" >
@@ -103,10 +104,11 @@ class Header extends React.Component {
                             onFocus={this.onAutocompleteFocus.bind(this)}
                             ref="autoComplete" placeholder="" selectLocation={selectLocation}
                             types={["(cities)"]} />
-                                {this.state.placeHolderVisible && <div ref="searchPlaceHolder" onClick={this.onSearchClicked.bind(this)} className="font-icon font-icon-search search-place-holder">Explore:</div>}
+                                {this.state.placeHolderVisible && <div ref="searchPlaceHolder" onClick={this.onSearchClicked.bind(this)} className="font-icon font-icon-search search-place-holder">Search</div>}
                         </div>
                     </div>
                     <div className="right-nav-bar">
+                        {/*
                         <Badge
                             style={{padding: "12px", marginRight: 10, marginTop: 8}}
                             badgeContent={4}
@@ -121,6 +123,12 @@ class Header extends React.Component {
                             badgeStyle={badgeStyle}>
                             <MessageNotificationsIcon color="rgba(255, 255, 255, 0.8)"/>
                         </Badge>
+                        */}
+                        {loggedInUser && (
+                                <RaisedButton className="new-trip" secondary={true} label="New Trip">
+                                </RaisedButton>
+                            )
+                        }
                         {loggedInUser && (
                             <Avatar onClick={this.openUserMenu.bind(this)} id={loggedInUser.id} width="30" height="30"/>
                         )}

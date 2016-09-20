@@ -13,6 +13,14 @@ import moment from 'moment';
 import Avatar from 'components/Modules/Avatar';
 import {findTripByIdOrLink} from 'lib/tripUtils';
 import PageSpinner from 'components/Modules/PageSpinner';
+import DestinationsList from 'components/Modules/DestinationsList';
+import FontIcon from 'material-ui/FontIcon';
+
+let styles = {
+    panel: {
+        marginBottom: "20px"
+    }
+}
 
 class TripPage extends React.Component {
 
@@ -51,20 +59,29 @@ class TripPage extends React.Component {
                     </div>
                 </div>
                 <div className="trip-info">
-                    <div className="right-dashboard">
-                        <ResizeablePanel className="trip-schedule" title="My Scheule">
-                            <TripsCalendar trip={trip} {...this.props} />
-                        </ResizeablePanel>
-                        <ResizeablePanel title={"Destinations"} className="destinations-list">
-                            {trip.destinations.map( d => {
-                                return <DestinationListItem onSelected={this.onDestinationSelected.bind(this, d)} destination = {d}/>;
-                            })}
-                        </ResizeablePanel>
-                        <ResizeablePanel resize={false} className="friends-panel" title="Friends with you">
+                    <div className="left">
+                        {
+                            // <ResizeablePanel style={styles.panel} title="My Scheule">
+                            //     <TripsCalendar trip={trip} {...this.props} />
+                            // </ResizeablePanel>
+                        }
+
+                        <ResizeablePanel style={styles.panel} title="Friends with you">
                             <TripFriends classname="trip-friends" trip={trip} />
                         </ResizeablePanel>
+                        <ResizeablePanel style={styles.panel} title="Destinations" rightIcon={<FontIcon style={{float: 'right', cursor:'pointer'}} className="material-icons">add</FontIcon>}>
+                            <DestinationsList destinations={trip.destinations} onDestinationSelected={this.onDestinationSelected.bind(this)} />
+                        </ResizeablePanel>
                     </div>
-                    <div className="top-dashboard">
+                    {
+                        // <div className="middle">
+                        //     <ResizeablePanel style={styles.panel} title="Destinations">
+                        //         <DestinationsList destinations={trip.destinations} />
+                        //     </ResizeablePanel>
+                        // </div>
+                    }
+
+                    <div className="right">
                         <TripsMap trip={trip} {...this.props} />
                     </div>
                 </div>

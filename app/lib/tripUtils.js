@@ -3,6 +3,14 @@ import {parseShortDate} from './dateUtils';
 import moment from 'moment';
 import countryCodes, {isoCountries} from './countryCodes';
 
+let citiesImages = [
+    'barcelona',
+    'new_york',
+    'paris',
+    'rome',
+    'tokyo'
+];
+
 export const formatTripName = (trip, short) => {
     return trip.destinations.map(des => des.tripDestination.cityName).join(',');
 }
@@ -10,6 +18,13 @@ export const formatTripName = (trip, short) => {
 export const getCityClassName = (cityName) => {
     return 'city-image ' + cityName.replace(/\s/g, '_').toLowerCase();
 }
+
+export const getCityImage = (cityName) => {
+    let name = cityName.replace(/\s/g, '_').toLowerCase(),
+        cityImage = citiesImages.indexOf(name) >= 0 ? name : citiesImages[0];
+
+    return `/resources/images/cities/${cityImage}.jpg`;
+};
 
 export const findTripByIdOrLink = (trips, idOrLink) => {
     return trips.find(t => {

@@ -30,106 +30,34 @@
     }
     .trip-info {
       flex: 1;
-      .right-dashboard {
+      flex-direction: row;
+      display: flex;
+      .right {
+        margin-left: 10px;
         display: flex;
+        flex-direction: row;
         flex: 1;
-        flex-direction: column;
-        margin-right: 20px;
-        .trip-schedule {
-          flex: 1;
-          flex-direction: column;
-          display: flex;
-          .panel-body {
-            flex: 1;
-            display: flex;
-          }
-        }
-        .destinations-list {
-          cursor: pointer;
-          background-color: white;
-          margin-bottom: 20px;
-          .destination-list-item {
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            .city-image {
-              width: 50px;
-              height: 50px;
-              border-radius: 35px;
-              margin-right: 10px;
-            }
-            .destination-info {
-              flex: 1;
-              .title {
-                color: rgba(49, 64, 73, 0.69);
-                font-weight: 700;
-                font-size: 16px;
-              }
-            }
-            .destination-dates {
-              color: rgba(49, 64, 73, 0.69);
-              font-weight: 700;
-            }
-          }
-        }
-
-        .friends-panel {
-          .panel-body {
-            padding-left: 10px;
-            padding-bottom: 10px;
-          }
-        }
-      }
-      .top-dashboard {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        .panel {
-          display: flex;
-          flex-direction: column;
-          flex: 1;
-          margin-bottom: 20px;
-          .panel-body {
-            flex: 1;
-            display: flex;
-          }
-        }
         .map-view {
+          flex: 1;
           border: 1px solid #dbdbdb;
           box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
       }
 
-      flex: 1;
-      display: flex;
-      flex-direction: row;
-      .header {
-        text-align: center;
-        font-size: 25px;
-        margin-bottom: 15px;
+      .middle {
+        margin-left: 10px;
+        margin-right: 10px;
       }
-      .content {
-        flex: 1;
-        padding-top: 20px;
-        padding-bottom: 20px;
-      }
-      .links {
-        padding-right: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        //padding-top: 50px;
-        a {
-          font-size: medium;
-          color: rgba(0, 0, 0, 0.6);
-          font-weight: 700;
-          padding: 10px 0px 10px 0px;
-          &.active {
-            color: rgba(48, 99, 142, 0.68);
-          }
+
+      .left {
+        margin-right: 10px;
+        .trip-friends-list {
+          margin-left: 15px;
+          padding-bottom: 20px;
+          padding-top: 20px;
         }
       }
+
       .trip-editor {
         .form-actions {
           width: 100%;
@@ -162,6 +90,7 @@
         }
       }
       .calendar {
+        height: 200px;
         flex: 1;
       }
     }

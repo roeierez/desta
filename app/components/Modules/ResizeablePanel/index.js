@@ -1,25 +1,44 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {Panel} from 'react-bootstrap';
+import Paper from 'material-ui/Paper';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {grey300} from 'material-ui/styles/colors';
+
+let styles={
+    header: {
+        borderColor: grey300,
+        borderBottom: "1px solid " + grey300,
+        margin: "0px 15px 0px 15px",
+        paddingLeft: "0px",
+        paddingRight: "0px"
+    }
+}
 
 class ResizeablePanel extends React.Component {
-    render() {
-        return (
-            <Panel  className={"resizeable-panel " + (this.props.className || "")} header={this.props.header || this.createHeader()} >
-                {this.props.children}
-            </Panel>
-        )
+
+    static propTypes = {
+        title: PropTypes.any,
+        style: PropTypes.object,
+        rightIcon: PropTypes.any
     }
 
-    createHeader() {
+    render() {
+
         return (
-            <div className={"title-wrapper"}>
-                <span className="title">{this.props.title}</span>
-                {this.props.resize && (
-                    <span className="toolbar">
-                        <i className="fa fa-expand" aria-hidden="true"></i>
-                    </span>
-                )}
-            </div>
+            <Paper style={this.props.style} zDepth={2}>
+                <Card>
+                    {
+                        this.props.title && (
+                            <CardHeader style={styles.header} title={this.props.title} >
+                                {this.props.rightIcon}
+                            </CardHeader>
+                        )
+                    }
+                    <CardMedia>
+                        {this.props.children}
+                    </CardMedia>
+                </Card>
+            </Paper>
         )
     }
 }

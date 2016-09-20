@@ -2,6 +2,10 @@ import React from 'react';
 import {List, ListItem, MakeSelectable} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import countryNameToCode from 'lib/countryCodes';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import FlatButton from 'material-ui/FlatButton';
+import {cyan500} from 'material-ui/styles/colors';
 
 let SelectableList = MakeSelectable(List),
     styles = {
@@ -12,7 +16,12 @@ let SelectableList = MakeSelectable(List),
         subheader: {
             fontSize: "16px"
         }
-    }
+    },
+    viewPeopleIcon = (
+        <IconButton>
+            <FontIcon color={cyan500} className="material-icons">people</FontIcon>
+        </IconButton>
+    );
 
 class PlacesList extends React.Component {
 
@@ -21,7 +30,7 @@ class PlacesList extends React.Component {
     }
 
     onViewCity(event, country, city) {
-        event.preventDefault();
+        event && event.preventDefault();
         this.props.onViewCity({country, city});
     }
 
@@ -38,11 +47,10 @@ class PlacesList extends React.Component {
                 </div>
             ),
             CityListItem = ({country, city, cityVisits, selected}) => (
-                <div className="list-item">
+                <div className="list-item city">
                     <div className="left">{city}</div>
                     <div className="right">
                         <div className="visits">{`${cityVisits} Friends`}</div>
-                        {selected && (<span className="view-people" onClick={(e) => this.onViewCity(e, country, city)}>View</span>)}
                     </div>
                 </div>
             );
@@ -60,8 +68,13 @@ class PlacesList extends React.Component {
                                 nestedItems = {
                                     Object.keys(byCountry[country].cities).map(city => {
                                         let cityVisits = this.getUniqVisits(byCountry[country].cities[city].visits).length;
-                                            return <ListItem value={JSON.stringify({country,city})}
-                                                             primaryText={<CityListItem country={country} city={city} cityVisits={cityVisits} selected={ this.props.selectedPopularCity == city}/>}
+                                            return <ListItem rightIconButton={(
+                                                 <IconButton onTouchTap={(e) => {this.onViewCity(e, country, city)}}>
+                                                     <FontIcon color={cyan500} className="material-icons">subdirectory_arrow_right</FontIcon>
+                                                 </IconButton>
+                                            )}
+                                                                value={JSON.stringify({country,city})}
+                                                                primaryText={<CityListItem country={country} city={city} cityVisits={cityVisits} selected={ this.props.selectedPopularCity == city}/>}
                                             />
                                         }
                                     )

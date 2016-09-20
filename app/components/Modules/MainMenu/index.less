@@ -1,8 +1,9 @@
 .menu-wrapper {
-    width: 200px;
+    margin-left: -20px;
+    width: 170px;
     transition: max-width 250ms linear;
     &.menu-opened {
-        max-width: 200px;
+        max-width: 170px;
         .main-navigation {
             transform: translateX(0px);
             transition: transform 250ms linear;
@@ -13,47 +14,36 @@
     position: relative;
     .main-navigation {
         transition: transform 250ms linear;
-        transform: translateX(-200px);
+        transform: translateX(-150px);
         position: absolute;
         top: 0;
         left: 0;
         opacity: 0.8;
         display: flex;
-        min-width: 180px;
+        min-width: 130px;
         flex-direction: column;
         justify-content: center;
         align-self: flex-start;
         width: 150px;
-        i {
-            font-size: 20px;
-            color: rgb(117, 117, 117);
-            font-weight: 500;
-            padding-right: 22px;
-            text-align: center;
-            padding-left: 5px;
-        }
         a {
-            padding-left: 20px;
-            padding-right: 12px;
-            font-size: 14px;
             font-weight: 500;
-            line-height: 50px;
             height: 48px;
-            font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
-            color: rgba(0, 0, 0, 0.870588);
+
+            button {
+                text-align: left !important;
+                padding-left: 7px !important;
+                width: 100%;
+            }
+            span {
+                text-transform: inherit !important;
+                color: rgba(0, 0, 0, 0.7) !important;
+            }
+
+
             &.active {
-                color: rgb(0, 188, 212);;
-                &:before {
-                    color: rgb(0, 188, 212);;
+                span {
+                    color: rgb(0, 188, 212) !important;
                 }
-            }
-            &:hover {
-                background-color: #e7e7e7;
-            }
-            &:before {
-                font-size: 20px;
-                padding-right: 15px;
-                color: rgb(117, 117, 117);
             }
         }
     }

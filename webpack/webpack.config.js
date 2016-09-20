@@ -4,6 +4,8 @@ const autoprefixer = require('autoprefixer');
 const yargs = require('yargs');
 const config = require('../config');
 const merge = require('webpack-merge');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path');
 
 const paths = config.get('utils_paths');
 const webapp = yargs.argv.webapp || 'debug';
@@ -32,7 +34,12 @@ const webpackConfig = {
       filename: 'index.html',
       inject: 'body'
     }),
-    new webpack.DefinePlugin({__DEVELOPMENT__: webapp == 'debug'})
+    new CopyWebpackPlugin([
+          {
+            from: path.join(paths.project(config.get('dir_src')), 'resources'),
+            to: path.join(paths.project(config.get('dir_dist')), 'resources')
+          }]),
+          new webpack.DefinePlugin({__DEVELOPMENT__: webapp == 'debug'})
   ],
   resolve: {
     extensions: ['', '.js', '.jsx'],
