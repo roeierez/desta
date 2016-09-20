@@ -1,5 +1,5 @@
 import React from 'react';
-import FacebookFriendsAutoComplete from 'components/Modules/FacebookFriendsAutoComplete';
+import FacebookFriendsAutoComplete from 'components/Modules/FriendsAutocomplete';
 
 class FCFriendsPicker extends React.Component {
 
@@ -12,15 +12,16 @@ class FCFriendsPicker extends React.Component {
 
     onSuggestionSelected (suggestion) {
         //this.setState({value: '', chosenFriends: this.state.chosenFriends.concat(suggestion)});
-        this.setState({value: ''});
+
         var existingValue = this.props.value || [];
-        this.props.onChange(existingValue.concat(suggestion));
+        this.setState({value: existingValue.concat(suggestion)});
+       // this.props.onChange(existingValue.concat(suggestion));
     }
 
     removeFriend(friend) {
-        //this.setState({chosenFriends: this.state.chosenFriends.filter(f => f != friend)});
-        var chosenFriends = this.props.value || [];
-        this.props.onChange(chosenFriends.filter(f => f != friend));
+        this.setState({value: this.state.value.filter(f => f.id != friend.id)});
+        //var chosenFriends = this.props.value || [];
+        //this.props.onChange(chosenFriends.filter(f => f != friend));
     }
 
     onChange(newValue) {
@@ -34,18 +35,20 @@ class FCFriendsPicker extends React.Component {
 
     render() {
         var inputProps = this.props.inputProps || {},
-            chosenFriends = this.props.value || [];
+            chosenFriends = this.state.value || [];
         if (this.state.value != null) {
             inputProps = Object.assign({}, inputProps, {value: this.state.value});
         }
         return (
-            <div className="friends-container">
-                {
-                    chosenFriends.map(f => (
-                        <span onClick={() => this.removeFriend(f)} className="friend-element font-icon font-icon-del">{f.name}</span>
-                    ))
-                }
-                <FacebookFriendsAutoComplete filter={this.filterExistingFriends.bind(this)} onChange={this.onChange.bind(this)} inputProps={inputProps} onSuggestionSelected={this.onSuggestionSelected.bind(this)} />
+            <div className="friends-container" style={this.props.style}>
+                <div>
+                    {
+                        chosenFriends.map(f => (
+                            <span onClick={() => this.removeFriend(f)} className="friend-element font-icon font-icon-del">{f.name}</span>
+                        ))
+                    }
+                </div>
+                <FacebookFriendsAutoComplete floatingLabelText={false} hintText="Who's coming with you?" style={{marginLeft: '15px'}} filter={this.filterExistingFriends.bind(this)} onChange={this.onChange.bind(this)} inputProps={inputProps} onFriendSelected={this.onSuggestionSelected.bind(this)} />
             </div>
         )
     }

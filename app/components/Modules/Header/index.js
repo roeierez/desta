@@ -1,7 +1,7 @@
 // Simple header component
 
 import '../../../resources/styles/main.less';
-import React from 'react';
+import React ,{PropTypes } from 'react';
 import ReactDom from 'react-dom';
 import {PlacesAutocompleteInput} from 'components/Modules/Form';
 import {Link, IndexLink} from 'react-router';
@@ -24,7 +24,18 @@ import {blue500, red500, green500} from 'material-ui/styles/colors';
 import Avatar from 'components/Modules/Avatar';
 
 
-class Header extends React.Component { 
+class Header extends React.Component {
+
+    static propTypes = {
+        login: PropTypes.func,
+        logout: PropTypes.func,
+        showNewTripForm: PropTypes.func,
+        newTripFormVisible: PropTypes.bool,
+        toggleMenu: PropTypes.func,
+        selectLocation: PropTypes.func,
+        loggedInUser: PropTypes.object
+    }
+
     constructor(props) {
         super(props);
         this.state = {placeHolderVisible: true};
@@ -85,7 +96,7 @@ class Header extends React.Component {
     }
 
     render (){
-        let {login, loggedInUser, selectLocation, pageLinks} = this.props;
+        let {login, loggedInUser, selectLocation} = this.props;
         var userPhothURL = loggedInUser ? `https://graph.facebook.com/v2.7/${loggedInUser.id}/picture?type=small&width=45&height=45` : null,
             badgeStyle={padding: 5, top: -1, right: -1, width: 20, height: 20};
 
@@ -125,7 +136,7 @@ class Header extends React.Component {
                         </Badge>
                         */}
                         {loggedInUser && (
-                                <RaisedButton className="new-trip" secondary={true} label="New Trip">
+                                <RaisedButton onTouchTap={() => this.props.showNewTripForm(true)} className="new-trip" secondary={true} label="New Trip">
                                 </RaisedButton>
                             )
                         }

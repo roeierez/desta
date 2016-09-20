@@ -3,13 +3,17 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actionCreators from '../../redux/modules';
 import Header from 'components/Modules/Header';
-import TripInfoEditor from 'components/Modules/TripInfoEditor';
 import MainMenu from 'components/Modules/MainMenu';
 import classNames from 'classnames';
+import Dialog from 'material-ui/Dialog';
+import Card, {CardHeader, CardText} from 'material-ui/Card'
+import FontIcon from 'material-ui/FontIcon';
+import AddDestinationForm from 'components/Modules/AddDestinationForm';
+import FlatButton from 'material-ui/FlatButton';
 
 @connect(
-    state => ({...state.profile, ...state.app}),
-    dispatch => bindActionCreators({...actionCreators.app}, dispatch),
+    state => ({...state.profile, ...state.app, ...state.createTrip}),
+    dispatch => bindActionCreators({...actionCreators.app, ...actionCreators.createTrip}, dispatch),
 )
 export default class Root extends Component {
 
@@ -28,6 +32,19 @@ export default class Root extends Component {
 
     render() {
 
+        const actions = [
+            <FlatButton
+                label="Cancel"
+                secondary={true}
+                onTouchTap={() => this.props.showNewTripForm(false)}
+            />,
+            <FlatButton
+                label="Create Trip"
+                primary={true}
+                onTouchTap={() => this.props.showNewTripForm(false)}
+            />
+        ];
+
         return (
             <div className="root-page">
                 <Header {...this.props} />
@@ -35,6 +52,15 @@ export default class Root extends Component {
                     <MainMenu {...this.props} className="main-menu"/>
                     <div className="page-content use-all-space">
                         {/*<TripInfoEditor />*/}
+
+                        <Dialog title="New Trip"
+                                modal={false}
+                                contentStyle={{maxWidth: "450px"}}
+                                actions = {actions}
+                                open={this.props.newTripFormVisible == true}
+                                onRequestClose={() => this.props.showNewTripForm(false)}>
+                            <AddDestinationForm />
+                        </Dialog>
                         { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }
                     </div>
                 </div>

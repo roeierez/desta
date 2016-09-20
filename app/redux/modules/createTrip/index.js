@@ -5,7 +5,8 @@ const initialState = {
     workingTrip: {
         destinations: []
     },
-    selectedLocation: null
+    selectedLocation: null,
+    newTripFormVisible: false
 };
 
 // For async components
@@ -46,6 +47,12 @@ export default createReducer({
             selectedLocation: null
         }
     },
+    ['SHOW_NEW_TRIP_FORM'] : (state, {payload}) => {
+        return {
+            ...state,
+            newTripFormVisible: payload
+        }
+    }
 }, initialState);
 
 export const selectLocation = (location) => ({
@@ -61,6 +68,11 @@ export const addDestination = (destination) => ({
 export const removeDestination = (destination) => ({
     type: 'REMOVE_DESTINATION',
     payload: destination
+})
+
+export const showNewTripForm = (visible) => ({
+    type: 'SHOW_NEW_TRIP_FORM',
+    payload: visible
 })
 
 export const createTrip = (trip) => ({
