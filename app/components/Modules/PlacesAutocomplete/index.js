@@ -21,6 +21,11 @@ class PlacesAutocomplete extends React.Component {
     }
 
     onSelect(value) {
+        if (value == null) {
+            this.props.onPlaceSelected(null);
+            return;
+        }
+
         this.geoCoder.geocode({address: value.description}, (results, status) => {
             if (status == google.maps.GeocoderStatus.OK) {
                 let gmaps = results[0],

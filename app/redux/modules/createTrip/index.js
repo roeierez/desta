@@ -79,9 +79,6 @@ export const createTrip = (trip) => ({
     type: 'CREATE_TRIP',
     payload: {
         promise: new Promise((resolve, reject) => {
-            trip.destinations.forEach(d => {
-                d.tripDestination.cityName = d.tripDestination.label.split(',')[0];
-            });
             fetch('/api/trips', {
                 credentials: 'include',
                 headers: {'Content-Type': 'application/json'},

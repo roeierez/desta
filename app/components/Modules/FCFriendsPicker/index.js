@@ -18,8 +18,9 @@ class FCFriendsPicker extends React.Component {
     onSuggestionSelected (suggestion) {
         //this.setState({value: '', chosenFriends: this.state.chosenFriends.concat(suggestion)});
 
-        var value = (this.props.value || []).concat([suggestion]);
+        var value = (this.props.value || []).concat([Object.assign({}, suggestion)]);;
         this.setState({value}, () => {
+            this.refs.autoComplete.clear();
             this.props.onChange(value);
         });
     }
@@ -27,12 +28,9 @@ class FCFriendsPicker extends React.Component {
     removeFriend(friend) {
         let value = this.state.value.filter(f => f.id != friend.id);
         this.setState({value}, () => {
-            this.props.onChange(value);
+            this.refs.autoComplete.clear();
+            this.props.onChange(Object.assign({}, value));
         });
-    }
-
-    onChange(newValue) {
-        this.setState({value: null});
     }
 
     filterExistingFriends(friends) {
@@ -46,7 +44,7 @@ class FCFriendsPicker extends React.Component {
 
         return (
             <div className="friends-container" style={this.props.style}>
-                <FacebookFriendsAutoComplete floatingLabelText={"Who's coming with you?"} hintText="Type friends names" style={{marginLeft: '15px'}} filter={this.filterExistingFriends.bind(this)} onFriendSelected={this.onSuggestionSelected.bind(this)} />
+                <FacebookFriendsAutoComplete ref="autoComplete" floatingLabelText={"Who's coming with you?"} hintText="Type friends names" style={{marginLeft: '15px'}} filter={this.filterExistingFriends.bind(this)} onFriendSelected={this.onSuggestionSelected.bind(this)} />
                 <div className="avatars-container">
                     {
                         chosenFriends.map(f => (

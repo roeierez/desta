@@ -56,18 +56,34 @@ class AddDestinationDialog extends React.Component {
         this.setState({friends});
     }
 
+    handleSubmit() {
+        this.props.onSubmit(this.state);
+    }
+
+    handleClose() {
+        this.setState({
+            destination: null,
+            departDate: null,
+            returnDate: null,
+            friends: []
+        });
+        this.props.onRequestClose();
+    }
+
     render() {
 
+        let canSubmit = this.state.departDate != null && this.state.returnDate != null && this.state.destination != null;
         const actions = [
             <FlatButton
                 label="Cancel"
                 secondary={true}
-                onTouchTap={() => this.props.onRequestClose()}
+                onTouchTap={() => this.handleClose()}
             />,
             <FlatButton
                 label="Create Trip"
                 primary={true}
-                onTouchTap={() => this.props.onRequestClose()}
+                disabled={!canSubmit}
+                onTouchTap={() => this.handleSubmit()}
             />
         ];
 
@@ -78,7 +94,9 @@ class AddDestinationDialog extends React.Component {
                     modal={false}
                     contentStyle={{maxWidth: "550px"}}
                     actions = {actions}
-                    {...this.props}>
+                    open={this.props.open}
+                    onRequestClose={this.handleClose.bind(this)}
+            >
                 <div className="add-destination-form" style={{paddingLeft: "20px", paddingRight: "20px"}}>
                     <div className="top">
                         <FontIcon color={grey600} className="material-icons">place</FontIcon>
@@ -90,7 +108,7 @@ class AddDestinationDialog extends React.Component {
                     <div className="middle">
                         <div className="date-wrapper">
                             <FontIcon color={grey600} className="material-icons">flight_takeoff</FontIcon>
-                            <DatePicker floatingLabelText="Departing" mode="landscape" autoOk textFieldStyle={styles.leftDatePicker} hintText="Departing" container="inline" />
+                            <DatePicker onChange={this.onDepartDateChanged.bind(this)} floatingLabelText="Departing" mode="landscape" autoOk textFieldStyle={styles.leftDatePicker} hintText="Departing" container="inline" />
                         </div>
                         <div className="date-wrapper">
                             <FontIcon color={grey600} className="material-icons">flight_land</FontIcon>

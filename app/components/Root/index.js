@@ -5,13 +5,10 @@ import * as actionCreators from '../../redux/modules';
 import Header from 'components/Modules/Header';
 import MainMenu from 'components/Modules/MainMenu';
 import classNames from 'classnames';
-import Dialog from 'material-ui/Dialog';
-import Card, {CardHeader, CardText} from 'material-ui/Card'
-import FontIcon from 'material-ui/FontIcon';
-import AddDestinationForm from 'components/Modules/AddDestinationForm';
-import FlatButton from 'material-ui/FlatButton';
-import {cyan800, pink300, cyan400, grey700} from 'material-ui/styles/colors'
 import AddDestinationDialog from 'components/Modules/AddDestinationDialog';
+import {formatShortDate} from 'lib/dateUtils';
+import moment from 'moment';
+import {browserHistory} from 'react-router';
 
 @connect(
     state => ({...state.profile, ...state.app, ...state.createTrip}),
@@ -32,6 +29,25 @@ export default class Root extends Component {
         let action = this.props.login(true);;
     }
 
+    createTrip(destination) {
+        this.props.createTrip({
+            destinations: [
+                {
+                    tripDestination: destination.destination,
+                    tripFriends: destination.friends,
+                    tripDates: {
+                        startDate: formatShortDate(moment(destination.departDate)),
+                        endDate: formatShortDate(moment(destination.returnDate))
+                    }
+                }
+            ]
+        }).payload.promise.then(result => {
+            console.log(result);
+            browserHistory.push(`/${this.props.loggedInUser.id}/profile/trips/${result.payload.id}`)
+            this.props.showNewTripForm(false);
+        });
+    }
+
     render() {
         return (
             <div className="root-page">
@@ -40,7 +56,8 @@ export default class Root extends Component {
                     <MainMenu {...this.props} className="main-menu"/>
                     <div className="page-content use-all-space">
                         <AddDestinationDialog open={this.props.newTripFormVisible == true}
-                                              onRequestClose={() => this.props.showNewTripForm(false)}  />
+                                              onRequestClose={() => this.props.showNewTripForm(false)}
+                                              onSubmit={this.createTrip.bind(this)}/>
                         { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }
                     </div>
                 </div>

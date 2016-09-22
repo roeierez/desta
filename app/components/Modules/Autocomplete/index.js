@@ -32,14 +32,18 @@ class Autocomplete extends React.Component {
     onNewRequest(text, index) {
         if (index >= 0) {
             this.props.onSelect(this.state.dataSource[index].textValue || this.state.dataSource[index].value);
+        } else {
+            this.clear();
         }
 
+    }
+
+    clear() {
         this.setState({searchText: 'a'}, () => {
             this.setState({searchText: ''}, () => {
                 this.refs.autoComplete.focus();
             });
         });
-
     }
 
     onSearch(text) {
