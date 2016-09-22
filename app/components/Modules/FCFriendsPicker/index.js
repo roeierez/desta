@@ -1,27 +1,34 @@
 import React from 'react';
 import FacebookFriendsAutoComplete from 'components/Modules/FriendsAutocomplete';
+import Chip from 'material-ui/Chip';
+import Avatar from 'components/Modules/Avatar';
+import MUIAvatar from 'material-ui/Avatar';
+import {formatPhotoURL} from 'lib/facebook';
+import FontIcon from 'material-ui/FontIcon';
 
 class FCFriendsPicker extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            chosenFriends: []
+            value: []
         }
     }
 
     onSuggestionSelected (suggestion) {
         //this.setState({value: '', chosenFriends: this.state.chosenFriends.concat(suggestion)});
 
-        var existingValue = this.props.value || [];
-        this.setState({value: existingValue.concat(suggestion)});
-       // this.props.onChange(existingValue.concat(suggestion));
+        var value = (this.props.value || []).concat([suggestion]);
+        this.setState({value}, () => {
+            this.props.onChange(value);
+        });
     }
 
     removeFriend(friend) {
-        this.setState({value: this.state.value.filter(f => f.id != friend.id)});
-        //var chosenFriends = this.props.value || [];
-        //this.props.onChange(chosenFriends.filter(f => f != friend));
+        let value = this.state.value.filter(f => f.id != friend.id);
+        this.setState({value}, () => {
+            this.props.onChange(value);
+        });
     }
 
     onChange(newValue) {
@@ -36,19 +43,23 @@ class FCFriendsPicker extends React.Component {
     render() {
         var inputProps = this.props.inputProps || {},
             chosenFriends = this.state.value || [];
-        if (this.state.value != null) {
-            inputProps = Object.assign({}, inputProps, {value: this.state.value});
-        }
+
         return (
             <div className="friends-container" style={this.props.style}>
-                <div>
+                <FacebookFriendsAutoComplete floatingLabelText={"Who's coming with you?"} hintText="Type friends names" style={{marginLeft: '15px'}} filter={this.filterExistingFriends.bind(this)} onFriendSelected={this.onSuggestionSelected.bind(this)} />
+                <div className="avatars-container">
                     {
                         chosenFriends.map(f => (
-                            <span onClick={() => this.removeFriend(f)} className="friend-element font-icon font-icon-del">{f.name}</span>
+                            <Chip
+                                style={{marginTop: 5, marginRight: 5}}
+
+                                onRequestDelete={() => this.removeFriend(f)}>
+                                <MUIAvatar size={25} src={formatPhotoURL(f.id, 25)}></MUIAvatar>
+                                {f.name}
+                            </Chip>
                         ))
                     }
                 </div>
-                <FacebookFriendsAutoComplete floatingLabelText={false} hintText="Who's coming with you?" style={{marginLeft: '15px'}} filter={this.filterExistingFriends.bind(this)} onChange={this.onChange.bind(this)} inputProps={inputProps} onFriendSelected={this.onSuggestionSelected.bind(this)} />
             </div>
         )
     }

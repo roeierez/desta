@@ -10,6 +10,8 @@ import Card, {CardHeader, CardText} from 'material-ui/Card'
 import FontIcon from 'material-ui/FontIcon';
 import AddDestinationForm from 'components/Modules/AddDestinationForm';
 import FlatButton from 'material-ui/FlatButton';
+import {cyan800, pink300, cyan400, grey700} from 'material-ui/styles/colors'
+import AddDestinationDialog from 'components/Modules/AddDestinationDialog';
 
 @connect(
     state => ({...state.profile, ...state.app, ...state.createTrip}),
@@ -31,36 +33,14 @@ export default class Root extends Component {
     }
 
     render() {
-
-        const actions = [
-            <FlatButton
-                label="Cancel"
-                secondary={true}
-                onTouchTap={() => this.props.showNewTripForm(false)}
-            />,
-            <FlatButton
-                label="Create Trip"
-                primary={true}
-                onTouchTap={() => this.props.showNewTripForm(false)}
-            />
-        ];
-
         return (
             <div className="root-page">
                 <Header {...this.props} />
                 <div className={classNames("page-content-wrapper", "layout-row", {"with-page-links": (this.props.pageLinks != null)})}>
                     <MainMenu {...this.props} className="main-menu"/>
                     <div className="page-content use-all-space">
-                        {/*<TripInfoEditor />*/}
-
-                        <Dialog title="New Trip"
-                                modal={false}
-                                contentStyle={{maxWidth: "450px"}}
-                                actions = {actions}
-                                open={this.props.newTripFormVisible == true}
-                                onRequestClose={() => this.props.showNewTripForm(false)}>
-                            <AddDestinationForm />
-                        </Dialog>
+                        <AddDestinationDialog open={this.props.newTripFormVisible == true}
+                                              onRequestClose={() => this.props.showNewTripForm(false)}  />
                         { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }
                     </div>
                 </div>

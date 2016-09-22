@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
+import ReactDom from 'react-dom';
 
 class Autocomplete extends React.Component {
 
@@ -14,14 +15,17 @@ class Autocomplete extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: []
+            dataSource: [],
+            searchText: ""
         };
     }
 
     render() {
-        let {hintText, search, floatingLabelText } = this.props;
+        let {hintText, search, floatingLabelText } = this.props,
+            valueProps = {};
+
         return (
-            <AutoComplete style={this.props.style} filter={AutoComplete.caseInsensitiveFilter} onNewRequest={this.onNewRequest.bind(this)} dataSource={this.state.dataSource || []} hintText={hintText} floatingLabelText={floatingLabelText} onUpdateInput={this.onSearch.bind(this)} />
+            <AutoComplete searchText={this.state.searchText} ref="autoComplete" style={this.props.style} filter={AutoComplete.caseInsensitiveFilter} onNewRequest={this.onNewRequest.bind(this)} dataSource={this.state.dataSource || []} hintText={hintText} floatingLabelText={floatingLabelText} onUpdateInput={this.onSearch.bind(this)} />
         );
     }
 
@@ -29,6 +33,13 @@ class Autocomplete extends React.Component {
         if (index >= 0) {
             this.props.onSelect(this.state.dataSource[index].textValue || this.state.dataSource[index].value);
         }
+
+        this.setState({searchText: 'a'}, () => {
+            this.setState({searchText: ''}, () => {
+                this.refs.autoComplete.focus();
+            });
+        });
+
     }
 
     onSearch(text) {
