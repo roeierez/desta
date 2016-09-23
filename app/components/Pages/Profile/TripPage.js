@@ -15,6 +15,8 @@ import {findTripByIdOrLink} from 'lib/tripUtils';
 import PageSpinner from 'components/Modules/PageSpinner';
 import DestinationsList from 'components/Modules/DestinationsList';
 import FontIcon from 'material-ui/FontIcon';
+import AddDestinationDialog from 'components/Modules/AddDestinationDialog';
+import TripHeader from './TripHeader';
 
 let styles = {
     panel: {
@@ -24,8 +26,21 @@ let styles = {
 
 class TripPage extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            destinationDialogOpened: false
+        }
+    }
+
     componentDidMount() {
         this.props.fetchTrip(this.props.params.id);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.params && this.props.params &&  this.props.params.id != nextProps.params.id) {
+            this.props.fetchTrip(nextProps.params.id);
+        }
     }
 
     componentWillUnmount () {
@@ -37,27 +52,28 @@ class TripPage extends React.Component {
         browserHistory.push(`/${trip.owner.facebookID}/profile/trips/${trip.id}/destination/${index}`);
     }
 
+    showAddDestination() {
+        this.setState({destinationDialogOpened: true});
+    }
+
+    onAddDesintation(destination) {
+        var trip = JSON.parse(JSON.stringify(findTripByIdOrLink(this.props.trips, this.props.params.id)));
+        trip.destinations.push(destination);
+        this.props.updateTrip(trip).payload.promise.then(() => {
+            this.setState({destinationDialogOpened: false});
+        })
+    }
+
     render() {
         var trip = findTripByIdOrLink(this.props.trips, this.props.params.id);
 
-        if (trip == null || this.props.fetchingTrip) {
+        if ( trip == null || this.props.fetchingTrip) {
             return <PageSpinner />;
         }
 
-        var startDates = trip.destinations.map(d => moment(d.tripDates.startDate)),
-            endDates = trip.destinations.map(d => moment(d.tripDates.endDate)),
-            minDate = moment.min(startDates),
-            maxDate = moment.max(endDates);
-
         return (
             <div className="trip-page">
-                <div className="trip-header">
-                    <Avatar id={trip.owner.facebookID} height={60} width={60} />
-                    <div className="trip-title">
-                        <div className="trip-destinations">{trip.destinations.map(d => d.tripDestination.cityName).join(', ')}</div>
-                        <div className="trip-dates">{`${minDate.format('ll')} - ${maxDate.format('ll')}`}</div>
-                    </div>
-                </div>
+                <TripHeader updateTrip={this.props.updateTrip} trip={trip} />
                 <div className="trip-info">
                     <div className="left">
                         {
@@ -69,7 +85,7 @@ class TripPage extends React.Component {
                         <ResizeablePanel style={styles.panel} title="Friends with you">
                             <TripFriends classname="trip-friends" trip={trip} />
                         </ResizeablePanel>
-                        <ResizeablePanel style={styles.panel} title="Destinations" rightIcon={<FontIcon style={{float: 'right', cursor:'pointer'}} className="material-icons">add</FontIcon>}>
+                        <ResizeablePanel style={styles.panel} title="Destinations" rightIcon={<FontIcon onTouchTap={() => this.showAddDestination()} style={{float: 'right', cursor:'pointer'}} className="material-icons">add</FontIcon>}>
                             <DestinationsList destinations={trip.destinations} onDestinationSelected={this.onDestinationSelected.bind(this)} />
                         </ResizeablePanel>
                     </div>
@@ -85,6 +101,11 @@ class TripPage extends React.Component {
                         <TripsMap trip={trip} {...this.props} />
                     </div>
                 </div>
+                <AddDestinationDialog open={this.state.destinationDialogOpened}
+                                      onSubmit={this.onAddDesintation.bind(this)}
+                                      title="New Destination"
+                                      submitButtonText="Add Destination"
+                                      onRequestClose={() => this.setState({destinationDialogOpened: false})}/>
             </div>
         );
     }

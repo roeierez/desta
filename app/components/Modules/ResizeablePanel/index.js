@@ -19,22 +19,27 @@ class ResizeablePanel extends React.Component {
     static propTypes = {
         title: PropTypes.any,
         style: PropTypes.object,
-        rightIcon: PropTypes.any
+        rightIcon: PropTypes.any,
+        expandable: PropTypes.bool
     }
 
     render() {
-
+        let titleProps = {};
+        if (this.props.expandable) {
+            titleProps.actAsExpander=true;
+            titleProps.showExpandableButton=true;
+        }
         return (
             <Paper style={this.props.style} zDepth={2}>
                 <Card>
                     {
                         this.props.title && (
-                            <CardHeader style={styles.header} title={this.props.title} >
+                            <CardHeader {...titleProps} style={styles.header} title={this.props.title} >
                                 {this.props.rightIcon}
                             </CardHeader>
                         )
                     }
-                    <CardMedia>
+                    <CardMedia expandable={this.props.expandable ==  true}>
                         {this.props.children}
                     </CardMedia>
                 </Card>

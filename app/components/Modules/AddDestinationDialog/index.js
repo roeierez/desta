@@ -6,6 +6,9 @@ import FlatButton from 'material-ui/FlatButton';
 import DatePicker from 'material-ui/DatePicker';
 import PlacesAutocomplete from '../PlacesAutocomplete';
 import FCFriendsPicker from 'components/Modules/FCFriendsPicker';
+import moment from 'moment';
+import {browserHistory} from 'react-router';
+import {formatShortDate} from 'lib/dateUtils';
 
 let styles = {
     topField: {
@@ -26,7 +29,10 @@ class AddDestinationDialog extends React.Component {
 
     static propTypes = {
         open: PropTypes.bool,
-        onRequestClose: PropTypes.func
+        title: PropTypes.string,
+        submitButtonText: PropTypes.string,
+        onRequestClose: PropTypes.func,
+        onSubmit: PropTypes.func
     }
 
     constructor(props) {
@@ -36,6 +42,17 @@ class AddDestinationDialog extends React.Component {
             departDate: null,
             returnDate: null,
             friends: []
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.open != nextProps.open) {
+            this.setState({
+                destination: null,
+                departDate: null,
+                returnDate: null,
+                friends: []
+            });
         }
     }
 
@@ -57,16 +74,17 @@ class AddDestinationDialog extends React.Component {
     }
 
     handleSubmit() {
-        this.props.onSubmit(this.state);
+        this.props.onSubmit({
+            tripDestination: this.state.destination,
+            tripFriends: this.state.friends,
+            tripDates: {
+                startDate: formatShortDate(moment(this.state.departDate)),
+                endDate: formatShortDate(moment(this.state.returnDate))
+            }
+        });
     }
 
     handleClose() {
-        this.setState({
-            destination: null,
-            departDate: null,
-            returnDate: null,
-            friends: []
-        });
         this.props.onRequestClose();
     }
 
@@ -80,7 +98,7 @@ class AddDestinationDialog extends React.Component {
                 onTouchTap={() => this.handleClose()}
             />,
             <FlatButton
-                label="Create Trip"
+                label={this.props.submitButtonText || "Create Trip"}
                 primary={true}
                 disabled={!canSubmit}
                 onTouchTap={() => this.handleSubmit()}
@@ -89,7 +107,7 @@ class AddDestinationDialog extends React.Component {
 
 
         return (
-            <Dialog title="New Trip"
+            <Dialog title={this.props.title || "New Trip"}
                     titleStyle={{padding: "12px 0px 12px 50px", borderColor: cyan400, borderBottom: "2px solid", color: grey700}}
                     modal={false}
                     contentStyle={{maxWidth: "550px"}}

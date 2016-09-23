@@ -1,9 +1,10 @@
 import React from 'react';
+import CircularProgress from 'material-ui/CircularProgress'
 
 class PageSpinner extends React.Component {
     render() {
         return (
-            <i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            <CircularProgress style={{margin: 'auto'}} className="page-spinner" />
         )
     }
 }

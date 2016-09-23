@@ -6,9 +6,9 @@ import Header from 'components/Modules/Header';
 import MainMenu from 'components/Modules/MainMenu';
 import classNames from 'classnames';
 import AddDestinationDialog from 'components/Modules/AddDestinationDialog';
-import {formatShortDate} from 'lib/dateUtils';
 import moment from 'moment';
 import {browserHistory} from 'react-router';
+import {formatShortDate} from 'lib/dateUtils';
 
 @connect(
     state => ({...state.profile, ...state.app, ...state.createTrip}),
@@ -29,25 +29,6 @@ export default class Root extends Component {
         let action = this.props.login(true);;
     }
 
-    createTrip(destination) {
-        this.props.createTrip({
-            destinations: [
-                {
-                    tripDestination: destination.destination,
-                    tripFriends: destination.friends,
-                    tripDates: {
-                        startDate: formatShortDate(moment(destination.departDate)),
-                        endDate: formatShortDate(moment(destination.returnDate))
-                    }
-                }
-            ]
-        }).payload.promise.then(result => {
-            console.log(result);
-            browserHistory.push(`/${this.props.loggedInUser.id}/profile/trips/${result.payload.id}`)
-            this.props.showNewTripForm(false);
-        });
-    }
-
     render() {
         return (
             <div className="root-page">
@@ -56,12 +37,24 @@ export default class Root extends Component {
                     <MainMenu {...this.props} className="main-menu"/>
                     <div className="page-content use-all-space">
                         <AddDestinationDialog open={this.props.newTripFormVisible == true}
-                                              onRequestClose={() => this.props.showNewTripForm(false)}
-                                              onSubmit={this.createTrip.bind(this)}/>
+                                              onSubmit={this.createTrip.bind(this)}
+                                              onRequestClose={() => this.props.showNewTripForm(false)}/>
                         { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }
                     </div>
                 </div>
             </div>
         );
+    }
+
+    createTrip(destination) {
+        this.props.createTrip({
+            destinations: [
+                destination
+            ]
+        }).payload.promise.then(result => {
+            console.log(result);
+            browserHistory.push(`/${this.props.loggedInUser.id}/profile/trips/${result.payload.id}`)
+            this.props.showNewTripForm(false);
+        });
     }
 }
