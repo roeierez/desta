@@ -102,7 +102,8 @@ class Header extends React.Component {
 
         return (
             <AppBar
-                title="Desta Travel"
+                style={{position: 'fixed'}}
+                title="Desta"
                 titleStyle={{flex: "initial", fontWeight: "300", fontSize: "22px"}}
                 onLeftIconButtonTouchTap={this.toggleLeftMenu.bind(this)}>
                 <div className="app-nav-bar">

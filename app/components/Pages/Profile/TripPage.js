@@ -52,6 +52,16 @@ class TripPage extends React.Component {
         browserHistory.push(`/${trip.owner.facebookID}/profile/trips/${trip.id}/destination/${index}`);
     }
 
+    onDeleteDestination(destination) {
+        var trip = JSON.parse(JSON.stringify(findTripByIdOrLink(this.props.trips, this.props.params.id)));
+        let toDelete = trip.destinations.find(d => d.tripDates.startDate == destination.tripDates.startDate),
+            index = trip.destinations.indexOf(toDelete);
+        trip.destinations.splice(index, 1);
+        this.props.updateTrip(trip).payload.promise.then(() => {
+
+        })
+    }
+
     showAddDestination() {
         this.setState({destinationDialogOpened: true});
     }
@@ -81,12 +91,17 @@ class TripPage extends React.Component {
                             //     <TripsCalendar trip={trip} {...this.props} />
                             // </ResizeablePanel>
                         }
-
-                        <ResizeablePanel style={styles.panel} title="Friends with you">
-                            <TripFriends classname="trip-friends" trip={trip} />
-                        </ResizeablePanel>
-                        <ResizeablePanel style={styles.panel} title="Destinations" rightIcon={<FontIcon onTouchTap={() => this.showAddDestination()} style={{float: 'right', cursor:'pointer'}} className="material-icons">add</FontIcon>}>
-                            <DestinationsList destinations={trip.destinations} onDestinationSelected={this.onDestinationSelected.bind(this)} />
+                        {
+                            // <ResizeablePanel style={styles.panel} title="Friends with you">
+                            //     <TripFriends classname="trip-friends" trip={trip} />
+                            // </ResizeablePanel>
+                        }
+                        <ResizeablePanel style={styles.panel} title="Destinations" rightIcon={
+                            <FontIcon onTouchTap={() => this.showAddDestination()}
+                                style={{float: 'right', cursor:'pointer'}}
+                                className="material-icons">add</FontIcon>
+                            }>
+                            <DestinationsList destinations={trip.destinations} onDeleteDestination={this.onDeleteDestination.bind(this)} onDestinationSelected={this.onDestinationSelected.bind(this)} />
                         </ResizeablePanel>
                     </div>
                     {

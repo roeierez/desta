@@ -30,7 +30,7 @@ class TripSummary extends React.Component {
             maxDate = moment.max(endDates);
 
         return (
-            <div onClick={this.handleClick.bind(this)} className={classNames("trip-summary", getCityClassName(destinations[0])) }>
+            <div onClick={this.handleClick.bind(this)} className={classNames("trip-summary", destinations.length == 0 ? "" :getCityClassName(destinations[0])) }>
                 <div className="icons">
                     <i onClick={this.onShare.bind(this)} className="fa fa-share-alt" aria-hidden="true"></i>
                 </div>

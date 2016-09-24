@@ -93,6 +93,30 @@ export const updateTrip = (tripInfo) => ({
     }
 });
 
+export const removeDestinationItem = (trip, destinationId, collectionType, index) => {
+    let tripCopy = JSON.parse(JSON.stringify(trip));
+    let destination = tripCopy.destinations[+destinationId];
+    let collectionItems = destination[collectionType];
+    collectionItems.splice(index, 1);
+    return updateTrip(tripCopy);
+}
+
+export const addDestinationItem = (trip, destinationId, collectionType, item) => {
+    let tripCopy = JSON.parse(JSON.stringify(trip));
+    let destination = tripCopy.destinations[+destinationId];
+    let collectionItems = destination[collectionType];
+    collectionItems.push(item);
+    return updateTrip(tripCopy);
+}
+
+export const updateDestinationItem = (trip, destinationId, collectionType, itemIndex, item) => {
+    let tripCopy = JSON.parse(JSON.stringify(trip));
+    let destination = tripCopy.destinations[+destinationId];
+    let collectionItems = destination[collectionType];
+    collectionItems[itemIndex] = item;
+    return updateTrip(tripCopy);
+}
+
 export const loadProfile = (ownerID) => {
     return {
         type: 'LOAD_PROFILE',

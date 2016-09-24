@@ -7,3 +7,7 @@ export const parseShortDate = (date) => {
 export const formatShortDate = (momentDate) => {
     return momentDate.format('YYYY-MM-DD');
 }
+
+export const formatRange = (start, end) => {
+    return `${moment(start).format( 'MMM-DD-YY')} - ${moment(end).format( 'MMM-DD-YY')}`
+}

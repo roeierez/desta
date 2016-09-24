@@ -5,6 +5,7 @@ class PlacesAutocomplete extends React.Component {
 
     static propTypes = {
         style: PropTypes.object,
+        placeType: PropTypes.string,
         onPlaceSelected: PropTypes.func
     }
 
@@ -16,7 +17,7 @@ class PlacesAutocomplete extends React.Component {
 
     render() {
         return (
-            <Autocomplete onSelect={this.onSelect.bind(this)} {...this.props.style} hintText="Type a city name" floatingLabelText="Where are you going?" search={this.searchCities.bind(this)} />
+            <Autocomplete {...this.props} onSelect={this.onSelect.bind(this)} {...this.props.style} hintText={this.props.hintText || "Type a city name"} floatingLabelText={this.props.floatingLabelText || "Where are you going?"} search={this.searchPlaces.bind(this)} />
         );
     }
 
@@ -45,9 +46,16 @@ class PlacesAutocomplete extends React.Component {
         });
     }
 
-    searchCities(text) {
+    searchPlaces(text) {
+        let options = {
+            input: text
+        };
+
+        if (this.props.placeType != 'all') {
+            options.types = [`(${this.props.placeType || "cities"})`];
+        }
         return new Promise((resolve, reject) => {
-            this.autocompleteService.getPlacePredictions({types: ['(cities)'], input: text}, suggestions => {
+            this.autocompleteService.getPlacePredictions(options, suggestions => {
                 if (!suggestions) {
                     resolve([]);
                 } else {

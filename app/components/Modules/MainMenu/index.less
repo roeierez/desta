@@ -1,9 +1,10 @@
 .menu-wrapper {
+    top: 50px;
     margin-left: -20px;
-    width: 170px;
+    width: 220px;
     transition: max-width 250ms linear;
     &.menu-opened {
-        max-width: 170px;
+        max-width: 220px;
         .main-navigation {
             transform: translateX(0px);
             transition: transform 250ms linear;
@@ -14,9 +15,9 @@
     position: relative;
     .main-navigation {
         transition: transform 250ms linear;
-        transform: translateX(-150px);
-        position: absolute;
-        top: 0;
+        transform: translateX(-220px);
+        position: fixed;
+        top: 70px;
         left: 0;
         opacity: 0.8;
         display: flex;
@@ -24,11 +25,10 @@
         flex-direction: column;
         justify-content: center;
         align-self: flex-start;
-        width: 150px;
+        width: 175px;
         a {
             font-weight: 500;
             height: 48px;
-
             button {
                 text-align: left !important;
                 padding-left: 7px !important;

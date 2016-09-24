@@ -80,7 +80,10 @@ class AddDestinationDialog extends React.Component {
             tripDates: {
                 startDate: formatShortDate(moment(this.state.departDate)),
                 endDate: formatShortDate(moment(this.state.returnDate))
-            }
+            },
+            hotels: [],
+            pois: [],
+            notes: []
         });
     }
 

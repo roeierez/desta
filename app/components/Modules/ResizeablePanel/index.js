@@ -31,7 +31,7 @@ class ResizeablePanel extends React.Component {
         }
         return (
             <Paper style={this.props.style} zDepth={2}>
-                <Card>
+                <Card style={{height: '100%'}}>
                     {
                         this.props.title && (
                             <CardHeader {...titleProps} style={styles.header} title={this.props.title} >
@@ -39,7 +39,7 @@ class ResizeablePanel extends React.Component {
                             </CardHeader>
                         )
                     }
-                    <CardMedia expandable={this.props.expandable ==  true}>
+                    <CardMedia style={{overflow: 'scroll', maxHeight: '400px'}} expandable={this.props.expandable ==  true}>
                         {this.props.children}
                     </CardMedia>
                 </Card>

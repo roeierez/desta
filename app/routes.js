@@ -8,6 +8,7 @@ import TripsCollectionPage from './components/Pages/Profile/TripsCollectionPage'
 import TripPage from './components/Pages/Profile/TripPage';
 import TripDestination from './components/Pages/TripDestination';
 import Explore from './components/Pages/Explore';
+import DestinationEditor from './components/Modules/TripInfoEditor/main';
 
 export default (
     <Route path="/" component={Root}>
@@ -18,7 +19,7 @@ export default (
                 {/*<Route path="/profile/trips/:id/calendar" component={TripsCalendar} />*/}
                 {/*<Route path="/profile/trips/:id/map" component={TripsMap} />*/}
             </Route>
-            <Route path="/:user_id/profile/trips/:id/destination/:destinationId" component={TripDestination} >
+            <Route path="/:user_id/profile/trips/:id/destination/:destinationId" component={DestinationEditor} >
             </Route>
         </Route>
         <Route path="/explore/:country" component={Explore} />

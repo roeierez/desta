@@ -20,7 +20,7 @@ class DestinationsList extends React.Component {
     }
 
     render() {
-        let {destinations, onDestinationSelected} = this.props;
+        let {destinations, onDestinationSelected, onDeleteDestination} = this.props;
 
         const iconButtonElement = (
             <IconButton
@@ -45,7 +45,7 @@ class DestinationsList extends React.Component {
                     rightIcon={
                         <IconMenu style={{transform: "translateY(-18px)", paddingRight: "12px"}} iconButtonElement={iconButtonElement}>
                             <MenuItem onTouchTap={() => onDestinationSelected(d)}>Edit</MenuItem>
-                            <MenuItem>Delete</MenuItem>
+                            {destinations.length > 1 && <MenuItem onTouchTap={() => onDeleteDestination(d)}>Delete</MenuItem>}
                         </IconMenu>
                     }
                     primaryText={d.tripDestination.cityName}
