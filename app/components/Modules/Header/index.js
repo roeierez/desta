@@ -142,7 +142,7 @@ class Header extends React.Component {
                             )
                         }
                         {loggedInUser && (
-                            <Avatar onClick={this.openUserMenu.bind(this)} id={loggedInUser.id} width="30" height="30"/>
+                            <Avatar onClick={this.openUserMenu.bind(this)} id={loggedInUser.id} width={35} height={35}/>
                         )}
 
                         {loggedInUser && (

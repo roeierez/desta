@@ -4,11 +4,13 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import linkState from 'react-link-state';
 import PlacesAutocomplete from 'components/Modules/PlacesAutocomplete';
+import {grey700, cyan400, cyan200} from 'material-ui/styles/colors';
 
 const styles = {
     button: {
         float: 'right',
-        marginLeft: "5px"
+        marginLeft: "5px",
+        right: '-25px'
     }
 };
 
@@ -36,9 +38,13 @@ class PointOfInterestEditor extends React.Component {
     render() {
         let {open, onSubmit, onCancel} = this.props;
         return (
-            <Dialog open={open} title="Add Point of Interest">
-                <form>
+            <Dialog
+                titleStyle={{ backgroundColor: cyan200, padding: "12px 0px 12px 40px", borderColor: cyan400, borderBottom: "2px solid", color: "white"}}
+                contentStyle={{maxWidth: "550px"}}
+                open={open} title="Add Point of Interest">
+                <form style={{paddingLeft: "20px", paddingRight: "20px"}}>
                     <PlacesAutocomplete
+                        style={{marginBottom: '30px'}}
                         ref = "text"
                         placeType="all"
                         fullWidth={true}
