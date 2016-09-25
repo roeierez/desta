@@ -18,7 +18,7 @@ class TripsCollectionPage extends React.Component {
     }
 
     render (){
-        var {loadingProfile, trips, editedTrip, editType, exitShareMode, shareTrip, generateTripLink} = this.props,
+        var {loadingProfile, trips, editedTrip, editType, exitShareMode, shareTrip, generateTripLink, removeTripLink} = this.props,
             shareDialogOpened = editedTrip != null && editType == 'share',
             tripToShare = shareDialogOpened && trips.find(t => (t.id == editedTrip));
 
@@ -29,7 +29,7 @@ class TripsCollectionPage extends React.Component {
         return (
             <div>
                 {tripToShare && (
-                        <ShareTrip generateTripLink={generateTripLink} shareTrip={shareTrip} trip={tripToShare} onHide={exitShareMode} container={this} show={shareDialogOpened} />
+                        <ShareTrip removeTripLink={removeTripLink} generateTripLink={generateTripLink} shareTrip={shareTrip} trip={tripToShare} onRequestClose={exitShareMode} open={shareDialogOpened} />
                     )
                 }
                 <div className="user-profile-header">

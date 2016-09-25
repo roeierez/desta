@@ -16,7 +16,7 @@ const styles = {
     },
 
     listItem: {
-        zoom: "90%", backgroundColor: 'white'
+        backgroundColor: 'white'
     },
 
     rightIcon: {
@@ -130,7 +130,7 @@ class DestinationEditor extends React.Component {
                                     style={styles.listItem}
                                     leftAvatar={<Avatar
                                                       icon={<FontIcon className="material-icons">place</FontIcon>}
-                                                      color={colors [ i % colors.length]}
+                                                      color={colors [ (i + 2) % colors.length]}
                                                       backgroundColor="white"
                                                       size={35}
                                                       style={{margin: 5}}
@@ -151,7 +151,7 @@ class DestinationEditor extends React.Component {
                                     style={styles.listItem}
                                     leftAvatar={<Avatar
                                                       icon={<FontIcon className="material-icons">note_add</FontIcon>}
-                                                      color={colors [ i % colors.length]}
+                                                      color={colors [ (i + 4) % colors.length]}
                                                       backgroundColor="white"
                                                       size={35}
                                                       style={{margin: 5}}

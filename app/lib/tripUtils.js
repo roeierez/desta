@@ -33,6 +33,19 @@ export const findTripByIdOrLink = (trips, idOrLink) => {
     });
 }
 
+export const formatTitleAndSubtitle = (trip) => {
+    let destinations = trip.destinations.map(d => d.tripDestination.cityName),
+        startDates = trip.destinations.map(d => moment(d.tripDates.startDate)),
+        endDates = trip.destinations.map(d => moment(d.tripDates.endDate)),
+        minDate = moment.min(startDates),
+        maxDate = moment.max(endDates);
+
+    return {
+        title: trip.name,
+        subtitle: `${minDate.format('ll')} - ${maxDate.format('ll')}`
+    }
+}
+
 export const isBookedDate = (trip, date) => {
     let destinations = trip.destinations,
         bookedDatesRanges = destinations.map(d => {

@@ -35,6 +35,7 @@ const ensureSignedRequest = async (req, res, next) => {
                 args.push(async function(res){
                     try {
                         if (res && res.error && res.error.code == 190 && !retry) {
+                            console.error('Error Retrying');
                             let accessToken = await requestAccessToken(facebook, req.facebook.signedRequest);
                             await storage.setAccessToken(req.user.facebookID, accessToken);
                             req.user.access_token = accessToken;
@@ -44,7 +45,8 @@ const ensureSignedRequest = async (req, res, next) => {
                         }
 
                         if (!res || res.error) {
-                            console.log(!res ? 'error occurred' : res.error);
+                            //console.log(!res ? 'error occurred' : res.error);
+                            console.log("Error Rejecting");
                             reject(res && res.error);
                         } else {
                             resolve(res);

@@ -22,7 +22,7 @@ class Avatar extends React.Component {
         return (
             <div className="avatar-container" onClick={this.props.onClick}>
                 <MUIAvatar onClick={this.handleClick.bind(this)} src={`https://graph.facebook.com/v2.7/${id}/picture?type=small&width=${width}&height=${height}`} />
-                {name && <div className="text" style={this.props.textStyle}>{name}</div>}
+                {name && <div className="text avatar" style={this.props.textStyle}>{name}</div>}
             </div>
         )
     }

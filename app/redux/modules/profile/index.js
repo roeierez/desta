@@ -160,3 +160,10 @@ export const generateTripLink = (trip) => {
     }
 }
 
+export const removeTripLink = (trip) => {
+    return updateTrip({
+        ...trip,
+        link: null
+    })
+}
+

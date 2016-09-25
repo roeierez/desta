@@ -39,7 +39,7 @@ class ResizeablePanel extends React.Component {
                             </CardHeader>
                         )
                     }
-                    <CardMedia style={{overflow: 'scroll', maxHeight: '400px'}} expandable={this.props.expandable ==  true}>
+                    <CardMedia expandable={this.props.expandable ==  true}>
                         {this.props.children}
                     </CardMedia>
                 </Card>

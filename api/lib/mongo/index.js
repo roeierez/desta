@@ -79,12 +79,13 @@ var storage = {
     },
 
     getTrip: function(facebookID, tripID) {
+        console.error('getTrip: tripID=' + tripID)
         let condition = {
             trips: {
                 $elemMatch: {
                     $or:[
                         {id: tripID},
-                        {link: tripID}
+                        {linkID: tripID}
                     ]
                 }
             }
@@ -92,6 +93,7 @@ var storage = {
         return db.collection('users').find(condition, {"trips.$":1, facebookID: 1}).toArray()
         //return db.collection('users').find({facebookID, ...{$or}}, {"trips.$":1}).toArray()
             .then(result => {
+                console.error('getTrip results = ' + result);
                 let user = result && result[0],
                     trip = user && user.trips && user.trips[0];
                 if (trip) {
