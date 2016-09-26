@@ -22,7 +22,7 @@ module.exports = {
     new CopyWebpackPlugin([
       {
         from: path.join(paths.project(config.get('dir_src')), 'resources'),
-        to: path.join(paths.project(config.get('dir_dist')), 'resources')
+        to: path.join(paths.project(config.get('dir_dist_production')), 'resources')
       }]),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
