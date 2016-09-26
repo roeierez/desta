@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const config = require('../config');
+const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const paths = config.get('utils_paths');
 
