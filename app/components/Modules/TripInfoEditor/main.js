@@ -38,6 +38,21 @@ const DestinationEditorSection = ({title, onAdd, children}) => {
     )
 }
 
+const EmptySectionItem = ({avatarIcon, avatarColor, hintText}) => {
+    return (
+        <ListItem
+            style={styles.listItem}
+            leftAvatar={<Avatar
+                                                          icon={<FontIcon className="material-icons">{avatarIcon}</FontIcon>}
+                                                          color={avatarColor}
+                                                          backgroundColor="white"
+                                                          size={35}
+                                                          style={{margin: 5}}
+                                                        />}
+            primaryText={hintText}/>
+    )
+}
+
 class DestinationEditor extends React.Component {
 
     static propTypes = {
@@ -103,6 +118,7 @@ class DestinationEditor extends React.Component {
                 <HotelEditor open={this.state.editingHotel == true} onCancel={() => this.setState({editingHotel: false})} onSubmit={(hotel) => this.addHotel(trip, destinationID, hotel)} />
                 <DestinationEditorSection title="Hotels" onAdd={() => this.setState({editingHotel: true})}>
                     <List >
+                        {hotels.length == 0 && <EmptySectionItem avatarIcon="hotel" avatarColor={colors[0]} hintText="All your destiation's hotels in one place." />}
                         {hotels.map((h,i) => {
                             return (
                                 <ListItem
@@ -124,6 +140,7 @@ class DestinationEditor extends React.Component {
                 <PointOfInterestEditor open={this.state.editingPOI == true} onCancel={() => this.setState({editingPOI: false})} onSubmit={(text) => this.addPOI(trip, destinationID, text)} />
                 <DestinationEditorSection title="Points of Interest" onAdd={() => this.setState({editingPOI: true})}>
                     <List >
+                        {pois.length == 0 && <EmptySectionItem avatarIcon="place" avatarColor={colors[1]} hintText="Manage your point of interests like: parks, restourants, stores and more" />}
                         {pois.map((h,i) => {
                             return (
                                 <ListItem
@@ -145,6 +162,7 @@ class DestinationEditor extends React.Component {
                 <TravellerNoteEditor open={this.state.editingNote == true} onCancel={() => this.setState({editingNote: false})} onSubmit={(text) => this.addNote(trip, destinationID, text)} />
                 <DestinationEditorSection title="Traveller Notes" onAdd={() => this.setState({editingNote: true})}>
                     <List >
+                        {notes.length == 0 && <EmptySectionItem avatarIcon="note_add" avatarColor={colors[2]} hintText="Just notes to remind you what you might forget" />}
                         {notes.map((h,i) => {
                             return (
                                 <ListItem

@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import Dialog from 'material-ui/Dialog';
-import {cyan400, grey700, grey600} from 'material-ui/styles/colors';
+import {cyan400, grey700, grey600, cyan200} from 'material-ui/styles/colors';
 import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
 import DatePicker from 'material-ui/DatePicker';
@@ -111,7 +111,7 @@ class AddDestinationDialog extends React.Component {
 
         return (
             <Dialog title={this.props.title || "New Trip"}
-                    titleStyle={{padding: "12px 0px 12px 50px", borderColor: cyan400, borderBottom: "2px solid", color: grey700}}
+                    titleStyle={{ backgroundColor: cyan200, padding: "12px 0px 12px 40px", borderColor: cyan400, borderBottom: "2px solid", color: "white"}}
                     modal={false}
                     contentStyle={{maxWidth: "550px"}}
                     actions = {actions}
@@ -122,6 +122,7 @@ class AddDestinationDialog extends React.Component {
                     <div className="top">
                         <FontIcon color={grey600} className="material-icons">place</FontIcon>
                         <PlacesAutocomplete
+                            fullWidth={true}
                             onPlaceSelected={this.onDestinationChanged.bind(this)}
                             style={styles.topField}
                         />
@@ -140,6 +141,7 @@ class AddDestinationDialog extends React.Component {
                         <div className="friends-wrapper">
                             <FontIcon color={grey600} className="material-icons">person</FontIcon>
                             <FCFriendsPicker
+                                fullWidth={true}
                                 onChange={this.onFriendsChanged.bind(this)}
                                 style={styles.bottomField}
                             />

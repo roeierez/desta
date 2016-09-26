@@ -9,6 +9,7 @@ import AddDestinationDialog from 'components/Modules/AddDestinationDialog';
 import moment from 'moment';
 import {browserHistory} from 'react-router';
 import {formatShortDate} from 'lib/dateUtils';
+import {formatTripName} from 'lib/tripUtils';
 
 @connect(
     state => ({...state.profile, ...state.app, ...state.createTrip}),
@@ -47,10 +48,15 @@ export default class Root extends Component {
     }
 
     createTrip(destination) {
-        this.props.createTrip({
-            destinations: [
+        let trip = {
+            destinations:[
                 destination
             ]
+        };
+
+        this.props.createTrip({
+            ...trip,
+            name: formatTripName(trip)
         }).payload.promise.then(result => {
             console.log(result);
             browserHistory.push(`/${this.props.loggedInUser.id}/profile/trips/${result.payload.id}`)

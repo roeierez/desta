@@ -25,7 +25,7 @@ class Autocomplete extends React.Component {
             valueProps = {};
 
         return (
-            <AutoComplete  searchText={this.state.searchText} ref="autoComplete" style={this.props.style} filter={AutoComplete.caseInsensitiveFilter} onNewRequest={this.onNewRequest.bind(this)} dataSource={this.state.dataSource || []} hintText={hintText} floatingLabelText={floatingLabelText} onUpdateInput={this.onSearch.bind(this)} />
+            <AutoComplete fullWidth={this.props.fullWidth}  searchText={this.state.searchText} ref="autoComplete" style={this.props.style} filter={AutoComplete.caseInsensitiveFilter} onNewRequest={this.onNewRequest.bind(this)} dataSource={this.state.dataSource || []} hintText={hintText} floatingLabelText={floatingLabelText} onUpdateInput={this.onSearch.bind(this)} />
         );
     }
 

@@ -28,7 +28,9 @@ class ShareTrip extends React.Component {
             VI = (color) => <FontIcon color={color} className="material-icons">check_circle</FontIcon>;
 
         return (
-            <Dialog titleStyle={{marginRight: "40px", marginLeft: "38px", padding: "12px 0px 12px 0px", borderColor: cyan400, borderBottom: "2px solid", color: grey700}}
+            <Dialog
+                autoScrollBodyContent={true}
+                titleStyle={{marginRight: "40px", marginLeft: "38px", padding: "12px 0px 12px 0px", borderColor: cyan400, borderBottom: "2px solid", color: grey700}}
                     modal={false}
                          title= {<div>Share Trip <FontIcon onTouchTap={() => this.handleClose()} style={{cursor: 'pointer', float: 'right', right: "-30px", top: "5px"}} className="material-icons">close</FontIcon></div>}
                     contentStyle={{maxWidth: "550px"}}
@@ -41,16 +43,14 @@ class ShareTrip extends React.Component {
                     secondaryText={subtitle}
                 />
                 <ListItem
-                    style={{marginBottom: "20px"}}
+                    style={{marginBottom: "10px"}}
                     rightIcon={
                         trip.link ?
                             <FontIcon onTouchTap={(e) => {e.preventDefault(); e.stopPropagation(); removeTripLink(trip);}} color={red400} className="material-icons">delete</FontIcon> :
-                            <FontIcon onTouchTap={(e) => {e.preventDefault(); e.stopPropagation(); generateTripLink(trip);}} color={indigo400} className="material-icons">add</FontIcon>
+                            <FontIcon onTouchTap={(e) => {e.preventDefault(); e.stopPropagation(); generateTripLink(trip);}} color={indigo400} className="material-icons">refresh</FontIcon>
                     }
-                    primaryText=
-                        {
-                            trip.link != null ? <a style={{display:"inline-block", overflow:"hidden", width: "300px", textOverflow: 'ellipsis', color: indigo400}} href={trip.link}>{trip.link}</a>: "Get link"
-                    }
+                    secondaryText={trip.link != null && <a style={{display:"inline-block", overflow:"hidden", width: "300px", textOverflow: 'ellipsis', color: indigo400}} href={trip.link}>{trip.link}</a>}
+                    primaryText= { trip.link != null ? "Private Link:" : "Get Link" }
                     leftAvatar={<Avatar backgroundColor={indigo400} icon={<FontIcon className="material-icons">link</FontIcon>} />}
                 />
 
@@ -59,8 +59,9 @@ class ShareTrip extends React.Component {
                 <ListItem
                     onTouchTap={() => this.handleShare('public')}
                     rightIcon={sharedWith == 'public' && VI(lightBlue400)}
-                    style={{marginTop: "20px",marginBottom: "15px"}}
+                    style={{marginTop: "10px",marginBottom: "15px"}}
                     primaryText="Public"
+                    secondaryText="Anyone can see this trip"
                     leftAvatar={<Avatar backgroundColor={lightBlue400} icon={<FontIcon className="material-icons">public</FontIcon>} />}
                 />
                 <ListItem
@@ -68,6 +69,7 @@ class ShareTrip extends React.Component {
                     rightIcon={sharedWith == 'friends' && VI(lightGreen400)}
                     style={{ marginBottom: "15px"}}
                     primaryText="Friends"
+                    secondaryText="Your friends will be able to follow this trip"
                     leftAvatar={<Avatar backgroundColor={lightGreen400} icon={<FontIcon className="material-icons">group</FontIcon>} />}
                 />
                 <ListItem
@@ -75,9 +77,9 @@ class ShareTrip extends React.Component {
                     rightIcon={sharedWith == 'private' && VI(red400)}
                     style={{marginBottom: "15px"}}
                     primaryText="Private"
+                    secondaryText="Only you can see this trip"
                     leftAvatar={<Avatar backgroundColor={red400} icon={<FontIcon className="material-icons">vpn_key</FontIcon>} />}
                 />
-
             </Dialog>
         );
     }

@@ -241,7 +241,7 @@ class Explore extends React.Component {
                                         byCountry={byCountry}/>
                         )}
                         {cityToShow && (
-                            <PeopleVisitsList header={<ListNavigationHeader onBack={this.backFromPeople.bind(this)} title={`${cityToShow.city.toUpperCase()}, ${cityToShow.country.toUpperCase()}`} backTitle="All Cities" />} selectedPerson={visitToShow} onSelect={this.onVisitSelected.bind(this)}
+                            <PeopleVisitsList header={<ListNavigationHeader onBack={this.backFromPeople.bind(this)} title={`${cityToShow.city.toUpperCase()}, ${cityToShow.country.toUpperCase()}`} backTitle="All" />} selectedPerson={visitToShow} onSelect={this.onVisitSelected.bind(this)}
                                         visits={shownCityVisits}/>
                         )}
                     </div>

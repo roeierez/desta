@@ -29,7 +29,7 @@ class FriendsAutocomplete extends React.Component {
         }
 
         return (
-            <Autocomplete ref="autoComplete" {...newProps} style-={this.props.style} onSelect={this.props.onFriendSelected} {...this.props.style} search={this.searchFriend.bind(this)} />
+            <Autocomplete fullWidth={this.props.fullWidth} ref="autoComplete" {...newProps} style-={this.props.style} onSelect={this.props.onFriendSelected} {...this.props.style} search={this.searchFriend.bind(this)} />
         );
     }
 

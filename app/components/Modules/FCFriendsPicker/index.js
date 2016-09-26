@@ -16,6 +16,10 @@ class FCFriendsPicker extends React.Component {
     }
 
     onSuggestionSelected (suggestion) {
+        console.error('suggestion = ' + JSON.stringify(suggestion));
+        if (!suggestion) {
+            return;
+        }
         //this.setState({value: '', chosenFriends: this.state.chosenFriends.concat(suggestion)});
 
         var value = (this.props.value || []).concat([Object.assign({}, suggestion)]);;
@@ -44,7 +48,7 @@ class FCFriendsPicker extends React.Component {
 
         return (
             <div className="friends-container" style={this.props.style}>
-                <FacebookFriendsAutoComplete ref="autoComplete" floatingLabelText={"Who's coming with you?"} hintText="Type friends names" style={{marginLeft: '15px'}} filter={this.filterExistingFriends.bind(this)} onFriendSelected={this.onSuggestionSelected.bind(this)} />
+                <FacebookFriendsAutoComplete fullWidth={this.props.fullWidth} ref="autoComplete" floatingLabelText={"Who's coming with you?"} hintText="Type friends names" filter={this.filterExistingFriends.bind(this)} onFriendSelected={this.onSuggestionSelected.bind(this)} />
                 <div className="avatars-container">
                     {
                         chosenFriends.map(f => (

@@ -18,7 +18,7 @@ function connect() {
 var storage = {
 
     getUser: function(facebookID) {
-        return db.collection('users').find({facebookID}, {access_token: 1, facebookID: 1, last_friends_sync: 1}).toArray()
+        return db.collection('users').find({facebookID}, {access_token: 1, facebookID: 1, last_friends_sync: 1, name: 1}).toArray()
             .then(res => res[0]);
     },
 

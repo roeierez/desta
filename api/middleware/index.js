@@ -6,23 +6,25 @@ const router = new Express.Router();
 const isProduction = process.env.NODE_ENV == 'production';
 
 const syncFriends = async (req, res, next) => {
+    console.error("syncFriends");
     let user = req.user,
         fbAPI = req.facebook.api;
 
     if (!user.name) {
         let userDetails = await fbAPI.apiPromise('/me/');
         user.name = userDetails.name;
+        console.error('updating user in sync friends ' + JSON.stringify(user) );
         await req.storage.updateUser(user.facebookID, {name: user.name});
     }
     next();
     if (!req.user.last_friends_sync || moment().diff( moment(req.user.last_friends_sync), 'hours') > 1 ) {
         let res = await fbAPI.apiPromise('/me/friends')
         req.storage.setUserFriends(req.user.facebookID, res.data);
-        console.log(res);
     }
 }
 
 const ensureSignedRequest = async (req, res, next) => {
+    console.error("ensureSignedRequest");
     var cookieName = `fbsr_${ isProduction ? '280958242271322' : '289224691444677'}`,
         cookie = req.cookies[cookieName],
         storage = req.storage,
@@ -77,6 +79,7 @@ const ensureSignedRequest = async (req, res, next) => {
 }
 
 const ensureUser = async (req, res, next) => {
+    console.error("Ensure User");
     let storage = req.storage,
         user = await storage.getUser(req.facebook.signedRequest.user_id);
     req.user = user;
@@ -84,6 +87,7 @@ const ensureUser = async (req, res, next) => {
 }
 
 const ensureAccessToken = async(req, res, next) => {
+    console.error("ensureAccessToken");
     var storage = req.storage,
         user = req.user;
 
