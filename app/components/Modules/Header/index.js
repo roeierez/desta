@@ -18,6 +18,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
+import {browserHistory} from 'react-router';
 
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 import {blue500, red500, green500} from 'material-ui/styles/colors';
@@ -104,7 +105,8 @@ class Header extends React.Component {
             <AppBar
                 style={{position: 'fixed'}}
                 title="Desta"
-                titleStyle={{flex: "initial", fontWeight: "300", fontSize: "22px"}}
+                onTitleTouchTap={() => browserHistory.push('/')}
+                titleStyle={{cursor: 'pointer', flex: "initial", fontWeight: "300", fontSize: "22px"}}
                 onLeftIconButtonTouchTap={this.toggleLeftMenu.bind(this)}>
                 <div className="app-nav-bar">
                     <div className="separator" ></div>
@@ -142,7 +144,7 @@ class Header extends React.Component {
                             )
                         }
                         {loggedInUser && (
-                            <Avatar onClick={this.openUserMenu.bind(this)} id={loggedInUser.id} width={35} height={35}/>
+                            <Avatar style={{cursor:'pointer'}} id={loggedInUser.id} width={35} height={35}/>
                         )}
 
                         {loggedInUser && (
