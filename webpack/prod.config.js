@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const config = require('../config');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const paths = config.get('utils_paths');
 
 module.exports = {
@@ -17,6 +18,11 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('bundle.css'),
     new webpack.optimize.OccurrenceOrderPlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: path.join(paths.project(config.get('dir_src')), 'resources'),
+        to: path.join(paths.project(config.get('dir_dist')), 'resources')
+      }]),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
