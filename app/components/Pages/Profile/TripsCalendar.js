@@ -49,9 +49,9 @@ class TripsCalendar extends React.Component {
             );
 
         let props = {events};
-        if (this.props.loggedInUser.id == this.props.trip.owner.facebookID) {
-            props.components = {event: EventComponent};
-        }
+        // if (this.props.loggedInUser.id == this.props.trip.owner.facebookID) {
+        //     props.components = {event: EventComponent};
+        // }
         return (
             <div className="calendar modal-container">
                 <Calendar {...props} />

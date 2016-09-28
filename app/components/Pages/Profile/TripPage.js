@@ -16,8 +16,19 @@ import DestinationsList from 'components/Modules/DestinationsList';
 import FontIcon from 'material-ui/FontIcon';
 import AddDestinationDialog from 'components/Modules/AddDestinationDialog';
 import TripHeader from './TripHeader';
+import {grey300} from 'material-ui/styles/colors';
+import Paper from 'material-ui/Paper';
+
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 
 let styles = {
+    header: {
+        backgroundColor: 'white',
+        fontSize: '16px',
+        fontFamily: 'Roboto',
+        borderColor: grey300,
+        borderBottom: "1px solid " + grey300
+    },
     panel: {
         marginBottom: "20px"
     }
@@ -86,22 +97,25 @@ class TripPage extends React.Component {
                 <div className="trip-info">
                     <div className="left">
                         {
-                            // <ResizeablePanel style={styles.panel} title="My Scheule">
-                            //     <TripsCalendar trip={trip} {...this.props} />
-                            // </ResizeablePanel>
+                            <ResizeablePanel expandable={true} style={{...styles.panel, flex: 0}} title="My Scheule">
+                                <TripsCalendar trip={trip} {...this.props} />
+                            </ResizeablePanel>
                         }
                         {
                             // <ResizeablePanel style={styles.panel} title="Friends with you">
                             //     <TripFriends classname="trip-friends" trip={trip} />
                             // </ResizeablePanel>
                         }
-                        <ResizeablePanel style={styles.panel} title="Destinations" rightIcon={
+                        <Paper style={{display: 'flex', flexDirection: 'column'}} zDepth={2}>
+                        <CardHeader style={styles.header} title="Destinations">
                             <FontIcon onTouchTap={() => this.showAddDestination()}
-                                style={{float: 'right', cursor:'pointer'}}
-                                className="material-icons">add</FontIcon>
-                            }>
+                                      style={{float: 'right', top: "-3px", marginRight: "0px", cursor:'pointer'}}
+                                      className="material-icons">add</FontIcon>
+                        </CardHeader>
+                        <div style={{backgroundColor: 'white', overflowY: 'auto'}}>
                             <DestinationsList destinations={trip.destinations} onDeleteDestination={this.onDeleteDestination.bind(this)} onDestinationSelected={this.onDestinationSelected.bind(this)} />
-                        </ResizeablePanel>
+                        </div>
+                        </Paper>
                     </div>
                     {
                         // <div className="middle">

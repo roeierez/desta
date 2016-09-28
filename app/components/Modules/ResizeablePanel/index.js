@@ -8,7 +8,7 @@ let styles={
     header: {
         borderColor: grey300,
         borderBottom: "1px solid " + grey300,
-        margin: "0px 15px 0px 15px",
+        margin: "0px 0px 0px 15px",
         paddingLeft: "0px",
         paddingRight: "0px"
     }
