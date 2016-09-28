@@ -78,6 +78,17 @@ var storage = {
             .then(r => me.getTrip(facebookID, tripID));
     },
 
+    deleteTrip: function(facebookID, tripID) {
+        return db.collection('users').find({facebookID}).toArray()
+            .then(result => {
+                if (result && result.length > 0) {
+                    let user = result[0];
+                    let trips = user.trips.filter(t => t.id != tripID);
+                    return db.collection('users').update({facebookID}, {$set: {trips: trips}});
+                }
+            })
+    },
+
     getTrip: function(facebookID, tripID) {
         console.error('getTrip: tripID=' + tripID)
         let condition = {

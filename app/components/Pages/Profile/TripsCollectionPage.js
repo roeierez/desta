@@ -37,7 +37,7 @@ class TripsCollectionPage extends React.Component {
                         <Avatar id={this.props.params.user_id} name={this.props.owner && this.props.owner.name} width={50} height={50} />
                     </div>
                 </div>
-                <TripsGallery enterShareMode={this.props.enterShareMode} trips= {this.props.trips.filter(t => t.owner.facebookID == this.props.params.user_id)} />
+                <TripsGallery deleteTrip={this.props.deleteTrip} enterShareMode={this.props.enterShareMode} trips= {this.props.trips.filter(t => t.owner.facebookID == this.props.params.user_id)} />
             </div>
         );
     }

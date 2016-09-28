@@ -76,7 +76,8 @@ router.get('/:id/generateLink', wrap(async function (req, res) {
     return req.storage.updateTrip(req.user.facebookID, req.params.id, {link, linkID}).then(() => res.json({link}));
 }));
 router.delete('/:id', wrap(async function (req, res) {
-    trips = trips.filter(t => t.id != req.params.id);
+    return req.storage.deleteTrip(req.user.facebookID, req.params.id)
+        .then(() => res.json({status: 'Ok'}));
 }));
 
 export default router;

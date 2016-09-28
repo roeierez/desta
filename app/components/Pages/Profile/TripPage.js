@@ -7,7 +7,6 @@ import TripInfoEditor from 'components/Modules/TripInfoEditor';
 import {Panel} from 'react-bootstrap';
 import ResizeablePanel from 'components/Modules/ResizeablePanel';
 import TripFriends from 'components/Modules/TripFriends';
-import DestinationListItem from './DestinationListItem';
 import { browserHistory } from 'react-router'
 import moment from 'moment';
 import Avatar from 'components/Modules/Avatar';

@@ -39,6 +39,12 @@ export default createReducer({
     ['UPDATE_TRIP_REQUEST']: (state, {payload}) => {
         return applyUpdatedTrip(state, payload);
     },
+    ['DELETE_TRIP_SUCCESS']: (state, {payload}) => {
+        return {
+            ...state,
+            trips: state.trips.filter(t => t.id != payload)
+        }
+    },
     ['FETCH_TRIP_SUCCESS']: (state, {payload}) => {
         return applyUpdatedTrip(state, payload, {fetchingTrip: false});
     },
@@ -135,6 +141,16 @@ export const enterShareMode = (trip) => {
     return {
         type: 'ENTER_SHARE_MODE',
         payload: trip
+    }
+}
+
+export const deleteTrip = (tripID) => {
+    return {
+        type: 'DELETE_TRIP',
+        payload: {
+            promise: fetch(`/api/trips/${tripID}`, {credentials: 'include', headers: {'Content-Type': 'application/json'}, method: 'DELETE'})
+                .then(() => tripID)
+        }
     }
 }
 
