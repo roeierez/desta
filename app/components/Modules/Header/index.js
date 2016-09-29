@@ -133,8 +133,6 @@ class Header extends React.Component {
                             <MessageNotificationsIcon color="rgba(255, 255, 255, 0.8)"/>
                         }
                         <div className="separator" ></div>
-                        <span className="page-title">{ this.getPageTitle()}</span>
-                        <div className="separator" ></div>
                         {loggedInUser && (
                             <Avatar style={{cursor:'pointer'}} id={loggedInUser.id} width={35} height={35}/>
                         )}
