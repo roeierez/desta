@@ -72,8 +72,8 @@ class TripPage extends React.Component {
         })
     }
 
-    showAddDestination() {
-        this.setState({destinationDialogOpened: true});
+    showAddDestination(e) {
+        this.setState({destinationDialogOpened: true, anchorEl: e.currentTarget});
     }
 
     onAddDesintation(destination) {
@@ -108,7 +108,7 @@ class TripPage extends React.Component {
                         }
                         <Paper style={{display: 'flex', flexDirection: 'column'}} zDepth={2}>
                         <CardHeader style={styles.header} title="Destinations">
-                            <FontIcon onTouchTap={() => this.showAddDestination()}
+                            <FontIcon onTouchTap={(e) => this.showAddDestination(e)}
                                       style={{float: 'right', top: "-3px", marginRight: "0px", cursor:'pointer'}}
                                       className="material-icons">add</FontIcon>
                         </CardHeader>
@@ -130,8 +130,8 @@ class TripPage extends React.Component {
                     </div>
                 </div>
                 <AddDestinationDialog open={this.state.destinationDialogOpened}
+                                      anchorEl= {this.state.anchorEl}
                                       onSubmit={this.onAddDesintation.bind(this)}
-                                      title="New Destination"
                                       submitButtonText="Add Destination"
                                       onRequestClose={() => this.setState({destinationDialogOpened: false})}/>
             </div>

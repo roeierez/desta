@@ -37,30 +37,11 @@ export default class Root extends Component {
                 <div className={classNames("page-content-wrapper", "layout-row", {"with-page-links": (this.props.pageLinks != null)})}>
                     <MainMenu {...this.props} className="main-menu"/>
                     <div className="page-content use-all-space">
-                        <AddDestinationDialog open={this.props.newTripFormVisible == true}
-                                              onSubmit={this.createTrip.bind(this)}
-                                              onRequestClose={() => this.props.showNewTripForm(false)}/>
+                        
                         { this.props.children && React.cloneElement(this.props.children, Object.assign({}, this.props, this.props.children.props, this.props.children.props.children)) }
                     </div>
                 </div>
             </div>
         );
-    }
-
-    createTrip(destination) {
-        let trip = {
-            destinations:[
-                destination
-            ]
-        };
-
-        this.props.createTrip({
-            ...trip,
-            name: formatTripName(trip)
-        }).payload.promise.then(result => {
-            console.log(result);
-            browserHistory.push(`/${this.props.loggedInUser.id}/profile/trips/${result.payload.id}`)
-            this.props.showNewTripForm(false);
-        });
     }
 }

@@ -20,6 +20,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import {browserHistory} from 'react-router';
 import FriendsAutocomplete from 'components/Modules/FriendsAutocomplete';
+import {formatShortDate} from 'lib/dateUtils';
+import {formatTripName} from 'lib/tripUtils';
+import AddDestinationDialog from 'components/Modules/AddDestinationDialog';
+import moment from 'moment';
 
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 import {blue500, red500, green500, lightWhite} from 'material-ui/styles/colors';
@@ -102,6 +106,14 @@ class Header extends React.Component {
         browserHistory.push(`/${friend.id}/profile/trips`);
     }
 
+    showCreateTrip(e) {
+        this.setState({
+            createTripAnchorEl: e.currentTarget
+        }, () => {
+            this.props.showNewTripForm(true);
+        })
+    }
+
     render (){
         let {login, loggedInUser, selectLocation} = this.props;
         var userPhothURL = loggedInUser ? `https://graph.facebook.com/v2.7/${loggedInUser.id}/picture?type=small&width=45&height=45` : null,
@@ -114,10 +126,14 @@ class Header extends React.Component {
                 onTitleTouchTap={() => browserHistory.push('/')}
                 titleStyle={{cursor: 'pointer', flex: "initial", fontWeight: "300", fontSize: "18px"}}
                 onLeftIconButtonTouchTap={this.toggleLeftMenu.bind(this)}>
+                <AddDestinationDialog open={this.props.newTripFormVisible == true}
+                                      anchorEl={this.state.createTripAnchorEl}
+                                      onSubmit={this.createTrip.bind(this)}
+                                      onRequestClose={() => this.props.showNewTripForm(false)}/>
                 <div className="app-nav-bar">
                     <div className="separator" ></div>
                     <div className="left-nav-bar">
-                        <RaisedButton onTouchTap={() => this.props.showNewTripForm(true)} className="new-trip raise-button-rounded" secondary={true} label="New Trip">
+                        <RaisedButton onTouchTap={(e) => this.showCreateTrip(e)} className="new-trip raise-button-rounded" secondary={true} label="New Trip">
                         </RaisedButton>
                         <div className="separator" ></div>
                         <div className="search">
@@ -161,6 +177,23 @@ class Header extends React.Component {
                 </div>
             </AppBar>
         );
+    }
+
+    createTrip(destination) {
+        let trip = {
+            destinations:[
+                destination
+            ]
+        };
+
+        this.props.createTrip({
+            ...trip,
+            name: formatTripName(trip)
+        }).payload.promise.then(result => {
+            console.log(result);
+            browserHistory.push(`/${this.props.loggedInUser.id}/profile/trips/${result.payload.id}`)
+            this.props.showNewTripForm(false);
+        });
     }
 };
 

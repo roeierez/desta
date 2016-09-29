@@ -9,6 +9,7 @@ import FCFriendsPicker from 'components/Modules/FCFriendsPicker';
 import moment from 'moment';
 import {browserHistory} from 'react-router';
 import {formatShortDate} from 'lib/dateUtils';
+import Popover from 'material-ui/Popover';
 
 let styles = {
     topField: {
@@ -110,11 +111,10 @@ class AddDestinationDialog extends React.Component {
 
 
         return (
-            <Dialog title={this.props.title || "New Trip"}
-                    titleStyle={{ backgroundColor: cyan200, padding: "8px 0px 8px 40px", borderColor: cyan400, borderBottom: "2px solid", color: "white"}}
-                    modal={false}
-                    contentStyle={{maxWidth: "550px"}}
-                    actions = {actions}
+            <Popover
+                style={{borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px"}}
+                title={this.props.title || "New Trip"}
+                     anchorEl = {this.props.anchorEl}
                     open={this.props.open}
                     onRequestClose={this.handleClose.bind(this)}
             >
@@ -147,8 +147,21 @@ class AddDestinationDialog extends React.Component {
                             />
                         </div>
                     </div>
+                    <div className="actions">
+                        <FlatButton
+                            label="Cancel"
+                            secondary={true}
+                            onTouchTap={() => this.handleClose()}
+                        />,
+                        <FlatButton
+                            label={this.props.submitButtonText || "Create Trip"}
+                            primary={true}
+                            disabled={!canSubmit}
+                            onTouchTap={() => this.handleSubmit()}
+                        />
+                    </div>
                 </div>
-            </Dialog>
+            </Popover>
         );
     }
 }
