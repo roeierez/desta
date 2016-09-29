@@ -47,7 +47,7 @@ class FriendsAutocomplete extends React.Component {
                 {
                     text: s.name,
                     textValue: s,
-                    value: <MenuItem style={{position: 'relative'}} innerDivStyle={{marginLeft: "35px"}} primaryText={s.name}><Avatar style={{position: 'absolute', left: "-30px", top: "4px"}} id={s.id} /></MenuItem>
+                    value: <MenuItem style={{position: 'relative'}} innerDivStyle={{marginLeft: "35px"}} primaryText={s.name}><Avatar width={35} height={35} style={{position: 'absolute', left: "-30px", top: "7px"}} id={s.id} /></MenuItem>
                 }
             ));
         });
