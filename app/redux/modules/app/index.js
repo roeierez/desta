@@ -4,7 +4,7 @@ import { loginAsync, logoutAsync } from 'lib/facebook';
 const initialState = {
     loggedInUser: null,
     pageLinks: null,
-    menuOpened: false
+    menuOpened: true
 };
 
 // For async components

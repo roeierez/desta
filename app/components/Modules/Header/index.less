@@ -14,63 +14,35 @@
     display: flex;
     flex: 1;
     align-items: center;
-    margin-right: 40px;
-    .page-title {
-      color: white;
-      margin-right: 45px;
-      font-weight: 300;
-      font-size: 22px;
-      width: 75px;
+    .new-trip {
+      font-size: 12px;
+      span {
+        text-transform: none !important;
+      }
     }
     .search {
+      display: flex;
+      align-items: center;
       position: relative;
-      max-width: 620px;
+      max-width: 320px;
       flex: 1;
-      border-radius: 5px;
-      border: 1px solid transparent;
-
-      .geo-suggest-wrapper {
-        border: none;
-        .geosuggest {
-          border: none;
-        }
-        .geosuggest__input-wrapper {
-          border: none;
-        }
-        .geosuggest__suggests {
-          border: none;
-        }
-        input {
-          font-weight: normal;
-          height: 28px;
-          box-shadow: none;
-          border-radius: 5px;
-          color: white;
-          background-color: rgba(255, 255, 255, 0.14902);
-        }
-      }
-      .search-place-holder {
-        position: absolute;
-        font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
-        font-size: 16px;
-        color: rgba(255,255,255,0.7);
-        top: 12px;
-        left: 10px;
-
-        &:before {
-          margin-right:10px;
-        }
+      .material-icons {
+        margin-right: 5px;
+        margin-top: 3px;
       }
     }
   }
   .right-nav-bar {
     display: flex;
     align-items: center;
-    .new-trip {
+    svg {
       margin-right: 10px;
-      span {
-        text-transform: none !important;
-      }
+    }
+    .page-title {
+      color: white;
+      margin-right: 10px;
+      font-weight: 300;
+      font-size: 18px;
     }
 
     a{

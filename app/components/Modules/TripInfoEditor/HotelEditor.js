@@ -42,7 +42,7 @@ class HotelEditor extends React.Component {
         let {open, onSubmit, onCancel} = this.props;
         return (
             <Dialog
-                titleStyle={{ backgroundColor: cyan200, padding: "12px 0px 12px 40px", borderColor: cyan400, borderBottom: "2px solid", color: "white"}}
+                titleStyle={{ backgroundColor: cyan200, padding: "8px 0px 8px 40px", borderColor: cyan400, borderBottom: "2px solid", color: "white"}}
                 open={open} title="Add Hotel"
                 contentStyle={{maxWidth: "550px"}}
             >

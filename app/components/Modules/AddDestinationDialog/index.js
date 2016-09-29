@@ -111,7 +111,7 @@ class AddDestinationDialog extends React.Component {
 
         return (
             <Dialog title={this.props.title || "New Trip"}
-                    titleStyle={{ backgroundColor: cyan200, padding: "12px 0px 12px 40px", borderColor: cyan400, borderBottom: "2px solid", color: "white"}}
+                    titleStyle={{ backgroundColor: cyan200, padding: "8px 0px 8px 40px", borderColor: cyan400, borderBottom: "2px solid", color: "white"}}
                     modal={false}
                     contentStyle={{maxWidth: "550px"}}
                     actions = {actions}

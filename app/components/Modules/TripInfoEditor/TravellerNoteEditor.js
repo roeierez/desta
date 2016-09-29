@@ -38,7 +38,7 @@ class TravellerNoteEditor extends React.Component {
         let {open, onSubmit, onCancel} = this.props;
         return (
             <Dialog
-                titleStyle={{ backgroundColor: cyan200, padding: "12px 0px 12px 40px", borderColor: cyan400, borderBottom: "2px solid", color: "white"}}
+                titleStyle={{ backgroundColor: cyan200, padding: "8px 0px 8px 40px", borderColor: cyan400, borderBottom: "2px solid", color: "white"}}
                 contentStyle={{maxWidth: "550px"}}
                 open={open} title="Add Note">
                 <form style={{paddingLeft: "20px", paddingRight: "20px"}}>

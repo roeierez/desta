@@ -7,6 +7,7 @@ import routes from './routes';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'flag-icon-css/css/flag-icon.min.css';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 if (__DEVELOPMENT__) {
   // https://facebook.github.io/react/docs/advanced-performance.html
@@ -30,9 +31,25 @@ export const store = configureStore();
 
 injectTapEventPlugin();
 
+const muiTheme = getMuiTheme({
+    palette: {
+        //textColor: cyan500,
+    },
+    appBar: {
+        height: 46
+    },
+    button: {
+        height: 30,
+        border: "1px solid black"
+    },
+    dialog: {
+        titleFontSize: 18
+    }
+});
+
 ReactDOM.render(
     <Provider store={store}>
-        <MuiThemeProvider>
+        <MuiThemeProvider muiTheme={muiTheme}>
             <Router history={history}>
                 {routes}
             </Router>

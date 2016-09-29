@@ -19,9 +19,10 @@ import Menu from 'material-ui/Menu';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
 import {browserHistory} from 'react-router';
+import FriendsAutocomplete from 'components/Modules/FriendsAutocomplete';
 
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-import {blue500, red500, green500} from 'material-ui/styles/colors';
+import {blue500, red500, green500, lightWhite} from 'material-ui/styles/colors';
 import Avatar from 'components/Modules/Avatar';
 
 
@@ -96,6 +97,11 @@ class Header extends React.Component {
         this.props.login(false);
     }
 
+    onFriendSelected(friend) {
+        this.refs.search.clear(true);
+        browserHistory.push(`/${friend.id}/profile/trips`);
+    }
+
     render (){
         let {login, loggedInUser, selectLocation} = this.props;
         var userPhothURL = loggedInUser ? `https://graph.facebook.com/v2.7/${loggedInUser.id}/picture?type=small&width=45&height=45` : null,
@@ -106,43 +112,29 @@ class Header extends React.Component {
                 style={{position: 'fixed'}}
                 title="Desta"
                 onTitleTouchTap={() => browserHistory.push('/')}
-                titleStyle={{cursor: 'pointer', flex: "initial", fontWeight: "300", fontSize: "22px"}}
+                titleStyle={{cursor: 'pointer', flex: "initial", fontWeight: "300", fontSize: "18px"}}
                 onLeftIconButtonTouchTap={this.toggleLeftMenu.bind(this)}>
                 <div className="app-nav-bar">
                     <div className="separator" ></div>
                     <div className="left-nav-bar">
-                        <span className="page-title">{ this.getPageTitle()}</span>
-                        <div className="search" >
-                            <PlacesAutocompleteInput
-                            onBlur={this.onAutocompleteBlur.bind(this)}
-                            onFocus={this.onAutocompleteFocus.bind(this)}
-                            ref="autoComplete" placeholder="" selectLocation={selectLocation}
-                            types={["(cities)"]} />
-                                {this.state.placeHolderVisible && <div ref="searchPlaceHolder" onClick={this.onSearchClicked.bind(this)} className="font-icon font-icon-search search-place-holder">Search</div>}
+                        <RaisedButton onTouchTap={() => this.props.showNewTripForm(true)} className="new-trip raise-button-rounded" secondary={true} label="New Trip">
+                        </RaisedButton>
+                        <div className="separator" ></div>
+                        <div className="search">
+                            <FontIcon className="material-icons" color="white">search</FontIcon>
+                            <FriendsAutocomplete ref="search" onFriendSelected={(friend) => this.onFriendSelected(friend)} fullWidth={true} hintText="Search" hintStyle={{color: lightWhite}} inputStyle={{color: "white"}} floatingLabelText={false}  style={{ color:'white', height:"46px", marginTop: "0px"}}/>
                         </div>
                     </div>
                     <div className="right-nav-bar">
-                        {/*
-                        <Badge
-                            style={{padding: "12px", marginRight: 10, marginTop: 8}}
-                            badgeContent={4}
-                            primary={true}
-                            badgeStyle={badgeStyle}>
+                        {
                             <NotificationsIcon color="rgba(255, 255, 255, 0.8)"/>
-                        </Badge>
-                        <Badge
-                            style={{padding: "12px", marginRight: 20, marginTop: 8}}
-                            badgeContent={10}
-                            primary={true}
-                            badgeStyle={badgeStyle}>
-                            <MessageNotificationsIcon color="rgba(255, 255, 255, 0.8)"/>
-                        </Badge>
-                        */}
-                        {loggedInUser && (
-                                <RaisedButton onTouchTap={() => this.props.showNewTripForm(true)} className="new-trip" secondary={true} label="New Trip">
-                                </RaisedButton>
-                            )
                         }
+                        {
+                            <MessageNotificationsIcon color="rgba(255, 255, 255, 0.8)"/>
+                        }
+                        <div className="separator" ></div>
+                        <span className="page-title">{ this.getPageTitle()}</span>
+                        <div className="separator" ></div>
                         {loggedInUser && (
                             <Avatar style={{cursor:'pointer'}} id={loggedInUser.id} width={35} height={35}/>
                         )}

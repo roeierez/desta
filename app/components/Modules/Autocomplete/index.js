@@ -25,7 +25,7 @@ class Autocomplete extends React.Component {
             valueProps = {};
 
         return (
-            <AutoComplete fullWidth={this.props.fullWidth}  searchText={this.state.searchText} ref="autoComplete" style={this.props.style} filter={AutoComplete.caseInsensitiveFilter} onNewRequest={this.onNewRequest.bind(this)} dataSource={this.state.dataSource || []} hintText={hintText} floatingLabelText={floatingLabelText} onUpdateInput={this.onSearch.bind(this)} />
+            <AutoComplete underlineShow={{false}} hintStyle={this.props.hintStyle} inputStyle={this.props.inputStyle} textFieldStyle={this.props.textFieldStyle} fullWidth={this.props.fullWidth}  searchText={this.state.searchText} ref="autoComplete" style={this.props.style} filter={AutoComplete.caseInsensitiveFilter} onNewRequest={this.onNewRequest.bind(this)} dataSource={this.state.dataSource || []} hintText={hintText} floatingLabelText={floatingLabelText} onUpdateInput={this.onSearch.bind(this)} />
         );
     }
 
@@ -38,10 +38,14 @@ class Autocomplete extends React.Component {
 
     }
 
-    clear() {
+    clear(blur) {
         this.setState({searchText: 'a'}, () => {
             this.setState({searchText: ''}, () => {
-                this.refs.autoComplete.focus();
+                if (blur) {
+                    this.refs.autoComplete.blur();
+                } else {
+                    this.refs.autoComplete.focus();
+                }
             });
         });
     }
