@@ -1,5 +1,6 @@
 import {createReducer} from '../../utils/createReducer';
 import {findDestinationCountry} from 'lib/tripUtils';
+import {updateTripImages} from 'lib/tripUtils';
 
 const initialState = {
     workingTrip: {
@@ -79,13 +80,15 @@ export const createTrip = (trip) => ({
     type: 'CREATE_TRIP',
     payload: {
         promise: new Promise((resolve, reject) => {
-            fetch('/api/trips', {
-                credentials: 'include',
-                headers: {'Content-Type': 'application/json'},
-                method: 'POST',
-                shareAudience: 'public',
-                body: JSON.stringify(trip)
-            }).then(r => r.json()).then(resolve);
+            updateTripImages(trip).then((tripWithImages) => {
+              return fetch('/api/trips', {
+                  credentials: 'include',
+                  headers: {'Content-Type': 'application/json'},
+                  method: 'POST',
+                  shareAudience: 'public',
+                  body: JSON.stringify(tripWithImages)
+              }).then(r => r.json()).then(resolve);
+            })
         })
     }
 })

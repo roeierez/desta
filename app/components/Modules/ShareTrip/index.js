@@ -39,7 +39,7 @@ class ShareTrip extends React.Component {
                 <ListItem
                     disabled={true}
                     primaryText={title}
-                    leftAvatar={<Avatar style={{borderRadius:"5px"}} src={getCityImage(trip.destinations[0].tripDestination.cityName)} />}
+                    leftAvatar={<Avatar style={{borderRadius:"5px"}} src={getCityImage(null, trip)} />}
                     secondaryText={subtitle}
                 />
                 <ListItem

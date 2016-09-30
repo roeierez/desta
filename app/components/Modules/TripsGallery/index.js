@@ -43,7 +43,8 @@ const TripCard = ({tripInfo, enterShareMode, deleteTrip}) => {
             >
                 <MenuItem primaryText="Delete" />
             </IconMenu>
-        )
+        ),
+        firstDestination = tripInfo.destinations[0].tripDestination;
 
 
     return (
@@ -60,7 +61,7 @@ const TripCard = ({tripInfo, enterShareMode, deleteTrip}) => {
             cols={1}
             rows={1}
         >
-            <img src={getCityImage(tripInfo.destinations[0].tripDestination.cityName)} />
+            <img src={getCityImage(null, tripInfo)} />
         </GridTile>
     )
 }

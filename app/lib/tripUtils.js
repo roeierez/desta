@@ -3,6 +3,8 @@ import {parseShortDate} from './dateUtils';
 import moment from 'moment';
 import countryCodes, {isoCountries} from './countryCodes';
 
+const placesService = new google.maps.places.PlacesService(document.createElement('div'));
+
 let citiesImages = [
     'barcelona',
     'new_york',
@@ -19,12 +21,26 @@ export const getCityClassName = (cityName) => {
     return 'city-image ' + cityName.replace(/\s/g, '_').toLowerCase();
 }
 
-export const getCityImage = (cityName) => {
-    let name = cityName.replace(/\s/g, '_').toLowerCase(),
+export const getCityImage = (city, tripInfo) => {
+    if (tripInfo) {
+        let destinatinosWithPhotos = tripInfo.destinations.filter(d => {
+            return d.tripDestination.photoURL != null;
+        });
+        if (destinatinosWithPhotos.length > 0) {
+            return destinatinosWithPhotos[0].tripDestination.photoURL;
+        }
+    }
+
+    let cityName = tripInfo.destinations[0].tripDestination.cityName,
+        name = cityName.replace(/\s/g, '_').toLowerCase(),
         cityImage = citiesImages.indexOf(name) >= 0 ? name : citiesImages[0];
 
     return `/resources/images/cities/${cityImage}.jpg`;
 };
+
+export const getDestinationImage = (destination) => {
+    return destination.photoURL || getCityImage(destination.cityName);
+}
 
 export const findTripByIdOrLink = (trips, idOrLink) => {
     return trips.find(t => {
@@ -69,3 +85,40 @@ export const findDestinationCountry = (tripDestination) => {
     let countryComponent = tripDestination.gmaps.address_components.find(ad => ad.types.indexOf('country') >= 0);
     return isoCountries[countryComponent.short_name];
 }
+
+export const getPlacePhoto = (placeId, maxWidth = 800, maxHeight = 800) => {
+    //ChIJOwg_06VPwokRYv534QaPC8g
+    return new Promise((resolve, reject) => {
+        placesService.getDetails({placeId}, (res, status) => {
+            if (status == google.maps.places.PlacesServiceStatus.OK && res.photos && res.photos.length) {
+                resolve(res.photos[0].getUrl({maxWidth, maxHeight}))
+            } else {
+                resolve(null)
+            }
+        })
+    });
+}
+
+export const updateTripImages = (tripInfo) => {
+    let tripWithImages = JSON.parse(JSON.stringify(tripInfo));
+
+    let destinationsPromises = tripWithImages.destinations.map(d => {
+        if (d.tripDestination.photoURL !== undefined) {
+            return Promise.resolve();
+        }
+
+        return getPlacePhoto(d.tripDestination.place_id)
+            .then(photoURL => {
+                d.tripDestination.photoURL = photoURL;
+            })
+    });
+
+    return Promise.all(destinationsPromises).then(cities => {
+        return tripWithImages;
+    })
+}
+//
+// console.error("*** get city photo ***");
+// getPlacePhoto("ChIJOwg_06VPwokRYv534QaPC8g").then(cityDetails => {
+//     console.error(cityDetails);
+// })

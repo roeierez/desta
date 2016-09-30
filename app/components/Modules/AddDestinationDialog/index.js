@@ -152,7 +152,7 @@ class AddDestinationDialog extends React.Component {
                             label="Cancel"
                             secondary={true}
                             onTouchTap={() => this.handleClose()}
-                        />,
+                        />
                         <FlatButton
                             label={this.props.submitButtonText || "Create Trip"}
                             primary={true}

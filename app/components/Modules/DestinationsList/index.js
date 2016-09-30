@@ -3,7 +3,7 @@ import {List, ListItem, MakeSelectable} from 'material-ui/List';
 import FontIcon from 'material-ui/FontIcon';
 import Avatar from 'material-ui/Avatar';
 import {parseShortDate} from 'lib/dateUtils';
-import {getCityImage} from 'lib/tripUtils';
+import {getDestinationImage} from 'lib/tripUtils';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
@@ -49,7 +49,7 @@ class DestinationsList extends React.Component {
                         </IconMenu>
                     }
                     primaryText={d.tripDestination.cityName}
-                    leftAvatar={<Avatar src={getCityImage(d.tripDestination.cityName)} />}
+                    leftAvatar={<Avatar src={getDestinationImage(d.tripDestination)} />}
                     secondaryText={startDate.format('MMM DD') + ' - ' + endDate.format('MMM DD')}
                 />
             ));
