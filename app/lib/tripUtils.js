@@ -31,7 +31,7 @@ export const getCityImage = (city, tripInfo) => {
         }
     }
 
-    let cityName = tripInfo.destinations[0].tripDestination.cityName,
+    let cityName = city || tripInfo.destinations[0].tripDestination.cityName,
         name = cityName.replace(/\s/g, '_').toLowerCase(),
         cityImage = citiesImages.indexOf(name) >= 0 ? name : citiesImages[0];
 

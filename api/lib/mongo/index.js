@@ -40,13 +40,19 @@ var storage = {
     },
 
     getProfile: function(facebookID, withFriends=false){
-        let projection = {trips: 1, facebookID: 1, name: 1};
+        let projection = {trips: 1, facebookID: 1, name: 1},
+            me = this;
+
         if (withFriends) {
             projection.friends = 1;
         }
         return db.collection('users').find({facebookID}, projection).toArray()
             .then(res => {
-                return res[0];
+                let user = res[0];
+                return me.getTrips(user).then(trips => {
+                    user.trips = trips;
+                    return user;
+                })
             }, err => {
                 return Promise.reject(err);
             });
@@ -62,57 +68,64 @@ var storage = {
     },
 
     insertTrip: function(facebookID, trip){
-        trip.id = new ObjectID().toString();
-        return db.collection('users').update({facebookID}, {$push:{trips: trip}}, {upsert: true});
+        let me = this;
+
+        console.error('insert trip');
+        trip.ownerID = facebookID;
+        return db.collection('trips').insert(trip)
+            .then((result) => {
+                let newTrip = result.ops && result.ops[0];
+                if (newTrip) {
+                    console.error("got new trip id = " + newTrip._id.toString());
+                    return me.getTrip(facebookID, newTrip._id.toString());
+                }
+                return newTrip;
+            })
     },
 
     updateTrip: function(facebookID, tripID, trip){
-        var $set = {},
-            me = this;
-
-        Object.keys(trip).forEach(k => {
-            $set["trips.$." + k] = trip[k];
-        });
-
-        return db.collection('users').update({facebookID, "trips.id": tripID}, {$set})
-            .then(r => me.getTrip(facebookID, tripID));
+        console.error('update trip');
+        let me = this;
+        delete trip._id;
+        return db.collection('trips').update({ownerID: facebookID, _id: ObjectID(tripID)}, {$set: trip})
+            .then(result => {
+                return me.getTrip(facebookID, tripID);
+            });
     },
 
     deleteTrip: function(facebookID, tripID) {
-        return db.collection('users').find({facebookID}).toArray()
-            .then(result => {
-                if (result && result.length > 0) {
-                    let user = result[0];
-                    let trips = user.trips.filter(t => t.id != tripID);
-                    return db.collection('users').update({facebookID}, {$set: {trips: trips}});
-                }
+        return db.collection('trips').remove({ownerID: facebookID, _id: ObjectID(tripID)});
+    },
+
+    getTrips: function(user, limit = 100) {
+        return db.collection('trips').find({ownerID: user.facebookID}, {limit}).toArray()
+            .then(trips => {
+                return trips.map(t => {
+                    return Object.assign(t, {id: t._id, owner: {name: user.name, id: user.facebookID}});
+                });
             })
     },
 
     getTrip: function(facebookID, tripID) {
-        console.error('getTrip: tripID=' + tripID)
-        let condition = {
-            trips: {
-                $elemMatch: {
-                    $or:[
-                        {id: tripID},
-                        {linkID: tripID}
-                    ]
-                }
-            }
-        }
-        return db.collection('users').find(condition, {"trips.$":1, facebookID: 1}).toArray()
-        //return db.collection('users').find({facebookID, ...{$or}}, {"trips.$":1}).toArray()
-            .then(result => {
-                console.error('getTrip results = ' + result);
-                let user = result && result[0],
-                    trip = user && user.trips && user.trips[0];
-                if (trip) {
-                    trip.owner = {facebookID: user.facebookID, name: user.name};
-                }
 
-                return trip || null;
-            });
+        let me = this;
+
+        console.error('getTrip');
+        return db.collection('trips').find({ownerID: facebookID, _id: ObjectID(tripID)}).toArray()
+            .then(trips => {
+                return me.getUser(facebookID)
+                    .then(user => {
+                        console.error('got user');
+                        let trip = trips && trips[0];
+                        if (trip) {
+                            console.error('getTrip found trip ' + JSON.stringify(trip));
+                            trip.id = trip._id.toString();
+                            console.error('getTrip found trip after id ' + JSON.stringify(trip));
+                            trip.owner = {facebookID: user.facebookID, name: user.name};
+                        }
+                        return trip;
+                    })
+            })
     },
 
     insertLink: function(generatedLink, link) {

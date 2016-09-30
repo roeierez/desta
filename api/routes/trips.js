@@ -57,7 +57,7 @@ router.get('/friends', wrap(async function (req, res, next) {
 }));
 
 router.post('/', wrap(async function (req, res) {
-    return req.storage.insertTrip(req.user.facebookID, req.body).then(() => res.json(req.body));
+    return req.storage.insertTrip(req.user.facebookID, req.body).then((newTrip) => res.json(newTrip));
 }));
 
 router.get('/:id', wrap(async function (req, res) {
