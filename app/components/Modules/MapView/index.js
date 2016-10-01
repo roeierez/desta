@@ -57,7 +57,7 @@ class MapView extends React.Component {
         // for (var i = 1; i < locations.length; ++i) {
         //     lines.push(<Polyline strokeColor="#fff" path={[locations[i - 1].location, locations[i].location]}/>)
         // }
-
+        
         return (
             <section className="map-view">
                 <GoogleMapLoader
@@ -73,7 +73,7 @@ class MapView extends React.Component {
                         <GoogleMap
                             ref="map"
 
-                            defaultCenter={{lat: -25.363882, lng: 131.044922}}
+                            defaultCenter={{lat: 0, lng: 0}}
 
                             defaultOptions={{
                                 styles: mapStyles,
@@ -82,11 +82,11 @@ class MapView extends React.Component {
                                 mapTypeIds: [google.maps.MapTypeId.ROADMAP]
                             }}
 
-                            defaultZoom={3}
+                            defaultZoom={2}
 
                             {...extraProps}
                             center={ centerLocation && centerLocation.location || {
-                                lat: -25.363882, lng: 131.044922
+                                lat: 0, lng: 0
                             }}
                         >
                             {!this.props.heatmap && locations && locations.length > 0 && (
