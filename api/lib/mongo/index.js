@@ -111,9 +111,13 @@ var storage = {
         let me = this;
 
         console.error('getTrip');
-        return db.collection('trips').find({ownerID: facebookID, _id: ObjectID(tripID)}).toArray()
+        return db.collection('trips').find({_id: ObjectID(tripID)}).toArray()
             .then(trips => {
-                return me.getUser(facebookID)
+                if (!trips || trips.length == 0) {
+                    return {};
+                }
+                let trip = trips[0];
+                return me.getUser(trip.ownerID)
                     .then(user => {
                         console.error('got user');
                         let trip = trips && trips[0];
