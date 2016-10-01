@@ -12,7 +12,7 @@ import MenuItem from 'material-ui/MenuItem'
 const styles = {
     gridList: {
         width: 600,
-        padding: '5px'
+        padding: '0px'
     },
     gridTile: {
         cursor: 'pointer',

@@ -4,6 +4,7 @@ import TripsGallery from 'components/Modules/TripsGallery';
 import ShareTrip from 'components/Modules/ShareTrip';
 import PageSpinner from 'components/Modules/PageSpinner';
 import Avatar from 'components/Modules/Avatar';
+import UserSummary from 'components/Modules/UserSummary';
 
 class TripsCollectionPage extends React.Component {
 
@@ -27,16 +28,17 @@ class TripsCollectionPage extends React.Component {
         }
 
         return (
-            <div>
+            <div className="profileWrapper">
                 {tripToShare && (
                         <ShareTrip removeTripLink={removeTripLink} generateTripLink={generateTripLink} shareTrip={shareTrip} trip={tripToShare} onRequestClose={exitShareMode} open={shareDialogOpened} />
                     )
                 }
-                <div className="user-profile-header">
-                    <div className="user-details">
-                        <Avatar id={this.props.params.user_id} name={this.props.owner && this.props.owner.name} width={50} height={50} />
-                    </div>
-                </div>
+                <UserSummary
+                    userName={this.props.owner && this.props.owner.name}
+                    userID={this.props.params.user_id}
+                    tripsCount={this.props.trips.length}
+                    friendsCount={3}
+                />
                 <TripsGallery deleteTrip={this.props.deleteTrip} enterShareMode={this.props.enterShareMode} trips= {this.props.trips.filter(t => t.owner.facebookID == this.props.params.user_id)} />
             </div>
         );
