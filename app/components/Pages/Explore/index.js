@@ -3,15 +3,13 @@ import MapView from 'components/Modules/MapView'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from 'redux-modules';
-import VisitedCityListItem from './VisitedCityListItem';
-import PersonVisitListItem from './PersonVisitListItem';
 import ResizeablePanel from 'components/Modules/ResizeablePanel';
 import PlacesList from './PlacesList';
 import DatePicker from 'material-ui/DatePicker';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import FontIcon from 'material-ui/FontIcon';
 import ActionFlightTakeoff from 'material-ui/svg-icons/action/flight-takeoff';
-import {blue500, red500, greenA200} from 'material-ui/styles/colors';
+import {blue500, red500, greenA200, pink500} from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import moment from 'moment';
 import {formatPhotoURL} from 'lib/facebook';
@@ -19,6 +17,14 @@ import {findDestinationCountry} from 'lib/tripUtils';
 import PeopleVisitsList from './PeopleVisitsList';
 import ListNavigationHeader from './ListNavigationHeader'
 import Avatar from 'components/Modules/Avatar';
+import {Tabs, Tab} from 'material-ui/Tabs';
+import {cyan300} from 'material-ui/styles/colors';
+import {browserHistory} from 'react-router';
+
+const styles = {
+    tab: {position: 'relative', height: '35px'},
+    tabLabel: {position: 'absolute', height: '35px', top: '9px'}
+}
 
 @connect(
     state => {
@@ -95,6 +101,22 @@ class Explore extends React.Component {
     setFutureFilter() {
         this.props.setFromDate(new Date());
         this.props.setToDate(moment(new Date()).add(10, 'years').toDate());
+    }
+
+    setPastFilter() {
+        this.props.setToDate(new Date());
+        this.props.setFromDate(moment(new Date()).subtract(10, 'years').toDate());
+    }
+
+    handleTabSelected(tab){
+       // browserHistory.push(`/explore/${tab}`)
+        if (tab == 'future') {
+            this.setFutureFilter();
+        } else if (tab == 'present') {
+            this.setLastMonthFilter();
+        } else {
+            this.setPastFilter();
+        }
     }
 
     render() {
@@ -205,49 +227,70 @@ class Explore extends React.Component {
             shownCity = shownCountry && shownCountry.cities[cityToShow.city],
             shownCityVisits = shownCity && shownCity.visits || [];
 
+        let exploreContent = (
+            <ExploreContent
+                cityToShow={cityToShow}
+                byCountry={byCountry}
+                onDestinationSelected={this.onDestinationSelected.bind(this)}
+                selectedValue={selectedValue}
+                selectedPopularCity={this.props.selectPopularCity}
+                setCityToShow={this.props.setCityToShow}
+                visitToShow={visitToShow}
+                onVisitSelected={this.onVisitSelected.bind(this)}
+                shownCityVisits={shownCityVisits}
+                mapIcons={mapIcons}
+                backFromPeople={this.backFromPeople.bind(this)}
+            />
+        );
+
+
         return (
             <div className="explore-page">
-                <Toolbar style={{marginBottom: "20px"}}>
-                    <ToolbarGroup firstChild={true}>
-                        <DatePicker
-                            onChange={this.onFromDateChanged.bind(this)}
-                            className="date-picker"
-                            hintText="From Date"
-                            value={fromDate.toDate()}
-                            autoOk={true}
-                        />
-                        <span style={{textAlign: 'center', lineHeight: '55px'}}>-</span>
-                        <DatePicker
-                            onChange={this.onToDateChanged.bind(this)}
-                            className="date-picker"
-                            hintText="To Date"
-                            value={toDate.toDate()}
-                            autoOk={true}
-                        />
-                        <ToolbarSeparator />
-                        <FlatButton onTouchTap={this.setLastWeekFilter.bind(this)} label="Last Week" primary={true}/>
-                        <FlatButton onTouchTap={this.setLastMonthFilter.bind(this)} label="Last Month" primary={true}/>
-                        <FlatButton onTouchTap={this.setFutureFilter.bind(this)} label="Future Travels"
-                                    secondary={true}/>
-                    </ToolbarGroup>
-                    <ToolbarGroup>
+                {
+                    // <Toolbar style={{marginBottom: "20px"}}>
+                    //     <ToolbarGroup firstChild={true}>
+                    //         <DatePicker
+                    //             onChange={this.onFromDateChanged.bind(this)}
+                    //             className="date-picker"
+                    //             hintText="From Date"
+                    //             value={fromDate.toDate()}
+                    //             autoOk={true}
+                    //         />
+                    //         <span style={{textAlign: 'center', lineHeight: '55px'}}>-</span>
+                    //         <DatePicker
+                    //             onChange={this.onToDateChanged.bind(this)}
+                    //             className="date-picker"
+                    //             hintText="To Date"
+                    //             value={toDate.toDate()}
+                    //             autoOk={true}
+                    //         />
+                    //         <ToolbarSeparator />
+                    //         <FlatButton onTouchTap={this.setLastWeekFilter.bind(this)} label="Last Week"
+                    //                     primary={true}/>
+                    //         <FlatButton onTouchTap={this.setLastMonthFilter.bind(this)} label="Last Month"
+                    //                     primary={true}/>
+                    //         <FlatButton onTouchTap={this.setFutureFilter.bind(this)} label="Future Travels"
+                    //                     secondary={true}/>
+                    //     </ToolbarGroup>
+                    //     <ToolbarGroup>
+                    //
+                    //     </ToolbarGroup>
+                    // </Toolbar>
+                }
+                <div className="time-tabs">
+                    <Tabs onChange={this.handleTabSelected.bind(this)} inkBarStyle={{backgroundColor: cyan300}} style={{height: '35px'}} tabItemContainerStyle={{height: "35px", borderTopRightRadius: "5px", borderTopLeftRadius: "5px"}}>
+                        <Tab value="past" style={styles.tab} label={<div style={styles.tabLabel}>Past</div>}>
 
-                    </ToolbarGroup>
-                </Toolbar>
-                <div className="content">
-                    <div className="left-panel">
-                        {!cityToShow && (
-                            <PlacesList header={<ListNavigationHeader onRightLinkClick={() => {this.onDestinationSelected({country: null});}} rightLink="ALL" title="FRIENDS LOCATIONS" />} selectedValue={selectedValue} selectedPopularCity={selectedPopularCity} onViewCity={this.props.setCityToShow} onSelect={this.onDestinationSelected.bind(this)}
-                                        byCountry={byCountry}/>
-                        )}
-                        {cityToShow && (
-                            <PeopleVisitsList header={<ListNavigationHeader onBack={this.backFromPeople.bind(this)} title={`${cityToShow.city.toUpperCase()}, ${cityToShow.country.toUpperCase()}`} backTitle="All" />} selectedPerson={visitToShow} onSelect={this.onVisitSelected.bind(this)}
-                                        visits={shownCityVisits}/>
-                        )}
-                    </div>
-                    <MapView heatmap={this.props.selectedPopularCity == null && this.props.params.filter == 'past'}
-                             locations={mapIcons}/>
+                        </Tab>
+                        <Tab value="present" style={styles.tab} label={<div style={styles.tabLabel}>Present</div>}>
+
+                        </Tab>
+                        <Tab value="future" style={styles.tab} label={<div style={styles.tabLabel}>Future</div>}>
+
+                        </Tab>
+                    </Tabs>
                 </div>
+                {exploreContent}
             </div>
         )
     }
@@ -255,31 +298,6 @@ class Explore extends React.Component {
     backFromPeople(){
         this.props.setCityToShow(null);
         this.props.selectVisitToShow(null);
-    }
-
-    renderVisits(byCountry, country) {
-        var placesObject = country && byCountry[country] ? byCountry[country].cities : byCountry,
-            places = Object.keys(placesObject).map(k => placesObject[k]);
-
-        let visitedPlaces = places.map(place => {
-            return {
-                label: place.label,
-                visits: this.getUniqVisits(place.visits),
-                city: place.city,
-                className: place.city && this.props.selectedPopularCity == place.city ? 'selected' : '',
-                onSelected: this.onDestinationSelected.bind(this, place)
-            }
-        });
-
-        return (
-            <ResizeablePanel title={byCountry[country] && country || "All Countries"} className="visited-cities-list">
-                {visitedPlaces.map(visit => {
-                    return (
-                        <VisitedCityListItem {...visit} />
-                    );
-                })}
-            </ResizeablePanel>
-        )
     }
 
     getUniqVisits(visits) {
@@ -291,21 +309,28 @@ class Explore extends React.Component {
             return uniqVisits[userId];
         });
     }
+}
 
-    renderPeopleVisitsList(visits) {
+class ExploreContent extends React.Component {
+
+    render() {
+        let {byCountry, cityToShow, onDestinationSelected, selectedValue, selectedPopularCity, setCityToShow, visitToShow, onVisitSelected, shownCityVisits, mapIcons, backFromPeople} = this.props;
+
         return (
-            <ResizeablePanel title={"Friends Travelling"} className="person-visits-list">
-                {visits.map(visit => {
-                    return (
-                        <PersonVisitListItem
-                            className={this.props.selectedTravelingFriend == visit.user.id ? 'selected' : ''}
-                            onSelected={this.onPersonSelected.bind(this, visit.user.id)}
-                            city={visit.place.location.city}
-                            country={visit.place.location.country}
-                            visit={visit}/>
-                    );
-                })}
-            </ResizeablePanel>
+            <div className="content">
+                <div className="left-panel">
+                    {!cityToShow && (
+                        <PlacesList header={<ListNavigationHeader onRightLinkClick={() => {onDestinationSelected({country: null});}} rightLink="ALL" title="FRIENDS LOCATIONS" />} selectedValue={selectedValue} selectedPopularCity={selectedPopularCity} onViewCity={setCityToShow} onSelect={onDestinationSelected.bind(this)}
+                                    byCountry={byCountry}/>
+                    )}
+                    {cityToShow && (
+                        <PeopleVisitsList header={<ListNavigationHeader onBack={backFromPeople.bind(this)} title={`${cityToShow.city.toUpperCase()}, ${cityToShow.country.toUpperCase()}`} backTitle="All" />} selectedPerson={visitToShow} onSelect={onVisitSelected.bind(this)}
+                                          visits={shownCityVisits}/>
+                    )}
+                </div>
+                <MapView heatmap={selectedPopularCity == null && this.props.params.filter == 'past'}
+                         locations={mapIcons}/>
+            </div>
         )
     }
 }

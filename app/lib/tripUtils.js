@@ -3,7 +3,13 @@ import {parseShortDate} from './dateUtils';
 import moment from 'moment';
 import countryCodes, {isoCountries} from './countryCodes';
 
-const placesService = new google.maps.places.PlacesService(document.createElement('div'));
+let placesService = null;//
+try {
+    placesService = new google.maps.places.PlacesService(document.createElement('div'));
+}
+catch(e) {
+    
+}
 
 let citiesImages = [
     'barcelona',

@@ -1,6 +1,7 @@
 .add-destination-form {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   .material-icons {
     margin-right: 5px;
     transform: translateY(4px);
@@ -8,29 +9,27 @@
   .top {
     flex: 1;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     .material-icons {
-      transform: translateY(-12px);
+      transform: translateY(12px);
     }
   }
 
   .middle {
-    .date-wrapper {
-      display: flex;
-      align-items: flex-end;
-      .material-icons {
-        transform: translateY(-12px);
-      }
-    }
-    flex: 1;
+    margin-bottom: 15px;
+    height: 72px;
     display: flex;
-    justify-content: space-between;
+    align-items: flex-end;
+    flex: 1;
+    .material-icons {
+      transform: translateY(-2px);
+    }
   }
 
   .bottom {
     .friends-wrapper {
       display: flex;
-      align-items: flex-end;
+      align-items: flex-start;
       .material-icons {
         transform: translateY(36px);
         color: #e0e0e0;

@@ -10,6 +10,7 @@ import moment from 'moment';
 import {browserHistory} from 'react-router';
 import {formatShortDate} from 'lib/dateUtils';
 import Popover from 'material-ui/Popover';
+import DateRangePicker from 'components/Modules/DateRangePicker';
 
 let styles = {
     topField: {
@@ -74,6 +75,10 @@ class AddDestinationDialog extends React.Component {
         this.setState({friends});
     }
 
+    onDatesChange({startDate, endDate}) {
+        this.setState({departDate: startDate, returnDate: endDate});
+    }
+
     handleSubmit() {
         this.props.onSubmit({
             tripDestination: this.state.destination,
@@ -128,14 +133,8 @@ class AddDestinationDialog extends React.Component {
                         />
                     </div>
                     <div className="middle">
-                        <div className="date-wrapper">
-                            <FontIcon color={grey600} className="material-icons">flight_takeoff</FontIcon>
-                            <DatePicker onChange={this.onDepartDateChanged.bind(this)} floatingLabelText="Departing" mode="landscape" autoOk textFieldStyle={styles.leftDatePicker} hintText="Departing" container="inline" />
-                        </div>
-                        <div className="date-wrapper">
-                            <FontIcon color={grey600} className="material-icons">flight_land</FontIcon>
-                            <DatePicker onChange={this.onReturnDateChanged.bind(this)} floatingLabelText="Returning" mode="landscape" autoOk textFieldStyle={styles.rightDatePicker} hintText="Returning" container="inline" />
-                        </div>
+                        <FontIcon color={grey600} className="material-icons">date_range</FontIcon>
+                        <DateRangePicker onChange={this.onDatesChange.bind(this)} />
                     </div>
                     <div className="bottom">
                         <div className="friends-wrapper">

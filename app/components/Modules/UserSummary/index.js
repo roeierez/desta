@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import Avatar from 'material-ui/Avatar';
 import {formatPhotoURL} from 'lib/facebook'
-import {pink500, grey500} from 'material-ui/styles/colors'
+import {pink500, grey500, cyan200, blue500, blueGrey100, grey300} from 'material-ui/styles/colors'
 
 
 class UserSummary extends React.Component {

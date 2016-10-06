@@ -11,8 +11,13 @@ class PlacesAutocomplete extends React.Component {
 
     constructor(props) {
         super(props);
-        this.autocompleteService = new google.maps.places.AutocompleteService();
-        this.geoCoder = new google.maps.Geocoder();
+        try {
+            this.autocompleteService = new google.maps.places.AutocompleteService();
+            this.geoCoder = new google.maps.Geocoder();
+        }
+        catch(e){
+            
+        }
     }
 
     render() {

@@ -8,6 +8,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'flag-icon-css/css/flag-icon.min.css';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {pink500, cyan300, pinkA200} from 'material-ui/styles/colors';
+import {DateRangePicker, SingleDatePicker} from 'react-dates';
+import styles from 'react-dates/css/styles.scss';
+import moment from 'moment';
 
 if (__DEVELOPMENT__) {
   // https://facebook.github.io/react/docs/advanced-performance.html
@@ -44,6 +48,11 @@ const muiTheme = getMuiTheme({
     },
     dialog: {
         titleFontSize: 18
+    },
+    tabs: {
+        textColor: cyan300,
+        backgroundColor: "rgb(232, 232, 232)",
+        selectedTextColor: pinkA200
     }
 });
 
@@ -55,5 +64,4 @@ ReactDOM.render(
             </Router>
         </MuiThemeProvider>
     </Provider>,
-    document.getElementById('root')
-);
+    document.getElementById('root'));
