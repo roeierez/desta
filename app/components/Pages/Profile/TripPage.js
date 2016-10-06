@@ -4,7 +4,6 @@ import {Link} from 'react-router';
 import TripsCalendar from './TripsCalendar';
 import TripsMap from './TripsMap';
 import TripInfoEditor from 'components/Modules/TripInfoEditor';
-import {Panel} from 'react-bootstrap';
 import ResizeablePanel from 'components/Modules/ResizeablePanel';
 import TripFriends from 'components/Modules/TripFriends';
 import { browserHistory } from 'react-router'

@@ -8,7 +8,7 @@ import TripsCollectionPage from './components/Pages/Profile/TripsCollectionPage'
 import TripPage from './components/Pages/Profile/TripPage';
 import TripDestination from './components/Pages/TripDestination';
 import Explore from './components/Pages/Explore';
-import DestinationEditor from './components/Modules/TripInfoEditor/main';
+import DestinationEditor from './components/Modules/TripInfoEditor';
 
 export default (
     <Route path="/" component={Root}>

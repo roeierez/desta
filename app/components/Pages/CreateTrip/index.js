@@ -1,15 +1,7 @@
 import React from 'react';
-import {Grid, Row, Col, Panel} from 'react-bootstrap';
-import QuickTripWizard from 'components/Modules/QuickTripWizard';
-import TripMapView from 'components/Modules/TripMapView';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from 'redux-modules';
-import ResizeablePanel from 'components/Modules/ResizeablePanel';
-import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import FontIcon from 'material-ui/FontIcon';
 
 @connect(
     state => {

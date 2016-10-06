@@ -3,10 +3,7 @@
 import '../../../resources/styles/main.less';
 import React ,{PropTypes } from 'react';
 import ReactDom from 'react-dom';
-import {PlacesAutocompleteInput} from 'components/Modules/Form';
 import {Link, IndexLink} from 'react-router';
-import {Nav, NavItem, Navbar, Grid, Row, Col} from 'react-bootstrap';
-import classNames from 'classnames';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';

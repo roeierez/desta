@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import {Panel} from 'react-bootstrap';
 import Paper from 'material-ui/Paper';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {grey300} from 'material-ui/styles/colors';

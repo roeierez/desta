@@ -4,9 +4,6 @@ import {formatTripName, isBookedDate} from 'lib/tripUtils';
 import {formatShortDate} from 'lib/dateUtils';
 import Calendar from 'components/Modules/Calendar'
 import moment from 'moment';
-import {Modal} from 'react-bootstrap';
-import TripInfoEditor from 'components/Modules/TripInfoEditor'
-import {RangePicker} from 'components/Modules/Form';
 
 class TripsCalendar extends React.Component {
 
@@ -43,10 +40,10 @@ class TripsCalendar extends React.Component {
                     allDay: true,
                     destination: d
                 }
-            }),
-            EventComponent = (props) => (
-                <RangePicker isInvalidDate={this.isInvalidDate.bind(this, props.event)} onChange={this.onDestinationDateChange.bind(this, props.event)} innerComponent={props.title} title={props.title} value={{startDate: props.event.start, endDate: props.event.end}} />
-            );
+            });
+            // EventComponent = (props) => (
+            //     <RangePicker isInvalidDate={this.isInvalidDate.bind(this, props.event)} onChange={this.onDestinationDateChange.bind(this, props.event)} innerComponent={props.title} title={props.title} value={{startDate: props.event.start, endDate: props.event.end}} />
+            // );
 
         let props = {events};
         // if (this.props.loggedInUser.id == this.props.trip.owner.facebookID) {
