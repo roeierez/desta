@@ -24,7 +24,7 @@ class PeopleVisitsList extends React.Component {
             PersonListItem = ({visit}) => (
                 <div className="person-visit">
                     <Avatar id={visit.user.id} width="30" height="30" textStyle={{ fontWeight:'normal', marginLeft: "15px", fontSize: "14px"}} name={visit.user.name}/>
-                    <div className="visit-date">{formatShortDate(moment(visit.arrivalTime))}</div>
+                    <div className="visit-date">{moment(visit.arrivalTime).format('ll')}</div>
                 </div>
             )
 
