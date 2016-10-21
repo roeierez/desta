@@ -11,6 +11,7 @@ import {browserHistory} from 'react-router';
 import {formatShortDate} from 'lib/dateUtils';
 import Popover from 'material-ui/Popover';
 import DateRangePicker from 'components/Modules/DateRangePicker';
+import TextField from 'material-ui/TextField';
 
 let styles = {
     topField: {
@@ -32,14 +33,18 @@ class AddDestinationDialog extends React.Component {
     static propTypes = {
         open: PropTypes.bool,
         title: PropTypes.string,
+        isNewTrip: PropTypes.boolean,
         submitButtonText: PropTypes.string,
         onRequestClose: PropTypes.func,
-        onSubmit: PropTypes.func
+        onCreateTrip: PropTypes.func,
+        onAddDestination: PropTypes.func
     }
 
     constructor(props) {
         super(props);
         this.state = {
+            keyIndex: 0,
+            tripName: null,
             destination: null,
             departDate: null,
             returnDate: null,
@@ -49,15 +54,13 @@ class AddDestinationDialog extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.open != nextProps.open) {
-            this.setState({
-                destination: null,
-                departDate: null,
-                returnDate: null,
-                friends: []
-            });
+            this.reset();
         }
     }
 
+    onTripNameChanged(o, name) {
+        this.setState({tripName: name});
+    }
 
     onReturnDateChanged(o, date) {
         this.setState({returnDate: date});
@@ -79,8 +82,8 @@ class AddDestinationDialog extends React.Component {
         this.setState({departDate: startDate, returnDate: endDate});
     }
 
-    handleSubmit() {
-        this.props.onSubmit({
+    handleSubmit(createTrip) {
+        let trip = {
             tripDestination: this.state.destination,
             tripFriends: this.state.friends,
             tripDates: {
@@ -90,30 +93,33 @@ class AddDestinationDialog extends React.Component {
             hotels: [],
             pois: [],
             notes: []
-        });
+        };
+        if (createTrip) {
+            this.props.onCreateTrip(trip, this.state.tripName);
+        } else {
+            this.props.onAddDestination(trip);
+        }
     }
 
     handleClose() {
         this.props.onRequestClose();
     }
 
+    reset() {
+        this.setState({
+            keyIndex: this.state.keyIndex + 1,
+            tripName: null,
+            destination: null,
+            departDate: null,
+            returnDate: null,
+            friends: []
+        });
+    }
+
     render() {
 
-        let canSubmit = this.state.departDate != null && this.state.returnDate != null && this.state.destination != null;
-        const actions = [
-            <FlatButton
-                label="Cancel"
-                secondary={true}
-                onTouchTap={() => this.handleClose()}
-            />,
-            <FlatButton
-                label={this.props.submitButtonText || "Create Trip"}
-                primary={true}
-                disabled={!canSubmit}
-                onTouchTap={() => this.handleSubmit()}
-            />
-        ];
-
+        let {isNewTrip} = this.props,
+            canSubmit = (!isNewTrip || this.state.tripName != null) && this.state.departDate != null && this.state.returnDate != null && this.state.destination != null;
 
         return (
             <Popover
@@ -124,9 +130,23 @@ class AddDestinationDialog extends React.Component {
                     onRequestClose={this.handleClose.bind(this)}
             >
                 <div className="add-destination-form" style={{paddingLeft: "20px", paddingRight: "20px"}}>
+                    {
+                        isNewTrip &&
+                        <div className="top">
+                            <FontIcon color={grey600} className="material-icons">place</FontIcon>
+                            <TextField
+                                key={"TripName" + this.state.keyIndex}
+                                onChange={this.onTripNameChanged.bind(this)}
+                                fullWidth={true}
+                                floatingLabelText="Trip Name"
+                                style={styles.topField}
+                            />
+                        </div>
+                    }
                     <div className="top">
                         <FontIcon color={grey600} className="material-icons">place</FontIcon>
                         <PlacesAutocomplete
+                            key={"PlacesAutocomplete" + this.state.keyIndex}
                             fullWidth={true}
                             onPlaceSelected={this.onDestinationChanged.bind(this)}
                             style={styles.topField}
@@ -134,12 +154,13 @@ class AddDestinationDialog extends React.Component {
                     </div>
                     <div className="middle">
                         <FontIcon color={grey600} className="material-icons">date_range</FontIcon>
-                        <DateRangePicker onChange={this.onDatesChange.bind(this)} />
+                        <DateRangePicker key={"DateRangePicker" + this.state.keyIndex} onChange={this.onDatesChange.bind(this)} />
                     </div>
                     <div className="bottom">
                         <div className="friends-wrapper">
                             <FontIcon color={grey600} className="material-icons">person</FontIcon>
                             <FCFriendsPicker
+                                key={"FCFriendsPicker" + this.state.keyIndex}
                                 fullWidth={true}
                                 onChange={this.onFriendsChanged.bind(this)}
                                 style={styles.bottomField}
@@ -152,11 +173,20 @@ class AddDestinationDialog extends React.Component {
                             secondary={true}
                             onTouchTap={() => this.handleClose()}
                         />
+                        {
+                            <FlatButton
+                                label="Add Destination"
+                                primary={!isNewTrip}
+                                secondary = {isNewTrip}
+                                disabled={!canSubmit}
+                                onTouchTap={() => this.handleSubmit(false)}
+                            />
+                        }
                         <FlatButton
                             label={this.props.submitButtonText || "Create Trip"}
                             primary={true}
                             disabled={!canSubmit}
-                            onTouchTap={() => this.handleSubmit()}
+                            onTouchTap={() => this.handleSubmit(true)}
                         />
                     </div>
                 </div>

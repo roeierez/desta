@@ -17,7 +17,6 @@ import * as actionCreators from 'redux-modules';
 class Profile extends React.Component {
 
     componentDidMount () {
-        debugger;
         this.props.login();
     }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {formatTripName} from 'lib/tripUtils';
 import {Link} from 'react-router';
 import TripsCalendar from './TripsCalendar';
@@ -52,7 +53,8 @@ class TripPage extends React.Component {
         }
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
+        this.showAddDestination(null);
     }
 
     onDestinationSelected(destination) {
@@ -72,14 +74,19 @@ class TripPage extends React.Component {
     }
 
     showAddDestination(e) {
-        this.setState({destinationDialogOpened: true, anchorEl: e.currentTarget});
+        this.anchorEl = e && e.currentTarget;
+        this.props.showAddDestinationForm(e != null);
     }
 
-    onAddDesintation(destination) {
+    onAddDesintation(addMore, destination) {
         var trip = JSON.parse(JSON.stringify(findTripByIdOrLink(this.props.trips, this.props.params.id)));
         trip.destinations.push(destination);
         this.props.updateTrip(trip).payload.promise.then(() => {
-            this.setState({destinationDialogOpened: false});
+            if (!addMore) {
+                this.showAddDestination(null);
+            } else {
+                this.refs.addDestinationDialog.reset();
+            }
         })
     }
 
@@ -108,6 +115,9 @@ class TripPage extends React.Component {
                         <Paper style={{display: 'flex', flexDirection: 'column'}} zDepth={2}>
                         <CardHeader style={styles.header} title="Destinations">
                             <FontIcon onTouchTap={(e) => this.showAddDestination(e)}
+                                      ref={(icon) => {
+                                          this.anchorEl = icon ? ReactDOM.findDOMNode(icon) : null;
+                                      }}
                                       style={{float: 'right', top: "-3px", marginRight: "0px", cursor:'pointer'}}
                                       className="material-icons">add</FontIcon>
                         </CardHeader>
@@ -116,23 +126,18 @@ class TripPage extends React.Component {
                         </div>
                         </Paper>
                     </div>
-                    {
-                        // <div className="middle">
-                        //     <ResizeablePanel style={styles.panel} title="Destinations">
-                        //         <DestinationsList destinations={trip.destinations} />
-                        //     </ResizeablePanel>
-                        // </div>
-                    }
-
                     <div className="right">
                         <TripsMap trip={trip} {...this.props} />
                     </div>
                 </div>
-                <AddDestinationDialog open={this.state.destinationDialogOpened}
-                                      anchorEl= {this.state.anchorEl}
-                                      onSubmit={this.onAddDesintation.bind(this)}
-                                      submitButtonText="Add Destination"
-                                      onRequestClose={() => this.setState({destinationDialogOpened: false})}/>
+                <AddDestinationDialog open={this.props.addDestinationFormVisible && this.anchorEl != null}
+                                      anchorEl= {this.anchorEl}
+                                      ref = "addDestinationDialog"
+                                      isNewTrip={false}
+                                      onAddDestination={this.onAddDesintation.bind(this, true)}
+                                      onCreateTrip={this.onAddDesintation.bind(this, false)}
+                                      submitButtonText="Save Trip"
+                                      onRequestClose={() => this.showAddDestination(null)}/>
             </div>
         );
     }

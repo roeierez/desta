@@ -86,6 +86,12 @@ export default createReducer({
             editedTrip: null,
             editType: null
         }
+    },
+    ['SHOW_ADD_DESTINATION_FORM'] : (state, {payload}) => {
+        return {
+            ...state,
+            addDestinationFormVisible: payload
+        }
     }
 }, initialState);
 
@@ -182,4 +188,9 @@ export const removeTripLink = (trip) => {
         link: null
     })
 }
+
+export const showAddDestinationForm = (visible) => ({
+    type: 'SHOW_ADD_DESTINATION_FORM',
+    payload: visible
+})
 

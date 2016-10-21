@@ -13,7 +13,7 @@ import {formatTripName} from 'lib/tripUtils';
 
 @connect(
     state => ({...state.profile, ...state.app, ...state.createTrip}),
-    dispatch => bindActionCreators({...actionCreators.app, ...actionCreators.createTrip}, dispatch),
+    dispatch => bindActionCreators({...actionCreators.app, ...actionCreators.createTrip, ...actionCreators.profile}, dispatch),
 )
 export default class Root extends Component {
 

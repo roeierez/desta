@@ -25,6 +25,7 @@ import moment from 'moment';
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 import {blue500, red500, green500, lightWhite} from 'material-ui/styles/colors';
 import Avatar from 'components/Modules/Avatar';
+import {findTripByIdOrLink} from 'lib/tripUtils';
 
 
 class Header extends React.Component {
@@ -33,6 +34,7 @@ class Header extends React.Component {
         login: PropTypes.func,
         logout: PropTypes.func,
         showNewTripForm: PropTypes.func,
+        showAddDestinationForm: PropTypes.func,
         newTripFormVisible: PropTypes.bool,
         toggleMenu: PropTypes.func,
         selectLocation: PropTypes.func,
@@ -125,7 +127,9 @@ class Header extends React.Component {
                 onLeftIconButtonTouchTap={this.toggleLeftMenu.bind(this)}>
                 <AddDestinationDialog open={this.props.newTripFormVisible == true}
                                       anchorEl={this.state.createTripAnchorEl}
-                                      onSubmit={this.createTrip.bind(this)}
+                                      isNewTrip={true}
+                                      onCreateTrip={this.createTrip.bind(this, false)}
+                                      onAddDestination={this.createTrip.bind(this, true)}
                                       onRequestClose={() => this.props.showNewTripForm(false)}/>
                 <div className="app-nav-bar">
                     <div className="separator" ></div>
@@ -176,7 +180,15 @@ class Header extends React.Component {
         );
     }
 
-    createTrip(destination) {
+    onAddDesintation(destination) {
+        var trip = JSON.parse(JSON.stringify(findTripByIdOrLink(this.props.trips, this.props.params.id)));
+        trip.destinations.push(destination);
+        this.props.updateTrip(trip).payload.promise.then(() => {
+            this.setState({destinationDialogOpened: false});
+        })
+    }
+
+    createTrip(addMore, destination, tripName) {
         let trip = {
             destinations:[
                 destination
@@ -185,10 +197,13 @@ class Header extends React.Component {
 
         this.props.createTrip({
             ...trip,
-            name: formatTripName(trip)
+            name: tripName
         }).payload.promise.then(result => {
             console.log(result);
-            browserHistory.push(`/${this.props.loggedInUser.id}/profile/trips/${result.payload.id}`)
+            if (addMore) {
+                this.props.showAddDestinationForm(true);
+            }
+            browserHistory.push(`/${this.props.loggedInUser.id}/profile/trips/${result.payload.id}?addDestination=true`)
             this.props.showNewTripForm(false);
         });
     }

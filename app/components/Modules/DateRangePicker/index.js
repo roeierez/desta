@@ -16,7 +16,7 @@ class Picker extends React.Component {
 
     render() {
         return (
-            <DateRangePicker withPortal={true} startDate={this.state.start} endDate={this.state.end} onDatesChange={this.onDatesChange.bind(this)} onFocusChange={(data) => { this.setState({focusedInput: data})}} focusedInput={this.state.focusedInput}/>
+            <DateRangePicker startDatePlaceholderText="From" endDatePlaceholderText="To" withPortal={true} startDate={this.state.start} endDate={this.state.end} onDatesChange={this.onDatesChange.bind(this)} onFocusChange={(data) => { this.setState({focusedInput: data})}} focusedInput={this.state.focusedInput}/>
         );
     }
 }

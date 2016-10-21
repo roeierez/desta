@@ -8,7 +8,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'flag-icon-css/css/flag-icon.min.css';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {pink500, cyan300, pinkA200} from 'material-ui/styles/colors';
+import {pink500, cyan200, cyan300, cyan700, pinkA200} from 'material-ui/styles/colors';
 import {DateRangePicker, SingleDatePicker} from 'react-dates';
 import styles from 'react-dates/css/styles.scss';
 import moment from 'moment';
@@ -50,9 +50,11 @@ const muiTheme = getMuiTheme({
         titleFontSize: 18
     },
     tabs: {
-        textColor: cyan300,
-        backgroundColor: "rgb(232, 232, 232)",
-        selectedTextColor: pinkA200
+        textColor: cyan200,
+        selectedTextColor: cyan700,
+        backgroundColor: 'transparent'
+         //backgroundColor: "rgb(232, 232, 232)",
+        // selectedTextColor: pinkA200
     }
 });
 
