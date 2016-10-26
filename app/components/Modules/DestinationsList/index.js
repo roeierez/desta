@@ -42,6 +42,13 @@ class DestinationsList extends React.Component {
                 endDate = parseShortDate(d.tripDates.endDate);
             listItems.push((
                 <ListItem
+                    style={{
+                        //fontSize: "11px"
+                    }}
+                    innerDivStyle={{
+                        //padding: "6px 56px 0px 72px"
+                    }}
+                    onTouchTap = {() => onDestinationSelected(d)}
                     rightIcon={
                         <IconMenu style={{transform: "translateY(-18px)", paddingRight: "12px"}} iconButtonElement={iconButtonElement}>
                             <MenuItem onTouchTap={() => onDestinationSelected(d)}>Edit</MenuItem>

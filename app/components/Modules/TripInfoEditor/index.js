@@ -95,9 +95,9 @@ class DestinationEditor extends React.Component {
     }
 
 
-    componentDidMount() {
-        this.props.fetchTrip(this.props.params.id);
-    }
+    // componentDidMount() {
+    //     this.props.fetchTrip(this.props.params.id);
+    // }
 
     render() {
         let trip = findTripByIdOrLink(this.props.trips, this.props.params.id);
@@ -114,7 +114,7 @@ class DestinationEditor extends React.Component {
         let {addDestinationItem, removeDestinationItem, updateDestinationItem} = this.props;
 
         return (
-            <div>
+            <div className="destinationEditor">
                 <HotelEditor open={this.state.editingHotel == true} onCancel={() => this.setState({editingHotel: false})} onSubmit={(hotel) => this.addHotel(trip, destinationID, hotel)} />
                 <DestinationEditorSection title="Hotels" onAdd={() => this.setState({editingHotel: true})}>
                     <List >
