@@ -9,7 +9,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'flag-icon-css/css/flag-icon.min.css';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {pink500, cyan200, cyan300, cyan700, pinkA200} from 'material-ui/styles/colors';
-import {DateRangePicker, SingleDatePicker} from 'react-dates';
 import styles from 'react-dates/css/styles.scss';
 import moment from 'moment';
 
