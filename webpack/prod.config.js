@@ -10,7 +10,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.scss$/,
-      loader: ExtractTextPlugin.extract('style-loader', 'css?minimize!postcss-loader!less-loader'),
+      loader: ExtractTextPlugin.extract('style-loader', 'css?minimize!postcss-loader!sass-loader'),
     }],
   },
   output: {
