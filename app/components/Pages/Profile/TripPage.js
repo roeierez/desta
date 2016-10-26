@@ -167,7 +167,7 @@ class TripPage extends React.Component {
                                     backgroundColor: 'white',
                                     boxShadow: "-10px 0 30px 0 rgba(0,0,0,.25)"
                                 }}>
-                                    <CardHeader style={styles.header} title="Huston">
+                                    <CardHeader style={styles.header} title={trip.destinations[this.state.destinationID].tripDestination.cityName}>
                                         <FontIcon
                                             onTouchTap={() => {
                                                 this.setState({destinationID:null});

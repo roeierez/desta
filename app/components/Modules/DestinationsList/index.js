@@ -19,6 +19,10 @@ class DestinationsList extends React.Component {
         onDestinationSelected: PropTypes.func
     }
 
+    onListitemTap(d, e) {
+        this.props.onDestinationSelected(d);
+    }
+
     render() {
         let {destinations, onDestinationSelected, onDeleteDestination} = this.props;
 
@@ -31,7 +35,7 @@ class DestinationsList extends React.Component {
 
         const RightIconMenu = ({destination}) =>  (
             <IconMenu iconButtonElement={iconButtonElement}>
-                <MenuItem onTouchTap={() => onDestinationSelected(destination)}>Edit</MenuItem>
+                <MenuItem onTouchTap={(e) => {e.stopPropagation(); onDestinationSelected(destination);}}>Edit</MenuItem>
                 <MenuItem>Delete</MenuItem>
             </IconMenu>
         );
@@ -48,14 +52,13 @@ class DestinationsList extends React.Component {
                     innerDivStyle={{
                         //padding: "6px 56px 0px 72px"
                     }}
-                    onTouchTap = {() => onDestinationSelected(d)}
                     rightIcon={
                         <IconMenu style={{transform: "translateY(-18px)", paddingRight: "12px"}} iconButtonElement={iconButtonElement}>
                             <MenuItem onTouchTap={() => onDestinationSelected(d)}>Edit</MenuItem>
                             {destinations.length > 1 && <MenuItem onTouchTap={() => onDeleteDestination(d)}>Delete</MenuItem>}
                         </IconMenu>
                     }
-                    primaryText={d.tripDestination.cityName}
+                    primaryText={<span onClick={this.onListitemTap.bind(this, d)}>{d.tripDestination.cityName}</span>}
                     leftAvatar={<Avatar src={getDestinationImage(d.tripDestination)} />}
                     secondaryText={startDate.format('MMM DD') + ' - ' + endDate.format('MMM DD')}
                 />
