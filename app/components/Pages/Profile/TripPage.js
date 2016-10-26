@@ -138,54 +138,18 @@ class TripPage extends React.Component {
                     </div>
                     <div className="right">
                         <TripsMap trip={trip} {...this.props} />
-                        <ReactCSSTransitionGroup
-                            transitionName="mask-slide-left"
-                            transitionEnterTimeout={1000}
-                            transitionLeaveTimeout={1000}
-                        >
-                            {this.state.destinationID != null &&
-                            <div key={this.props.destinationID} className="white-mask" style={{
-                                //opacity: this.props.addDestinationFormVisible ? 1 : 0,
-                                overflowY: 'hidden',
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                width: "100%",
-                                height: "100%",
-                                backgroundColor: "rgba(255,255,255,0.8)"
-
-                            }}>
-
-                                <div zDepth={5} className="slider" style={{
-                                    key: "0",
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 100,
-                                    width: "calc(100% - 100px)",
-                                    height: "100%",
-                                    opacity: 1,
-                                    backgroundColor: 'white',
-                                    boxShadow: "-10px 0 30px 0 rgba(0,0,0,.25)"
-                                }}>
-                                    <CardHeader style={styles.header} title={trip.destinations[this.state.destinationID].tripDestination.cityName}>
-                                        <FontIcon
-                                            onTouchTap={() => {
-                                                this.setState({destinationID:null});
-                                            }}
-                                            style={{
-                                                float: 'right',
-                                                top: "-3px",
-                                                marginRight: "-5px",
-                                                cursor: 'pointer'
-                                            }}
-                                            className="material-icons">close</FontIcon>
-                                    </CardHeader>
-                                    <TripInfoEditor {...this.props}
-                                                    params={{destinationId: this.state.destinationID, id: this.props.params.id}}/>
-                                </div>
-                            </div>
-                            }
-                        </ReactCSSTransitionGroup>
+                        {this.state.destinationID !== null &&
+                        <div className="trip-info" style={{}}>
+                            <CardHeader style={{...styles.header, paddingTop: "12px", paddingBottom: "12px"}}
+                                        title={trip.destinations[this.state.destinationID].tripDestination.cityName}>
+                            </CardHeader>
+                            <TripInfoEditor {...this.props}
+                                            params={{
+                                                destinationId: this.state.destinationID,
+                                                id: this.props.params.id
+                                            }}/>
+                        </div>
+                        }
                     </div>
                 </div>
                 <AddDestinationDialog open={this.props.addDestinationFormVisible && this.anchorEl != null}
