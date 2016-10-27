@@ -129,7 +129,7 @@ class TripPage extends React.Component {
                                           }}
                                           className="material-icons">add</FontIcon>
                             </CardHeader>
-                            <div style={{backgroundColor: 'white', overflowY: 'auto'}}>
+                            <div style={{backgroundColor: 'white'}}>
                                 <DestinationsList destinations={trip.destinations}
                                                   onDeleteDestination={this.onDeleteDestination.bind(this)}
                                                   onDestinationSelected={this.onDestinationSelected.bind(this)}/>
