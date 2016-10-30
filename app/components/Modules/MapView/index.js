@@ -8,6 +8,9 @@ class MapView extends React.Component {
     constructor(props) {
         super(props);
         this.onMarkerClick = this.onMarkerClick.bind(this);
+        this.state = {
+            showFaces: false
+        }
     }
 
     onMarkerClick(marker) {
@@ -43,6 +46,11 @@ class MapView extends React.Component {
                 this.refs.map.fitBounds(bounds);
             }
         }
+    }
+
+    handleZoomChanged() {
+        const nextZoom = this.refs.map.getZoom();
+        this.setState({showFaces: nextZoom >= 7});
     }
 
     render() {
@@ -88,12 +96,13 @@ class MapView extends React.Component {
                             center={ centerLocation && centerLocation.location || {
                                 lat: 0, lng: 0
                             }}
+                            onZoomChanged={this.handleZoomChanged.bind(this)}
                         >
                             {!this.props.heatmap && locations && locations.length > 0 && (
 
                                     locations.map((dest, i) => {
                                         return (
-                                            (dest.icon || dest.component) ?
+                                            (this.state.showFaces && (dest.icon || dest.component)) ?
                                             <OverlayView
                                                 key={i.toString() + dest.location.lat.toString() + dest.location.lng.toString()}
                                                 position={dest.location}
@@ -107,10 +116,10 @@ class MapView extends React.Component {
                                             :
                                             <Marker
                                                 position={dest.location}
-                                                shape={{coords:[22,22,23],type:'circle'}}
+                                                shape={this.state.showFaces && {coords:[22,22,23],type:'circle'}}
                                                 optimized={false}
-                                                icon={ new google.maps.MarkerImage(dest.icon, null, null, new google.maps.Point(13, 25))}
-                                                onClick={this.onMarkerClick}
+                                                icon={ this.state.showFaces && new google.maps.MarkerImage(dest.icon, null, null, new google.maps.Point(13, 25))}
+                                                onClick={!this.state.showFaces && this.onMarkerClick}
                                                 key={i.toString() + dest.location.lat.toString() + dest.location.lng.toString()}>
                                             </Marker>
 
