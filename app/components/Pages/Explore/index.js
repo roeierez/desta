@@ -20,6 +20,7 @@ import Avatar from 'components/Modules/Avatar';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {cyan300} from 'material-ui/styles/colors';
 import {browserHistory} from 'react-router';
+import MonthPicker from 'components/Modules/MonthPicker'
 
 const styles = {
     tab: {position: 'relative', height: '35px'},
@@ -101,6 +102,11 @@ class Explore extends React.Component {
     setFutureFilter() {
         this.props.setFromDate(new Date());
         this.props.setToDate(moment(new Date()).add(10, 'years').toDate());
+    }
+
+    onSelectedMonthChange(year, month) {
+        this.props.setFromDate(new Date(year, month, 1));
+        this.props.setToDate(new Date(year, month + 1, 0));
     }
 
     setPastFilter() {
@@ -239,6 +245,9 @@ class Explore extends React.Component {
                 onVisitSelected={this.onVisitSelected.bind(this)}
                 shownCityVisits={shownCityVisits}
                 mapIcons={mapIcons}
+                fromDate={fromDate}
+                toDate={toDate}
+                onSelectedMonthChange={this.onSelectedMonthChange.bind(this)}
                 backFromPeople={this.backFromPeople.bind(this)}
             />
         );
@@ -314,11 +323,19 @@ class Explore extends React.Component {
 class ExploreContent extends React.Component {
 
     render() {
-        let {byCountry, cityToShow, onDestinationSelected, selectedValue, selectedPopularCity, setCityToShow, visitToShow, onVisitSelected, shownCityVisits, mapIcons, backFromPeople} = this.props;
+        let {fromDate, toDate, onSelectedMonthChange, byCountry, cityToShow, onDestinationSelected, selectedValue, selectedPopularCity, setCityToShow, visitToShow, onVisitSelected, shownCityVisits, mapIcons, backFromPeople} = this.props,
+            fromMonth = fromDate.month(),
+            fromYear = fromDate.year(),
+            toMonth = toDate.month(),
+            toYear = toDate.year();
 
+        let value = (fromMonth == toMonth && fromYear == toYear) ? {month: fromMonth, year: fromYear} : "WWW"
         return (
             <div className="content">
                 <div className="left-panel">
+                    <div className="edit">
+                        <MonthPicker onChange={onSelectedMonthChange} value={value} />
+                    </div>
                     {!cityToShow && (
                         <PlacesList header={<ListNavigationHeader onRightLinkClick={() => {onDestinationSelected({country: null});}} rightLink="ALL" title="FRIENDS LOCATIONS" />} selectedValue={selectedValue} selectedPopularCity={selectedPopularCity} onViewCity={setCityToShow} onSelect={onDestinationSelected.bind(this)}
                                     byCountry={byCountry}/>
