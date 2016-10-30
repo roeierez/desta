@@ -95,21 +95,24 @@ class Explore extends React.Component {
     }
 
     setLastMonthFilter() {
+        this.props.setTimeFilter("present");
         this.props.setToDate(new Date());
         this.props.setFromDate(moment(new Date()).subtract(1, 'months').toDate());
     }
 
     setFutureFilter() {
+        this.props.setTimeFilter("future");
         this.props.setFromDate(new Date());
         this.props.setToDate(moment(new Date()).add(10, 'years').toDate());
     }
 
     onSelectedMonthChange(year, month) {
-        this.props.setFromDate(new Date(year, month, 1));
-        this.props.setToDate(new Date(year, month + 1, 0));
+        this.props.setFromDate(new Date(year, month - 1, 1));
+        this.props.setToDate(new Date(year, month , 0));
     }
 
     setPastFilter() {
+        this.props.setTimeFilter("past");
         this.props.setToDate(new Date());
         this.props.setFromDate(moment(new Date()).subtract(10, 'years').toDate());
     }
@@ -247,6 +250,7 @@ class Explore extends React.Component {
                 mapIcons={mapIcons}
                 fromDate={fromDate}
                 toDate={toDate}
+                timeFilter={this.props.timeFilter}
                 onSelectedMonthChange={this.onSelectedMonthChange.bind(this)}
                 backFromPeople={this.backFromPeople.bind(this)}
             />
@@ -323,13 +327,14 @@ class Explore extends React.Component {
 class ExploreContent extends React.Component {
 
     render() {
-        let {fromDate, toDate, onSelectedMonthChange, byCountry, cityToShow, onDestinationSelected, selectedValue, selectedPopularCity, setCityToShow, visitToShow, onVisitSelected, shownCityVisits, mapIcons, backFromPeople} = this.props,
+        let {timeFilter, fromDate, toDate, onSelectedMonthChange, byCountry, cityToShow, onDestinationSelected, selectedValue, selectedPopularCity, setCityToShow, visitToShow, onVisitSelected, shownCityVisits, mapIcons, backFromPeople} = this.props,
             fromMonth = fromDate.month(),
             fromYear = fromDate.year(),
             toMonth = toDate.month(),
             toYear = toDate.year();
 
-        let value = (fromMonth == toMonth && fromYear == toYear) ? {month: fromMonth, year: fromYear} : "WWW"
+        let value = (fromMonth == toMonth && fromYear == toYear) ? {month: fromMonth + 1, year: fromYear} : " ";
+
         return (
             <div className="content">
                 <div className="left-panel">

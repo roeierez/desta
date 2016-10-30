@@ -90,6 +90,12 @@ export default createReducer({
             ...state,
             toDate: payload
         }
+    },
+    ['SET_TIME_FILTER']: (state, {payload}) => {
+        return {
+            ...state,
+            timeFilter: payload
+        }
     }
 }, initialState);
 
@@ -132,6 +138,13 @@ export const setToDate  = (date) => {
     return {
         type: 'SET_TO_DATE',
         payload: date
+    }
+}
+
+export const setTimeFilter  = (filter) => {
+    return {
+        type: 'SET_TIME_FILTER',
+        payload: filter
     }
 }
 

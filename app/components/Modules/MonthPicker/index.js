@@ -37,9 +37,9 @@ class MonthPicker extends Component {
 
         return (
             <div className="month-picker-wrapper">
-                <label>Pick A Month</label>
+                <label>Select A Month</label>
                 <ReactMonthPicker ref="picker"
-                                  years={years}
+                                  years={{min: 2000, max: 2020}}
                                   value={value}
                                   lang={{
                                       months: ['Jan', 'Feb', 'Mar', 'Spr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
